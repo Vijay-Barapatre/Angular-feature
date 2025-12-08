@@ -1,0 +1,127 @@
+﻿node.exe : - Building...
+At C:\Users\Durga\AppData\Roaming\npm\ng.ps1:24 
+char:5
++     & "node$exe"  
+"$basedir/node_modules/@angular/cli/bin/ng.js" $arg 
+...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (- Build 
+   ing...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Application bundle generation failed. [17.874 seconds]
+
+Γû▓ [WARNING] NG8107: The left side of this optional 
+chain operation does not include 'null' or 
+'undefined' in its type, therefore the '?.' operator 
+can be replaced with the '.' operator. [plugin 
+angular-compiler]
+
+    src/app/features/reactive-forms/components/use-ca
+se-7/dynamic-form.component.ts:97:37:
+      97 Γöé                 <pre>{{ 
+dynamicForm?.value | json }}</pre>
+         Γò╡                                      
+~~~~~
+
+
+Γû▓ [WARNING] NG8107: The left side of this optional 
+chain operation does not include 'null' or 
+'undefined' in its type, therefore the '?.' operator 
+can be replaced with the '.' operator. [plugin 
+angular-compiler]
+
+    src/app/practice/input-output/complex/scenario-1-
+shopping-cart.component.ts:111:54:
+      111 Γöé ...  <span class="subtotal">\${{ 
+getSubtotal()?.toFixed(2) }}</span>
+          Γò╡                                        
+        ~~~~~~~
+
+
+Γû▓ [WARNING] NG8107: The left side of this optional 
+chain operation does not include 'null' or 
+'undefined' in its type, therefore the '?.' operator 
+can be replaced with the '.' operator. [plugin 
+angular-compiler]
+
+    src/app/practice/routing/basic/exercise-2-params.
+component.ts:68:54:
+      68 Γöé                             <h4>{{ 
+selectedProduct()?.name }}</h4>
+         Γò╡                                         
+              ~~~~
+
+
+Γû▓ [WARNING] NG8107: The left side of this optional 
+chain operation does not include 'null' or 
+'undefined' in its type, therefore the '?.' operator 
+can be replaced with the '.' operator. [plugin 
+angular-compiler]
+
+    src/app/practice/routing/basic/exercise-2-params.
+component.ts:69:53:
+      69 Γöé ...                       <p>{{ 
+selectedProduct()?.description }}</p>
+         Γò╡                                         
+           ~~~~~~~~~~~
+
+
+Γû▓ [WARNING] NG8107: The left side of this optional 
+chain operation does not include 'null' or 
+'undefined' in its type, therefore the '?.' operator 
+can be replaced with the '.' operator. [plugin 
+angular-compiler]
+
+    src/app/practice/routing/basic/exercise-2-params.
+component.ts:70:71:
+      70 Γöé ...       <span class="price">\${{ 
+selectedProduct()?.price }}</span>
+         Γò╡                                         
+             ~~~~~
+
+
+X [ERROR] TS2345: Argument of type 'null' is not 
+assignable to parameter of type '{ id: number; name: 
+string; description: string; price: number; }'. 
+[plugin angular-compiler]
+
+    src/app/practice/routing/basic/exercise-2-params.
+component.ts:113:96:
+      113 Γöé ...his.products extends () => (infer 
+T)[] ? T : never | null>(null);
+          Γò╡                                        
+                       ~~~~
+
+
+X [ERROR] TS2345: Argument of type '{ id: number; 
+name: string; description: string; price: number; } 
+| null' is not assignable to parameter of type '{ 
+id: number; name: string; description: string; 
+price: number; }'.
+  Type 'null' is not assignable to type '{ id: 
+number; name: string; description: string; price: 
+number; }'. [plugin angular-compiler]
+
+    src/app/practice/routing/basic/exercise-2-params.
+component.ts:118:33:
+      118 Γöé         
+this.selectedProduct.set(product || null);
+          Γò╡                                  
+~~~~~~~~~~~~~~~
+
+
+X [ERROR] NG5002: Unexpected closing tag "code". It 
+may happen when the tag has already been closed by 
+another tag. For more info see https://www.w3.org/TR/
+html5/syntax.html#closing-elements-that-have-implied-
+end-tags [plugin angular-compiler]
+
+    src/app/practice/rxjs/basic/exercise-4-subscripti
+ons.component.ts:84:9:
+      84 Γöé {{ '}' }}</code></pre>
+         Γò╡          ~~~~~~~
+
+

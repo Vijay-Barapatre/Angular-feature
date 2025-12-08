@@ -41,5 +41,11 @@ export const SECURITY_ROUTES: Routes = [
         path: 'use-case-6',
         loadComponent: () => import('./components/use-case-6/security-checklist.component')
             .then(m => m.SecurityChecklistComponent)
+    },
+
+    // Practice Exercises
+    {
+        path: 'practice',
+        loadChildren: () => import('./practice/practice.routes').then(m => m.SECURITY_PRACTICE_ROUTES)
     }
 ];

@@ -310,6 +310,15 @@ export const routes: Routes = [
     },
 
     /**
+     * PRACTICE EXERCISES
+     * Centralized practice section for all features
+     */
+    {
+        path: 'practice',
+        loadChildren: () => import('./practice/practice.routes').then(m => m.PRACTICE_ROUTES)
+    },
+
+    /**
      * WILDCARD ROUTE (404 Not Found)
      * MUST be last in the array
      * Catches any unmatched routes
