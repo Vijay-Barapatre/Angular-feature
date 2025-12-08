@@ -67,7 +67,7 @@ interface Todo {
     `,
     styles: [`
         .scenario { max-width: 600px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #06b6d4; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #06b6d4; }
         .app-container { background: white; padding: 1.5rem; border-radius: 8px; }
         .add-form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
         .add-form input { flex: 1; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 6px; }

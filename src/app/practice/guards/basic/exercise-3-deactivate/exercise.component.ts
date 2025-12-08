@@ -118,9 +118,9 @@ import { FormsModule } from '@angular/forms';
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #f5f3ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #8b5cf6; }
+        .instructions { background: #f5f3ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #8b5cf6; }
         .instructions h2 { margin: 0 0 0.5rem; color: #8b5cf6; }
-        .task-list { background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        .task-list { background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; }
         .form-container { border: 2px solid #e5e7eb; border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
         .form-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8fafc; border-bottom: 1px solid #e5e7eb; }

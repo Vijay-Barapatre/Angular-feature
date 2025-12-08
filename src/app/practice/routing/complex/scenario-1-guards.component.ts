@@ -100,7 +100,7 @@ import { CommonModule } from '@angular/common';
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ec4899; }
+        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ec4899; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .guard-types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
         .guard-card { padding: 1rem; background: #f8fafc; border-radius: 8px; }

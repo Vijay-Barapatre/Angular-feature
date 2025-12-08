@@ -88,7 +88,7 @@ ngOnDestroy() {{ '{' }}
     `,
     styles: [`
         .exercise { max-width: 700px; }
-        .instructions { background: #fffbeb; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #fffbeb; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }
         .counters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
         .counter-box { padding: 1rem; background: #f8fafc; border-radius: 8px; text-align: center; }

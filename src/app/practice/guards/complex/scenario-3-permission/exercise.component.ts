@@ -84,7 +84,7 @@ type Permission = 'create' | 'read' | 'update' | 'delete';
     `,
     styles: [`
         .scenario { max-width: 800px; }
-        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ef4444; }
         .instructions h2 { margin: 0 0 0.5rem; color: #ef4444; }
         .content { background: white; padding: 1.5rem; border-radius: 12px; }
         .permission-manager { margin-bottom: 1.5rem; }

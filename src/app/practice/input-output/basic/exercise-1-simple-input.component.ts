@@ -140,7 +140,7 @@ export class UserCardComponent {
     `,
     styles: [`
         .exercise { max-width: 700px; }
-        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #10b981; }
         .instructions ul { margin: 0.5rem 0 0; padding-left: 1.5rem; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }

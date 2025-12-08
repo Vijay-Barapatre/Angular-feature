@@ -75,7 +75,7 @@ interface Metric {
     `,
     styles: [`
         .scenario { max-width: 800px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #8b5cf6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #8b5cf6; }
         .dashboard { background: white; padding: 1.5rem; border-radius: 12px; }
         .controls { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
         .controls button { padding: 0.5rem 1rem; border: none; border-radius: 6px; background: #8b5cf6; color: white; cursor: pointer; }

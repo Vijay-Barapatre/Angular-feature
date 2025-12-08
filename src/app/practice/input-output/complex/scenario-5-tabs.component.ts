@@ -104,7 +104,7 @@ export class TabsComponent {
     `,
     styles: [`
         .tabs-scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ef4444; }
         .demo { background: white; border-radius: 8px; overflow: hidden; }
     `]
 })

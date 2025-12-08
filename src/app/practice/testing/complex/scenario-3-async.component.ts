@@ -100,7 +100,7 @@ it('should test observable with fakeAsync', fakeAsync(() => {{ '{' }}
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #14b8a6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #14b8a6; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .code-block { padding: 1rem; background: #1e1e2e; border-radius: 8px; margin-bottom: 1rem; overflow-x: auto; }
         .code-block h4 { color: white; margin: 0 0 0.5rem; font-size: 0.9rem; }

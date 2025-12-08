@@ -75,7 +75,7 @@ this.uploadFile(file).subscribe(event => {{ '{' }}
     `,
     styles: [`
         .scenario { max-width: 600px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #06b6d4; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #06b6d4; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .upload-zone { padding: 3rem; border: 2px dashed #e5e7eb; border-radius: 12px; text-align: center; transition: all 0.3s; }
         .upload-zone.dragover { border-color: #06b6d4; background: #ecfeff; }

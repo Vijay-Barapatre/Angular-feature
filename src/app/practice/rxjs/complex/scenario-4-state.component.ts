@@ -90,7 +90,7 @@ type Action =
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #f59e0b; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .state-display { padding: 1rem; background: #1e1e2e; border-radius: 8px; margin-bottom: 1rem; }
         .state-display h4 { margin: 0 0 0.5rem; color: white; font-size: 0.9rem; }

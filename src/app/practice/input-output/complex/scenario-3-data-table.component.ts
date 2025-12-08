@@ -94,7 +94,7 @@ interface User {
     `,
     styles: [`
         .data-table-scenario { max-width: 900px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ef4444; }
         .instructions h2 { margin: 0 0 0.5rem; color: #ef4444; }
         .table-container { background: white; border-radius: 8px; overflow: hidden; }
         .table-actions { padding: 1rem; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }

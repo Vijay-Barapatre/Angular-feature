@@ -81,7 +81,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@
     `,
     styles: [`
         .scenario { max-width: 800px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #3b82f6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #3b82f6; }
         .form-container { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
         form { background: white; padding: 1.5rem; border-radius: 8px; }
         .form-section { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb; }

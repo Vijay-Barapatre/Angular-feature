@@ -103,7 +103,7 @@ ngOnInit() {{ '{' }}
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ec4899; }
+        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ec4899; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .code-block { padding: 1rem; background: #1e1e2e; border-radius: 8px; margin-bottom: 1.5rem; }
         .code-block h4 { color: white; margin: 0 0 0.5rem; font-size: 0.9rem; }

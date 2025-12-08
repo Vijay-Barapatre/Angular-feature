@@ -83,7 +83,7 @@ this.route.queryParamMap.subscribe(params => {{ '{' }}
     `,
     styles: [`
         .exercise { max-width: 700px; }
-        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #ec4899; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }
         .code-block { padding: 1rem; background: #1e1e2e; border-radius: 8px; margin-bottom: 1.5rem; }

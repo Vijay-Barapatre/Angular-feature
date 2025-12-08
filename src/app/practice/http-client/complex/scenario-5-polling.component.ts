@@ -68,7 +68,7 @@ interval(5000).pipe(
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #06b6d4; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #06b6d4; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .controls { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
         .controls button, .controls select { padding: 0.5rem 1rem; border: none; border-radius: 4px; background: #06b6d4; color: white; cursor: pointer; }

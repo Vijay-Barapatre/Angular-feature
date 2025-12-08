@@ -231,7 +231,7 @@ export class CartItemComponent {
     `,
     styles: [`
         .shopping-cart { max-width: 1000px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ef4444; }
         .instructions h2 { margin: 0 0 0.5rem; color: #ef4444; }
         .layout { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
         .products h3, .cart h3 { margin: 0 0 1rem; }

@@ -75,7 +75,7 @@ interface Message {
     `,
     styles: [`
         .scenario { max-width: 500px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #f59e0b; }
         .chat-container { background: #1e1e2e; border-radius: 12px; overflow: hidden; }
         .chat-header { display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: #334155; color: white; }
         .status { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; }

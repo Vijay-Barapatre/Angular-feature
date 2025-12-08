@@ -54,7 +54,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, Validati
     `,
     styles: [`
         .scenario { max-width: 400px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #3b82f6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #3b82f6; }
         form { background: white; padding: 1.5rem; border-radius: 8px; }
         .form-group { margin-bottom: 1rem; }
         .form-group label { display: block; margin-bottom: 0.25rem; }

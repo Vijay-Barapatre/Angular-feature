@@ -159,7 +159,7 @@ export class CounterComponent {
     `,
     styles: [`
         .exercise { max-width: 700px; }
-        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #10b981; }
         .hint { margin-top: 1rem; padding: 0.75rem; background: #fef3c7; border-radius: 6px; font-size: 0.9rem; }
         .hint ul { margin: 0.5rem 0 0; padding-left: 1.5rem; }

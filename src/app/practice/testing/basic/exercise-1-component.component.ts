@@ -99,7 +99,7 @@ export class CounterComponent {{ '{' }}
     `,
     styles: [`
         .exercise { max-width: 700px; }
-        .instructions { background: #f0fdfa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #f0fdfa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #14b8a6; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }
         .test-structure { margin-bottom: 1.5rem; }

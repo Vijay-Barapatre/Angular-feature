@@ -151,9 +151,9 @@ export class RoleAuthService {
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #f5f3ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #8b5cf6; }
+        .instructions { background: #f5f3ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #8b5cf6; }
         .instructions h2 { margin: 0 0 0.5rem; color: #8b5cf6; }
-        .task-list { background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        .task-list { background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; color: #1e1e2e; }
         .task-list h4 { margin: 0 0 0.5rem; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; }
         .user-selector { margin-bottom: 1.5rem; }

@@ -94,7 +94,7 @@ interface DynamicRoute {
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ec4899; }
+        .instructions { background: #fdf2f8; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ec4899; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .route-builder { padding: 1rem; background: #f8fafc; border-radius: 8px; margin-bottom: 1.5rem; }
         .form-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }

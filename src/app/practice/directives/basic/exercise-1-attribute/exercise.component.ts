@@ -98,9 +98,9 @@ export class HighlightDirective {{ '{' }}
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #fffbeb; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b; }
+        .instructions { background: #fffbeb; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #f59e0b; }
         .instructions h2 { margin: 0 0 0.5rem; color: #f59e0b; }
-        .task-list { background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        .task-list { background: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; }
         .demo-items { display: grid; gap: 0.5rem; margin-bottom: 1.5rem; }
         .demo-item { padding: 1rem; background: #f8fafc; border-radius: 8px; margin: 0; cursor: pointer; transition: background 0.2s; }

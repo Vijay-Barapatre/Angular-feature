@@ -221,7 +221,7 @@ export class PersonalInfoStepComponent {
     `,
     styles: [`
         .form-wizard { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ef4444; }
         .instructions h2 { margin: 0 0 0.5rem; color: #ef4444; }
         .wizard-container { background: white; border-radius: 8px; overflow: hidden; }
         .step-nav { display: flex; gap: 0.5rem; padding: 1rem; background: #f8fafc; border-bottom: 1px solid #e5e7eb; }

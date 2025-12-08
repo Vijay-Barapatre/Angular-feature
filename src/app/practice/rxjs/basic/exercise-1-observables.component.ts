@@ -83,7 +83,7 @@ obs$.subscribe({{ '{' }}
     `,
     styles: [`
         .exercise { max-width: 700px; }
-        .instructions { background: #fffbeb; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #fffbeb; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #f59e0b; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }
         .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }

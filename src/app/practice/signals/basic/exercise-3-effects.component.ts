@@ -62,7 +62,7 @@ import { FormsModule } from '@angular/forms';
     `,
     styles: [`
         .exercise { max-width: 600px; }
-        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #8b5cf6; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }
         .form-row input { width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1rem; }

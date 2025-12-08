@@ -86,7 +86,7 @@ interface ValidationErrors {
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #8b5cf6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #8b5cf6; }
         .form-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         form { background: white; padding: 1.5rem; border-radius: 8px; }
         .form-group { margin-bottom: 1rem; }

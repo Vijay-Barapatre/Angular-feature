@@ -60,7 +60,7 @@ import { ReactiveFormsModule, FormBuilder, FormArray, Validators } from '@angula
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #3b82f6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #3b82f6; }
         .form-container form { background: white; padding: 1.5rem; border-radius: 8px; }
         .form-section h3 { margin: 0 0 1rem; }
         .add-btn { padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 1rem; }

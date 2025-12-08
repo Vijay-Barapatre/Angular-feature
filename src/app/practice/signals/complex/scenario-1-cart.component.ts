@@ -78,7 +78,7 @@ interface CartItem {
     `,
     styles: [`
         .scenario { max-width: 1000px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #8b5cf6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #8b5cf6; }
         .layout { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         .product-card { padding: 1rem; background: white; border-radius: 8px; text-align: center; }

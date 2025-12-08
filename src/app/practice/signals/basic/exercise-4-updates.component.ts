@@ -57,7 +57,7 @@ interface Todo {
     `,
     styles: [`
         .exercise { max-width: 600px; }
-        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #8b5cf6; }
         code { background: #1e1e2e; color: #a6e3a1; padding: 0.125rem 0.25rem; border-radius: 2px; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; }

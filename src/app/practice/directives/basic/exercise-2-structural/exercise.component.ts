@@ -78,7 +78,7 @@ export class UnlessDirective {
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #fffbeb; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b; }
+        .instructions { background: #fffbeb; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #f59e0b; }
         .instructions h2 { margin: 0 0 0.5rem; color: #f59e0b; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; }
         .toggle-section { padding: 1rem; background: #f8fafc; border-radius: 8px; margin-bottom: 1rem; }

@@ -67,7 +67,7 @@ interface DrawingState {
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #8b5cf6; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #8b5cf6; }
         .editor { background: white; padding: 1.5rem; border-radius: 12px; }
         .toolbar { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb; }
         .toolbar button { padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: 6px; background: white; cursor: pointer; }

@@ -91,7 +91,7 @@ export class ModalComponent {
     `,
     styles: [`
         .modal-scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #ef4444; }
         .demo { padding: 2rem; text-align: center; }
         .open-btn { padding: 1rem 2rem; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; }
     `]

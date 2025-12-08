@@ -64,7 +64,7 @@ import { CommonModule } from '@angular/common';
     `,
     styles: [`
         .exercise { max-width: 600px; }
-        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        .instructions { background: #f0fdf4; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; }
         .instructions h2 { margin: 0 0 0.5rem; color: #8b5cf6; }
         .hint { margin-top: 1rem; padding: 0.75rem; background: #eff6ff; border-radius: 6px; }
         .demo { background: white; padding: 1.5rem; border-radius: 8px; text-align: center; }

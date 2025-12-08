@@ -80,7 +80,7 @@ import { catchError, retry, retryWhen, delay, take, tap, switchMap } from 'rxjs/
     `,
     styles: [`
         .scenario { max-width: 700px; }
-        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b; }
+        .instructions { background: #fef2f2; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; color: #1e1e2e; border-left: 4px solid #f59e0b; }
         .content { background: white; padding: 1.5rem; border-radius: 8px; }
         .patterns { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
         .pattern-card { padding: 1rem; background: #f8fafc; border-radius: 8px; }
