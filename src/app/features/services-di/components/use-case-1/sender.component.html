@@ -1,0 +1,144 @@
+<!-- USE CASE 1: Basic Service & Injection - Sender Component -->
+
+<div class="use-case-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/services-di" class="back-link">← Back to Overview</a>
+        <h1>💉 Use Case 1: Basic Service & Injection</h1>
+        <p class="header-description">
+            Learn how to create an &#64;Injectable service and inject it into components.
+            ANY component can inject the same service - no parent-child required!
+        </p>
+    </div>
+
+    <!-- Concept Explanation -->
+    <section class="concept-section">
+        <h2>🎯 What You'll Learn</h2>
+        <div class="concept-grid">
+            <div class="concept-card">
+                <span class="concept-icon">📝</span>
+                <h4>&#64;Injectable()</h4>
+                <p>Decorator that marks a class for dependency injection</p>
+            </div>
+            <div class="concept-card">
+                <span class="concept-icon">🔧</span>
+                <h4>Constructor Injection</h4>
+                <p>Services are injected through constructor parameters</p>
+            </div>
+            <div class="concept-card">
+                <span class="concept-icon">🌍</span>
+                <h4>providedIn: 'root'</h4>
+                <p>Creates a singleton instance shared app-wide</p>
+            </div>
+            <div class="concept-card">
+                <span class="concept-icon">🔗</span>
+                <h4>Shared State</h4>
+                <p>Multiple components share the same service data</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo -->
+    <section class="demo-section">
+        <h2>🧪 Interactive Demo</h2>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">Total Messages:</span>
+                <span class="stat-value">{{ messages.length }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Operations:</span>
+                <span class="stat-value">{{ operationCount }}</span>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <!-- Sender Panel -->
+            <div class="demo-panel parent-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">📤</span>
+                    <h3>Sender Component</h3>
+                </div>
+
+                <div class="panel-content">
+                    <div class="input-group">
+                        <input type="text" [(ngModel)]="newMessage" placeholder="Type a message..."
+                            (keyup.enter)="addMessage()" class="message-input" />
+                        <button (click)="addMessage()" class="btn btn-primary">
+                            Add from Sender
+                        </button>
+                    </div>
+
+                    <div class="message-list">
+                        <h4>📨 Messages (from Service):</h4>
+                        <div *ngIf="messages.length === 0" class="empty-state">
+                            No messages yet. Add one above!
+                        </div>
+                        <div *ngFor="let msg of messages" class="message-item"
+                            [class.from-parent]="msg.includes('[Sender]')"
+                            [class.from-child]="msg.includes('[Receiver]')">
+                            {{ msg }}
+                        </div>
+                    </div>
+
+                    <button (click)="clearAll()" class="btn btn-secondary btn-small">
+                        🗑️ Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Receiver Panel -->
+            <div class="demo-panel child-panel">
+                <app-use-case-1-receiver></app-use-case-1-receiver>
+            </div>
+        </div>
+
+        <!-- Observation Box -->
+        <div class="observation-box">
+            <h4>👀 Observe:</h4>
+            <ul>
+                <li>Messages added by Sender appear in Receiver's list <strong>immediately</strong></li>
+                <li>Messages added by Receiver appear in Sender's list <strong>immediately</strong></li>
+                <li>Both components share the <strong>SAME</strong> DataService instance</li>
+                <li>No parent-child relationship needed - just inject the service!</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Code Snippet -->
+    <section class="code-section">
+        <h2>💻 Key Code Patterns</h2>
+
+        <div class="code-block">
+            <div class="code-header">
+                <span class="file-name">data.service.ts</span>
+            </div>
+            <pre><code>&#64;Injectable(&#123;
+  providedIn: 'root'  // 🌍 Singleton for entire app
+&#125;)
+export class DataService &#123;
+  private messages: string[] = [];
+  
+  addMessage(msg: string): void &#123;
+    this.messages.push(msg);
+  &#125;
+&#125;</code></pre>
+        </div>
+
+        <div class="code-block">
+            <div class="code-header">
+                <span class="file-name">sender.component.ts</span>
+            </div>
+            <pre><code>&#64;Component(&#123; ... &#125;)
+export class SenderComponent &#123;
+  // 💉 Constructor Injection
+  constructor(private dataService: DataService) &#123;&#125;
+  
+  addMessage(): void &#123;
+    this.dataService.addMessage('Hello!');
+  &#125;
+&#125;</code></pre>
+        </div>
+    </section>
+</div>

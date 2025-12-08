@@ -1,0 +1,187 @@
+/* ============================================
+   USE CASE 1: CHILD COMPONENT STYLES
+   ============================================ */
+
+:host {
+    display: block;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 2px solid var(--accent-color);
+}
+
+/* ============================================
+   PANEL HEADER
+   ============================================ */
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, var(--accent-color), #4ade80);
+}
+
+.panel-icon {
+    font-size: 1.5rem;
+}
+
+.panel-header h3 {
+    font-size: 1.25rem;
+    margin: 0;
+    flex: 1;
+}
+
+.badge {
+    background: rgba(0, 0, 0, 0.2);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ============================================
+   PANEL CONTENT
+   ============================================ */
+.panel-content {
+    padding: var(--spacing-lg);
+}
+
+/* ============================================
+   INPUT GROUP
+   ============================================ */
+.input-group {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.message-input {
+    flex: 1;
+    padding: var(--spacing-md);
+    border: 1px solid rgba(102, 234, 126, 0.3);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast);
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.message-input::placeholder {
+    color: var(--text-muted);
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--accent-color), #4ade80);
+    color: var(--bg-primary);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(126, 234, 102, 0.3);
+}
+
+/* ============================================
+   MESSAGE LIST
+   ============================================ */
+.message-list {
+    margin-bottom: var(--spacing-lg);
+}
+
+.message-list h4 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+}
+
+.message-count {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-md);
+}
+
+.empty-state {
+    padding: var(--spacing-lg);
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+}
+
+.message-item {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border-left: 4px solid var(--text-muted);
+    transition: transform var(--transition-fast);
+}
+
+.message-item:hover {
+    transform: translateX(4px);
+}
+
+.message-item.from-parent {
+    border-left-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.message-item.from-child {
+    border-left-color: var(--accent-color);
+    background: rgba(126, 234, 102, 0.1);
+}
+
+/* ============================================
+   INSIGHT BOX
+   ============================================ */
+.insight-box {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: rgba(126, 234, 102, 0.1);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--radius-md);
+}
+
+.insight-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.insight-box p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 600px) {
+    .input-group {
+        flex-direction: column;
+    }
+
+    .panel-header {
+        flex-wrap: wrap;
+    }
+
+    .badge {
+        width: 100%;
+        text-align: center;
+        margin-top: var(--spacing-sm);
+    }
+}

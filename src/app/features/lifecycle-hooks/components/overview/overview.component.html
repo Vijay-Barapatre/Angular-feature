@@ -1,0 +1,173 @@
+<!-- LIFECYCLE HOOKS OVERVIEW PAGE -->
+
+<div class="overview-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/" class="back-link">← Back to Home</a>
+        <h1>🔄 Lifecycle Hooks</h1>
+        <p class="header-description">
+            Master Angular's component lifecycle hooks. Learn when each hook is called,
+            how to use them effectively, and implement proper initialization and cleanup patterns.
+        </p>
+    </div>
+
+    <!-- Lifecycle Flow Diagram -->
+    <section class="diagram-section">
+        <h2>📊 Lifecycle Execution Order</h2>
+        <div class="lifecycle-flow">
+            <div *ngFor="let hook of lifecycleOrder; let i = index" class="lifecycle-step"
+                [class]="'phase-' + hook.phase">
+                <div class="step-number">{{ i + 1 }}</div>
+                <div class="step-content">
+                    <span class="hook-name">{{ hook.name }}</span>
+                    <span class="hook-description">{{ hook.description }}</span>
+                </div>
+                <div class="step-connector" *ngIf="i < lifecycleOrder.length - 1"></div>
+            </div>
+        </div>
+        <div class="phase-legend">
+            <span class="legend-item phase-creation">🎬 Creation</span>
+            <span class="legend-item phase-update">🔄 Update</span>
+            <span class="legend-item phase-content">📦 Content</span>
+            <span class="legend-item phase-view">👁️ View</span>
+            <span class="legend-item phase-destroy">💀 Destroy</span>
+        </div>
+    </section>
+
+    <!-- Use Cases Grid -->
+    <section class="use-cases-section">
+        <h2>📋 Use Cases & Examples</h2>
+
+        <div class="use-cases-grid">
+            <div *ngFor="let useCase of useCases" class="use-case-card">
+                <!-- Difficulty Badge -->
+                <div class="card-header">
+                    <span class="difficulty-badge" [class]="'difficulty-' + useCase.difficulty.toLowerCase()">
+                        {{ useCase.difficulty }}
+                    </span>
+                    <span class="use-case-icon">{{ useCase.icon }}</span>
+                </div>
+
+                <!-- Title -->
+                <h3>{{ useCase.id }}. {{ useCase.title }}</h3>
+
+                <!-- Description -->
+                <p class="use-case-description">{{ useCase.description }}</p>
+
+                <!-- Topics Covered -->
+                <div class="topics">
+                    <span *ngFor="let topic of useCase.topics" class="topic-tag">
+                        {{ topic }}
+                    </span>
+                </div>
+
+                <!-- Action Button -->
+                <a [routerLink]="useCase.route" class="btn btn-primary">
+                    View Example →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Concepts -->
+    <section class="concepts-section">
+        <h2>🎯 Key Concepts</h2>
+
+        <div class="concepts-grid">
+            <div class="concept-card">
+                <h4>Initialization (ngOnInit)</h4>
+                <p>Called once after the first ngOnChanges. Perfect for fetching data and setting up logic.</p>
+                <code>ngOnInit(): void &#123; this.loadData(); &#125;</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Cleanup (ngOnDestroy)</h4>
+                <p>Called just before Angular destroys the component. Unsubscribe and release resources here.</p>
+                <code>ngOnDestroy(): void &#123; this.sub.unsubscribe(); &#125;</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Input Changes (ngOnChanges)</h4>
+                <p>Called before ngOnInit and whenever input properties change. Receives SimpleChanges object.</p>
+                <code>ngOnChanges(changes: SimpleChanges): void</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>View Ready (ngAfterViewInit)</h4>
+                <p>Called once after the component's view and child views are initialized.</p>
+                <code>ngAfterViewInit(): void &#123; this.chart.init(); &#125;</code>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <h2>📖 Additional Resources</h2>
+
+        <div class="resources-grid">
+            <div *ngFor="let resource of resources" class="resource-card">
+                <span class="resource-icon">{{ resource.icon }}</span>
+                <h4>{{ resource.name }}</h4>
+                <p>{{ resource.description }}</p>
+                <a *ngIf="resource.route" [routerLink]="resource.route" class="btn btn-secondary btn-sm">
+                    Go →
+                </a>
+                <a *ngIf="resource.external" [href]="resource.external" target="_blank"
+                    class="btn btn-secondary btn-sm">
+                    Open →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Flow Diagram (ASCII) -->
+    <section class="diagram-section">
+        <h2>📈 Component Lifecycle Flow</h2>
+        <div class="diagram-container">
+            <div class="diagram-card">
+                <pre class="diagram-text">
+┌─────────────────────────────────────────────────────────────────────┐
+│                     COMPONENT LIFECYCLE FLOW                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                       │
+│  ┌──────────────┐                                                     │
+│  │ constructor  │ ──▶ Class instantiation (DI happens here)          │
+│  └──────┬───────┘                                                     │
+│         │                                                             │
+│         ▼                                                             │
+│  ┌──────────────┐                                                     │
+│  │ ngOnChanges  │ ──▶ Called BEFORE ngOnInit if inputs exist          │
+│  └──────┬───────┘     Called on EVERY input change                    │
+│         │                                                             │
+│         ▼                                                             │
+│  ┌──────────────┐                                                     │
+│  │  ngOnInit    │ ──▶ Called ONCE after first ngOnChanges             │
+│  └──────┬───────┘     ⭐ Best place for initialization logic          │
+│         │                                                             │
+│         ▼                                                             │
+│  ┌──────────────┐       ┌────────────────────────────────────────┐   │
+│  │  ngDoCheck   │ ──────│ UPDATE CYCLE (repeats on each CD run)  │   │
+│  └──────┬───────┘       └────────────────────────────────────────┘   │
+│         │                                                             │
+│         ├──────────────────────────────────────────────────┐         │
+│         ▼                                                  │         │
+│  ┌────────────────────┐  ┌─────────────────────────┐       │         │
+│  │ ngAfterContentInit │  │ ngAfterContentChecked   │ ◀─────┘         │
+│  └──────────┬─────────┘  └─────────────────────────┘                 │
+│             │                                                         │
+│             ▼                                                         │
+│  ┌────────────────────┐  ┌─────────────────────────┐                 │
+│  │ ngAfterViewInit    │  │ ngAfterViewChecked      │                 │
+│  └──────────┬─────────┘  └─────────────────────────┘                 │
+│             │                                                         │
+│             ▼                                                         │
+│  ┌──────────────┐                                                     │
+│  │ ngOnDestroy  │ ──▶ Called ONCE before component is destroyed       │
+│  └──────────────┘     ⭐ Best place for cleanup logic                 │
+│                                                                       │
+└─────────────────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+        </div>
+    </section>
+</div>

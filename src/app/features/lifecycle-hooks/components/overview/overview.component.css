@@ -1,0 +1,420 @@
+/* ============================================
+   LIFECYCLE HOOKS OVERVIEW PAGE STYLES
+   ============================================ */
+
+.overview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--primary-light);
+    text-decoration: none;
+    margin-bottom: var(--spacing-md);
+    transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--accent-color);
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.header-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   LIFECYCLE FLOW DIAGRAM
+   ============================================ */
+.lifecycle-flow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+}
+
+.lifecycle-step {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid transparent;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.lifecycle-step:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Phase Colors */
+.lifecycle-step.phase-creation {
+    border-color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.lifecycle-step.phase-update {
+    border-color: #60a5fa;
+    background: rgba(96, 165, 250, 0.1);
+}
+
+.lifecycle-step.phase-content {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.lifecycle-step.phase-view {
+    border-color: #a78bfa;
+    background: rgba(167, 139, 250, 0.1);
+}
+
+.lifecycle-step.phase-destroy {
+    border-color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+.step-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.hook-name {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.hook-description {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.step-connector {
+    position: absolute;
+    right: -20px;
+    width: 16px;
+    height: 2px;
+    background: var(--text-muted);
+}
+
+/* Phase Legend */
+.phase-legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+}
+
+.legend-item.phase-creation {
+    background: rgba(74, 222, 128, 0.2);
+    color: #4ade80;
+}
+
+.legend-item.phase-update {
+    background: rgba(96, 165, 250, 0.2);
+    color: #60a5fa;
+}
+
+.legend-item.phase-content {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.legend-item.phase-view {
+    background: rgba(167, 139, 250, 0.2);
+    color: #a78bfa;
+}
+
+.legend-item.phase-destroy {
+    background: rgba(248, 113, 113, 0.2);
+    color: #f87171;
+}
+
+/* ============================================
+   SECTION HEADERS
+   ============================================ */
+.use-cases-section,
+.resources-section,
+.concepts-section,
+.diagram-section {
+    margin-bottom: var(--spacing-2xl);
+}
+
+section h2 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-xl);
+    border-left: 4px solid var(--primary-color);
+    padding-left: var(--spacing-lg);
+}
+
+/* ============================================
+   USE CASES GRID
+   ============================================ */
+.use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.use-case-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+}
+
+.use-case-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.use-case-icon {
+    font-size: 2rem;
+}
+
+/* ============================================
+   DIFFICULTY BADGES
+   ============================================ */
+.difficulty-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.difficulty-beginner {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.difficulty-intermediate {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.difficulty-advanced {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error);
+    border: 1px solid var(--error);
+}
+
+/* ============================================
+   USE CASE CONTENT
+   ============================================ */
+.use-case-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.use-case-description {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+    flex: 1;
+    line-height: 1.6;
+}
+
+/* ============================================
+   TOPIC TAGS
+   ============================================ */
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.topic-tag {
+    background: var(--bg-card);
+    color: var(--primary-light);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+/* ============================================
+   RESOURCES GRID
+   ============================================ */
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.resource-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all var(--transition-normal);
+}
+
+.resource-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+}
+
+.resource-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--spacing-md);
+}
+
+.resource-card h4 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.25rem;
+}
+
+.resource-card p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.875rem;
+}
+
+/* ============================================
+   CONCEPTS GRID
+   ============================================ */
+.concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.concept-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border-left: 4px solid var(--primary-color);
+}
+
+.concept-card h4 {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-light);
+}
+
+.concept-card p {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.concept-card code {
+    display: block;
+    margin-top: var(--spacing-sm);
+}
+
+/* ============================================
+   DIAGRAM SECTION
+   ============================================ */
+.diagram-container {
+    display: flex;
+    justify-content: center;
+}
+
+.diagram-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    overflow-x: auto;
+}
+
+.diagram-text {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin: 0;
+    white-space: pre;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .use-cases-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    section h2 {
+        font-size: 1.5rem;
+    }
+
+    .diagram-text {
+        font-size: 0.75rem;
+    }
+
+    .lifecycle-flow {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step-connector {
+        display: none;
+    }
+}

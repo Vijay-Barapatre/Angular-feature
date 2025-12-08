@@ -1,0 +1,364 @@
+/* ============================================
+   USE CASE 2: ngOnChanges STYLES
+   ============================================ */
+
+.use-case-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--primary-light);
+    text-decoration: none;
+    margin-bottom: var(--spacing-md);
+    transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--accent-color);
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.header-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   CONTENT GRID
+   ============================================ */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2xl);
+}
+
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   DEMO SECTION
+   ============================================ */
+.demo-section h2,
+.explanation-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+    border-left: 4px solid var(--primary-color);
+    padding-left: var(--spacing-md);
+}
+
+/* ============================================
+   CONTROLS CARD
+   ============================================ */
+.controls-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    margin-bottom: var(--spacing-xl);
+}
+
+.controls-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--primary-light);
+}
+
+.control-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.user-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.875rem;
+}
+
+.btn-sm.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.input-field {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-card);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.toggle-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-lg);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--text-muted);
+    color: var(--text-secondary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-light);
+    color: var(--primary-light);
+}
+
+/* ============================================
+   COMPONENT DISPLAY
+   ============================================ */
+.component-display {
+    margin-bottom: var(--spacing-xl);
+}
+
+.component-display h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   LOG SECTION
+   ============================================ */
+.log-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.log-container {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    max-height: 250px;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.8rem;
+}
+
+.log-empty {
+    color: var(--text-muted);
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.log-entry {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-xs);
+    background: rgba(96, 165, 250, 0.1);
+    border-left: 3px solid #60a5fa;
+}
+
+.log-time {
+    color: var(--text-muted);
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.log-changes {
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+/* ============================================
+   EXPLANATION SECTION
+   ============================================ */
+.concept-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.concept-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-light);
+}
+
+.concept-description {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.code-block {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    overflow-x: auto;
+}
+
+.code-block pre {
+    margin: 0;
+}
+
+.code-block code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+}
+
+/* ============================================
+   PROPERTIES TABLE
+   ============================================ */
+.properties-table {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.property-row {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.property-row:last-child {
+    border-bottom: none;
+}
+
+.property-row code {
+    min-width: 140px;
+    color: var(--primary-light);
+    font-size: 0.875rem;
+}
+
+.property-row span {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* ============================================
+   TIMELINE
+   ============================================ */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+}
+
+.timeline-item.first {
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.timeline-item.warning {
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+}
+
+.timeline-item.first .timeline-dot {
+    background: #4ade80;
+}
+
+.timeline-item.warning .timeline-dot {
+    background: #f59e0b;
+}
+
+.timeline-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   WARNING CARD
+   ============================================ */
+.concept-card.highlight {
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.concept-card.warning-card {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notes-list li {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.notes-list li strong {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.notes-list li code {
+    background: rgba(102, 126, 234, 0.2);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+}

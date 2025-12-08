@@ -1,0 +1,195 @@
+<!-- 
+  USE CASE 1 - PARENT COMPONENT TEMPLATE
+  
+  This template demonstrates:
+  1. Property binding to pass data to child: [inputProperty]="parentData"
+  2. Event binding to handle child events: (outputEvent)="parentMethod($event)"
+  3. How parent and child remain independent
+-->
+
+<div class="use-case-container">
+    <!-- Navigation -->
+    <div class="case-header">
+        <a routerLink="/input-output" class="back-link">← Back to Overview</a>
+        <h1>Use Case 1: Basic &#64;Input() & &#64;Output()</h1>
+        <p>Learn the fundamentals of parent-child communication with property and event binding.</p>
+    </div>
+
+    <!-- Main Content: Two-Column Layout -->
+    <div class="content-grid">
+
+        <!-- LEFT COLUMN: Parent Controls -->
+        <div class="column">
+            <div class="card">
+                <h2>👨‍💼 Parent Component</h2>
+                <p class="sub-header">Control and modify the data, then watch it update in the child automatically!</p>
+
+                <!-- Parent State Display -->
+                <div class="state-section">
+                    <h3>Current State:</h3>
+                    <div class="state-item">
+                        <label>Name:</label>
+                        <code>{{ userName }}</code>
+                    </div>
+                    <div class="state-item">
+                        <label>Age:</label>
+                        <code>{{ userAge }}</code>
+                    </div>
+                    <div class="state-item">
+                        <label>Active:</label>
+                        <code>{{ isUserActive }}</code>
+                    </div>
+                    <div class="state-item">
+                        <label>Colors:</label>
+                        <code>{{ favoriteColors.join(', ') }}</code>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="actions">
+                    <button (click)="changeName()" class="btn btn-primary">
+                        🔄 Change Name
+                    </button>
+                    <button (click)="incrementAge()" class="btn btn-primary">
+                        ➕ Increase Age
+                    </button>
+                    <button (click)="toggleActiveStatus()" class="btn btn-primary">
+                        {{ isUserActive ? '⛔ Deactivate' : '✅ Activate' }}
+                    </button>
+                    <button (click)="addFavoriteColor()" class="btn btn-primary">
+                        🎨 Add Color
+                    </button>
+                </div>
+
+                <!-- Event Log -->
+                <div class="event-log-section">
+                    <h3>📡 Events Received from Child</h3>
+                    <p class="info-text">
+                        When the child emits events, they appear here. This demonstrates upward communication.
+                    </p>
+
+                    <div *ngIf="eventLog.length === 0" class="empty-log">
+                        No events yet. Click something in the child component!
+                    </div>
+
+                    <div *ngIf="eventLog.length > 0" class="event-log">
+                        <div *ngFor="let event of eventLog" class="log-entry">
+                            {{ event }}
+                        </div>
+                    </div>
+
+                    <button *ngIf="eventLog.length > 0" (click)="clearEventLog()" class="btn btn-secondary btn-sm">
+                        Clear Log
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Child Component -->
+        <div class="column">
+            <div class="card child-card">
+                <h2>👶 Child Component</h2>
+                <p class="sub-header">Receives data from parent and emits events back up!</p>
+
+                <!-- 
+          CRITICAL SYNTAX:
+          
+          Property Binding (Inputs): 
+          - [inputName]="parentProperty"
+          - Square brackets indicate property binding
+          - Passes data from parent to child
+          
+          Event Binding (Outputs):
+          - (outputName)="parentMethod($event)"
+          - Parentheses indicate event binding
+          - $event contains the data emitted by the child
+        -->
+                <app-use-case-1-child [userName]="userName" [age]="userAge" [isActive]="isUserActive"
+                    [colors]="favoriteColors" (greetingClick)="onGreetingClick($event)"
+                    (colorClick)="onColorClick($event)">
+                </app-use-case-1-child>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explanation Section -->
+    <div class="explanation-section card">
+        <h2>📚 What's Happening Here?</h2>
+
+        <div class="explanation-grid">
+            <!-- VISUAL DIAGRAM -->
+            <div class="explanation-item full-width-item">
+                <h4>📊 Visual Data Flow</h4>
+                <div class="flow-diagram">
+                    <div class="flow-node parent-node">
+                        <div class="node-icon">👨‍💼</div>
+                        <div class="node-label">Parent</div>
+                    </div>
+
+                    <div class="flow-arrows">
+                        <div class="arrow-container down-arrow">
+                            <span class="arrow-label">Data (&#64;Input)</span>
+                            <div class="arrow-line"></div>
+                            <div class="arrow-head"></div>
+                        </div>
+                        <div class="arrow-container up-arrow">
+                            <span class="arrow-label">Events (&#64;Output)</span>
+                            <div class="arrow-line"></div>
+                            <div class="arrow-head"></div>
+                        </div>
+                    </div>
+
+                    <div class="flow-node child-node">
+                        <div class="node-icon">👶</div>
+                        <div class="node-label">Child</div>
+                    </div>
+                </div>
+                <p class="detail center-text">
+                    The <strong>Parent</strong> owns the data and passes it down.<br>
+                    The <strong>Child</strong> detects user actions and sends events up.
+                </p>
+            </div>
+            <div class="explanation-item">
+                <h4>1️⃣ Data Down (&#64;Input)</h4>
+                <p>
+                    Parent passes data to child using <strong>property binding</strong>:
+                </p>
+                <code>[userName]="userName"</code>
+                <p class="detail">
+                    When parent's data changes, Angular automatically updates the child's view!
+                </p>
+            </div>
+
+            <div class="explanation-item">
+                <h4>2️⃣ Events Up (&#64;Output)</h4>
+                <p>
+                    Child emits events to parent using <strong>EventEmitter</strong>:
+                </p>
+                <code>(greetingClick)="onGreetingClick($event)"</code>
+                <p class="detail">
+                    Parent decides what to do with the event. Child remains decoupled and reusable!
+                </p>
+            </div>
+
+            <div class="explanation-item">
+                <h4>3️⃣ Change Detection</h4>
+                <p>
+                    Angular automatically detects changes and updates the view. Try clicking the buttons!
+                </p>
+                <p class="detail">
+                    This is Angular's magic sauce - automatic synchronization between data and view.
+                </p>
+            </div>
+
+            <div class="explanation-item">
+                <h4>4️⃣ Unidirectional Data Flow</h4>
+                <p>
+                    Data flows ONE way: Parent → Child. Events flow the opposite: Child → Parent.
+                </p>
+                <p class="detail">
+                    This pattern makes apps predictable and easier to debug!
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

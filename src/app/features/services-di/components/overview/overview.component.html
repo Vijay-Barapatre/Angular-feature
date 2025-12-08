@@ -1,0 +1,125 @@
+<!-- SERVICES & DI OVERVIEW PAGE -->
+
+<div class="overview-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/" class="back-link">← Back to Home</a>
+        <h1>🛠️ Services & Dependency Injection</h1>
+        <p class="header-description">
+            Master Angular's powerful Dependency Injection system. Learn how to create, provide, and inject services
+            to build scalable, testable, and maintainable applications.
+        </p>
+    </div>
+
+    <!-- Use Cases Grid -->
+    <section class="use-cases-section">
+        <h2>📋 Use Cases & Examples</h2>
+
+        <div class="use-cases-grid">
+            <div *ngFor="let useCase of useCases" class="use-case-card">
+                <!-- Difficulty Badge -->
+                <div class="card-header">
+                    <span class="difficulty-badge" [class]="'difficulty-' + useCase.difficulty.toLowerCase()">
+                        {{ useCase.difficulty }}
+                    </span>
+                    <span class="use-case-icon">{{ useCase.icon }}</span>
+                </div>
+
+                <!-- Title -->
+                <h3>{{ useCase.id }}. {{ useCase.title }}</h3>
+
+                <!-- Description -->
+                <p class="use-case-description">{{ useCase.description }}</p>
+
+                <!-- Topics Covered -->
+                <div class="topics">
+                    <span *ngFor="let topic of useCase.topics" class="topic-tag">
+                        {{ topic }}
+                    </span>
+                </div>
+
+                <!-- Action Button -->
+                <a [routerLink]="useCase.route" class="btn btn-primary">
+                    View Example →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <h2>📖 Additional Resources</h2>
+
+        <div class="resources-grid">
+            <div *ngFor="let resource of resources" class="resource-card">
+                <span class="resource-icon">{{ resource.icon }}</span>
+                <h4>{{ resource.name }}</h4>
+                <p>{{ resource.description }}</p>
+                <a *ngIf="resource.route" [routerLink]="resource.route" class="btn btn-secondary btn-sm">
+                    Go →
+                </a>
+                <a *ngIf="resource.external" [href]="resource.external" target="_blank"
+                    class="btn btn-secondary btn-sm">
+                    Open →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Concepts -->
+    <section class="concepts-section">
+        <h2>🎯 Key Concepts</h2>
+
+        <div class="concepts-grid">
+            <div class="concept-card">
+                <h4>&#64;Injectable()</h4>
+                <p>Decorator that marks a class as available for dependency injection.</p>
+                <code>&#64;Injectable(&#123; providedIn: 'root' &#125;)</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Constructor Injection</h4>
+                <p>Services are injected via the constructor parameters of a component or service.</p>
+                <code>constructor(private dataService: DataService)</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Injector Hierarchy</h4>
+                <p>Angular creates a tree of injectors that mirror the component tree.</p>
+                <code>Platform → Root → Module → Component</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Providers</h4>
+                <p>Configure how dependencies are created: useClass, useValue, useFactory, useExisting.</p>
+                <code>providers: [&#123; provide: Token, useValue: config &#125;]</code>
+            </div>
+        </div>
+    </section>
+
+    <!-- DI Flow Diagram -->
+    <section class="diagram-section">
+        <h2>📊 Dependency Injection Flow</h2>
+        <div class="diagram-container">
+            <div class="diagram-card">
+                <pre class="diagram-text">
+┌─────────────────────────────────────────────────────────┐
+│                    Angular Application                   │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────────────┐    ┌─────────────────────────────┐ │
+│  │   Component A   │───▶│     DataService             │ │
+│  │   (Consumer)    │    │  ┌───────────────────────┐  │ │
+│  └─────────────────┘    │  │ • getData()           │  │ │
+│           │             │  │ • saveData(data)      │  │ │
+│           │             │  │ • sharedState         │  │ │
+│           ▼             │  └───────────────────────┘  │ │
+│  ┌─────────────────┐    │           ▲                 │ │
+│  │   Component B   │────┼───────────┘                 │ │
+│  │   (Consumer)    │    │  Same instance shared!      │ │
+│  └─────────────────┘    └─────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+        </div>
+    </section>
+</div>

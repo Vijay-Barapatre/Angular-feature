@@ -1,0 +1,313 @@
+/* ============================================
+   USE CASE 6: Complete Lifecycle Demo STYLES
+   ============================================ */
+
+.use-case-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--primary-light);
+    text-decoration: none;
+    margin-bottom: var(--spacing-md);
+    transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--accent-color);
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.header-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2xl);
+}
+
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Demo Section */
+.demo-section h2,
+.explanation-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+    border-left: 4px solid var(--primary-color);
+    padding-left: var(--spacing-md);
+}
+
+.controls-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--text-muted);
+    color: var(--text-secondary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-light);
+    color: var(--primary-light);
+}
+
+/* Demo Container */
+.demo-container {
+    margin-bottom: var(--spacing-xl);
+}
+
+.demo-placeholder {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: rgba(248, 113, 113, 0.1);
+    border-radius: var(--radius-lg);
+    border: 2px dashed rgba(248, 113, 113, 0.3);
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: var(--spacing-md);
+}
+
+.demo-placeholder p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.demo-placeholder .hint {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+/* Log Section */
+.log-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.log-container {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.8rem;
+}
+
+.log-empty {
+    color: var(--text-muted);
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.log-entry {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-xs);
+    background: var(--bg-secondary);
+    border-left: 3px solid;
+    align-items: center;
+}
+
+.log-time {
+    color: var(--text-muted);
+    min-width: 80px;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+}
+
+.log-phase {
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 600;
+    min-width: 70px;
+    text-align: center;
+}
+
+.log-hook {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Explanation Section */
+.concept-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.concept-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--primary-light);
+}
+
+.concept-card.highlight {
+    border-color: var(--primary-color);
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* Lifecycle Diagram */
+.lifecycle-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.phase-group {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+}
+
+.phase-title {
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.phase-title.creation {
+    color: #4ade80;
+}
+
+.phase-title.update {
+    color: #a78bfa;
+}
+
+.phase-title.content {
+    color: #f59e0b;
+}
+
+.phase-title.view {
+    color: #ec4899;
+}
+
+.phase-title.destroy {
+    color: #f87171;
+}
+
+.hook-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) 0;
+}
+
+.hook-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--hook-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.hook-name {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.hook-note {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+/* Quick Reference */
+.quick-ref {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.ref-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm);
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+}
+
+.ref-hook {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.ref-use {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: var(--primary-light);
+    font-size: 0.875rem;
+}

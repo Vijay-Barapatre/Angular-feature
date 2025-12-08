@@ -1,0 +1,30 @@
+import { Routes } from '@angular/router';
+import { provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { NgRxOverviewComponent } from './components/overview/overview.component';
+import { counterReducer } from './components/use-case-1/store/counter.reducer';
+import { userReducer } from './components/use-case-2/store/user.reducer';
+import { UserEffects } from './components/use-case-2/store/user.effects';
+
+export const NGRX_ROUTES: Routes = [
+    {
+        path: '',
+        component: NgRxOverviewComponent
+    },
+    {
+        path: 'use-case-1',
+        loadComponent: () => import('./components/use-case-1/store-basics.component').then(m => m.StoreBasicsComponent),
+        providers: [
+            provideState({ name: 'counter', reducer: counterReducer })
+        ]
+    },
+    {
+        path: 'use-case-2',
+        loadComponent: () => import('./components/use-case-2/effects-demo.component').then(m => m.EffectsDemoComponent),
+        providers: [
+            provideState({ name: 'usersViaEffects', reducer: userReducer }),
+            provideEffects(UserEffects)
+        ]
+    },
+    // Future use cases will be added here
+];

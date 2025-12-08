@@ -1,0 +1,173 @@
+<!-- USE CASE 6: Complete Lifecycle Demo -->
+
+<div class="use-case-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/lifecycle-hooks" class="back-link">← Back to Lifecycle Hooks</a>
+        <h1>🎬 Use Case 6: Complete Lifecycle Demo</h1>
+        <p class="header-description">
+            Watch ALL lifecycle hooks in action. Each hook is logged in real-time
+            showing the exact execution order.
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-grid">
+        <!-- Left: Interactive Demo -->
+        <div class="demo-section">
+            <h2>🎮 Interactive Demo</h2>
+
+            <!-- Controls -->
+            <div class="controls-card">
+                <div class="controls">
+                    <button class="btn" [class.btn-danger]="showDemo" [class.btn-success]="!showDemo"
+                        (click)="toggleDemo()">
+                        {{ showDemo ? '💀 Destroy' : '🚀 Create' }}
+                    </button>
+                    <button class="btn btn-primary" (click)="updateInput()" [disabled]="!showDemo">
+                        🔄 Update Input
+                    </button>
+                    <button class="btn btn-secondary" (click)="triggerCD()">
+                        ⚡ Trigger CD
+                    </button>
+                    <button class="btn btn-outline" (click)="clearLog()">
+                        🗑️ Clear Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- Demo Component -->
+            <div class="demo-container">
+                <app-lifecycle-demo *ngIf="showDemo" [message]="inputValue" (lifecycleEvent)="onLifecycleEvent($event)">
+                    <p>This is projected content!</p>
+                </app-lifecycle-demo>
+
+                <div *ngIf="!showDemo" class="demo-placeholder">
+                    <span class="placeholder-icon">💀</span>
+                    <p>Component destroyed</p>
+                    <p class="hint">Click "Create" to see all hooks fire in order</p>
+                </div>
+            </div>
+
+            <!-- Lifecycle Log -->
+            <div class="log-section">
+                <h3>📋 Lifecycle Event Log</h3>
+                <div class="log-container">
+                    <div *ngIf="lifecycleLog.length === 0" class="log-empty">
+                        Create the component to see lifecycle events.
+                    </div>
+                    <div *ngFor="let log of lifecycleLog" class="log-entry" [style.border-left-color]="log.color">
+                        <span class="log-time">{{ log.time }}</span>
+                        <span class="log-phase" [style.background]="log.color + '30'" [style.color]="log.color">
+                            {{ log.phase }}
+                        </span>
+                        <span class="log-hook">{{ log.hook }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Lifecycle Reference -->
+        <div class="explanation-section">
+            <h2>📖 Lifecycle Reference</h2>
+
+            <!-- Complete Order -->
+            <div class="concept-card">
+                <h3>📊 Complete Execution Order</h3>
+                <div class="lifecycle-diagram">
+                    <div class="phase-group">
+                        <h4 class="phase-title creation">🎬 Creation Phase</h4>
+                        <div class="hook-item" style="--hook-color: #4ade80">
+                            <span class="hook-num">1</span>
+                            <span class="hook-name">constructor</span>
+                        </div>
+                        <div class="hook-item" style="--hook-color: #60a5fa">
+                            <span class="hook-num">2</span>
+                            <span class="hook-name">ngOnChanges</span>
+                            <span class="hook-note">if inputs</span>
+                        </div>
+                        <div class="hook-item" style="--hook-color: #4ade80">
+                            <span class="hook-num">3</span>
+                            <span class="hook-name">ngOnInit</span>
+                            <span class="hook-note">⭐ once</span>
+                        </div>
+                    </div>
+
+                    <div class="phase-group">
+                        <h4 class="phase-title update">🔄 Update Phase</h4>
+                        <div class="hook-item" style="--hook-color: #a78bfa">
+                            <span class="hook-num">4</span>
+                            <span class="hook-name">ngDoCheck</span>
+                        </div>
+                    </div>
+
+                    <div class="phase-group">
+                        <h4 class="phase-title content">📦 Content Phase</h4>
+                        <div class="hook-item" style="--hook-color: #f59e0b">
+                            <span class="hook-num">5</span>
+                            <span class="hook-name">ngAfterContentInit</span>
+                            <span class="hook-note">⭐ once</span>
+                        </div>
+                        <div class="hook-item" style="--hook-color: #fbbf24">
+                            <span class="hook-num">6</span>
+                            <span class="hook-name">ngAfterContentChecked</span>
+                        </div>
+                    </div>
+
+                    <div class="phase-group">
+                        <h4 class="phase-title view">👁️ View Phase</h4>
+                        <div class="hook-item" style="--hook-color: #ec4899">
+                            <span class="hook-num">7</span>
+                            <span class="hook-name">ngAfterViewInit</span>
+                            <span class="hook-note">⭐ once</span>
+                        </div>
+                        <div class="hook-item" style="--hook-color: #f472b6">
+                            <span class="hook-num">8</span>
+                            <span class="hook-name">ngAfterViewChecked</span>
+                        </div>
+                    </div>
+
+                    <div class="phase-group">
+                        <h4 class="phase-title destroy">💀 Destruction</h4>
+                        <div class="hook-item" style="--hook-color: #f87171">
+                            <span class="hook-num">9</span>
+                            <span class="hook-name">ngOnDestroy</span>
+                            <span class="hook-note">⭐ once</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Reference -->
+            <div class="concept-card highlight">
+                <h3>⚡ Quick Reference</h3>
+                <div class="quick-ref">
+                    <div class="ref-item">
+                        <span class="ref-hook">Init logic</span>
+                        <span class="ref-use">→ ngOnInit</span>
+                    </div>
+                    <div class="ref-item">
+                        <span class="ref-hook">Cleanup</span>
+                        <span class="ref-use">→ ngOnDestroy</span>
+                    </div>
+                    <div class="ref-item">
+                        <span class="ref-hook">&#64;Input changes</span>
+                        <span class="ref-use">→ ngOnChanges</span>
+                    </div>
+                    <div class="ref-item">
+                        <span class="ref-hook">&#64;ViewChild</span>
+                        <span class="ref-use">→ ngAfterViewInit</span>
+                    </div>
+                    <div class="ref-item">
+                        <span class="ref-hook">&#64;ContentChild</span>
+                        <span class="ref-use">→ ngAfterContentInit</span>
+                    </div>
+                    <div class="ref-item">
+                        <span class="ref-hook">Custom CD</span>
+                        <span class="ref-use">→ ngDoCheck</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

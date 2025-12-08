@@ -1,0 +1,136 @@
+# 🎭 Use Case 3: Mocking Dependencies
+
+> **💡 Lightbulb Moment**: Mocking isolates your test from external dependencies. You control exactly what the dependency returns, testing your component's behavior—not the dependency's!
+
+---
+
+## 1. 🔍 How It Works
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#667eea'}}}%%
+flowchart LR
+    A[Component] -->|uses| B[Real Service]
+    B -->|calls| C[HTTP/DB]
+    
+    A2[Component] -->|uses| D[Mock Service]
+    D -->|returns| E[Controlled Data]
+    
+    style B fill:#ef4444,stroke:#dc2626,color:#fff
+    style D fill:#10b981,stroke:#059669,color:#fff
+    
+    subgraph Production
+    A
+    B
+    C
+    end
+    
+    subgraph Testing
+    A2
+    D
+    E
+    end
+```
+
+### Why Mock?
+
+| Reason | Benefit |
+|--------|---------|
+| **Isolation** | Test only your code, not dependencies |
+| **Speed** | No network delays |
+| **Control** | Test edge cases (errors, empty data) |
+| **Reliability** | No flaky tests from external services |
+
+---
+
+## 2. 🚀 Implementation
+
+### Step 1: Create Spy Object
+
+```typescript
+mockUserService = jasmine.createSpyObj('UserService', ['getUser', 'save']);
+```
+
+### Step 2: Configure Return Values
+
+```typescript
+// Success
+mockUserService.getUser.and.returnValue(of({ id: 1, name: 'Test' }));
+
+// Error
+mockUserService.getUser.and.returnValue(throwError(() => new Error('404')));
+```
+
+### Step 3: Provide in TestBed
+
+```typescript
+providers: [
+    { provide: UserService, useValue: mockUserService }
+]
+```
+
+### Step 4: Verify Calls
+
+```typescript
+expect(mockUserService.getUser).toHaveBeenCalledWith(1);
+expect(mockUserService.getUser).toHaveBeenCalledTimes(1);
+```
+
+---
+
+## 3. 🐛 Common Pitfalls
+
+| ❌ Wrong | ✅ Right |
+|----------|----------|
+| Forgetting to mock all used methods | Mock all methods component calls |
+| Over-mocking (mocking everything) | Mock only external dependencies |
+| Not resetting spies between tests | Use `beforeEach` for fresh mocks |
+
+---
+
+## 4. ⚡ Reusable Mock Pattern
+
+```typescript
+// mock-providers.ts
+export function createUserServiceMock() {
+    return jasmine.createSpyObj('UserService', ['getUser', 'save'], {
+        user$: of(null)
+    });
+}
+
+// In spec file
+const mockUserService = createUserServiceMock();
+```
+
+---
+
+## 5. ❓ Interview Questions
+
+**Q: What's the difference between `useValue` and `useClass` in providers?**
+> `useValue` provides a pre-created instance (mock object). `useClass` creates a new instance from a class (useful for stub classes).
+
+**Q: How do you test error handling with mocks?**
+> Use `throwError(() => new Error('message'))` as the return value, then verify error state in component.
+
+---
+
+## 🧠 Mind Map
+
+```mermaid
+mindmap
+  root((Mocking))
+    createSpyObj
+      Methods list
+      Properties
+    Return Values
+      and.returnValue
+      and.callFake
+      throwError
+    Verification
+      toHaveBeenCalled
+      toHaveBeenCalledWith
+      toHaveBeenCalledTimes
+    Provide
+      useValue
+      useClass
+      useFactory
+```

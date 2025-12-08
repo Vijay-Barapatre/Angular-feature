@@ -1,0 +1,158 @@
+<!-- USE CASE 1: ngOnInit & ngOnDestroy -->
+
+<div class="use-case-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/lifecycle-hooks" class="back-link">← Back to Lifecycle Hooks</a>
+        <h1>🚀 Use Case 1: ngOnInit & ngOnDestroy</h1>
+        <p class="header-description">
+            Learn how to properly initialize components and clean up resources.
+            Toggle the timer to see ngOnInit and ngOnDestroy in action.
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-grid">
+        <!-- Left: Interactive Demo -->
+        <div class="demo-section">
+            <h2>🎮 Interactive Demo</h2>
+
+            <div class="demo-card">
+                <div class="controls">
+                    <button class="btn btn-primary" (click)="toggleTimer()">
+                        {{ showTimer ? '💀 Destroy Timer' : '🚀 Create Timer' }}
+                    </button>
+                    <button class="btn btn-secondary" (click)="clearLog()">
+                        🗑️ Clear Log
+                    </button>
+                </div>
+
+                <div class="timer-container">
+                    <!-- Timer Component - conditionally rendered -->
+                    <app-timer *ngIf="showTimer" (lifecycleEvent)="onLifecycleEvent($event)">
+                    </app-timer>
+
+                    <!-- Placeholder when timer is destroyed -->
+                    <div *ngIf="!showTimer" class="timer-placeholder">
+                        <span class="placeholder-icon">💀</span>
+                        <p>Timer component destroyed</p>
+                        <p class="hint">Click "Create Timer" to initialize a new instance</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lifecycle Log -->
+            <div class="log-section">
+                <h3>📋 Lifecycle Event Log</h3>
+                <div class="log-container">
+                    <div *ngIf="lifecycleLog.length === 0" class="log-empty">
+                        No events yet. Toggle the timer to see lifecycle events.
+                    </div>
+                    <div *ngFor="let log of lifecycleLog" class="log-entry" [class]="'log-' + log.type">
+                        <span class="log-time">{{ log.time }}</span>
+                        <span class="log-event">{{ log.event }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Code Explanation -->
+        <div class="explanation-section">
+            <h2>📖 How It Works</h2>
+
+            <!-- ngOnInit Explanation -->
+            <div class="concept-card">
+                <h3>🚀 ngOnInit</h3>
+                <p class="concept-description">
+                    Called <strong>once</strong> after Angular first displays the data-bound properties
+                    and sets the component's input properties. Use it for initialization logic.
+                </p>
+                <div class="code-block">
+                    <pre><code>export class TimerComponent implements OnInit &#123;
+  ngOnInit(): void &#123;
+    // ✅ Start subscriptions
+    // ✅ Fetch initial data
+    // ✅ Set up timers
+    this.startTimer();
+  &#125;
+&#125;</code></pre>
+                </div>
+                <div class="best-practices">
+                    <h4>✅ Best Practices:</h4>
+                    <ul>
+                        <li>Fetch data from APIs here, not in constructor</li>
+                        <li>Initialize subscriptions to observables</li>
+                        <li>Set up intervals/timers</li>
+                        <li>Access &#64;Input values (they're set by now)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ngOnDestroy Explanation -->
+            <div class="concept-card">
+                <h3>💀 ngOnDestroy</h3>
+                <p class="concept-description">
+                    Called <strong>just before</strong> Angular destroys the component.
+                    Use it for cleanup to prevent memory leaks.
+                </p>
+                <div class="code-block">
+                    <pre><code>export class TimerComponent implements OnDestroy &#123;
+  private subscription: Subscription;
+
+  ngOnDestroy(): void &#123;
+    // ✅ Unsubscribe from observables
+    this.subscription.unsubscribe();
+    // ✅ Clear timers/intervals
+    clearInterval(this.timerId);
+    // ✅ Remove event listeners
+    this.cleanup();
+  &#125;
+&#125;</code></pre>
+                </div>
+                <div class="best-practices warning">
+                    <h4>⚠️ Memory Leak Prevention:</h4>
+                    <ul>
+                        <li>Always unsubscribe from observables</li>
+                        <li>Clear setInterval/setTimeout</li>
+                        <li>Remove DOM event listeners</li>
+                        <li>Disconnect WebSocket connections</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lifecycle Order -->
+            <div class="concept-card highlight">
+                <h3>📊 Execution Order</h3>
+                <div class="order-diagram">
+                    <div class="order-step">
+                        <span class="step-num">1</span>
+                        <span class="step-name">constructor</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step">
+                        <span class="step-num">2</span>
+                        <span class="step-name">ngOnChanges</span>
+                        <span class="step-note">(if inputs exist)</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step active">
+                        <span class="step-num">3</span>
+                        <span class="step-name">ngOnInit</span>
+                        <span class="step-note">⭐ Called once!</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step">
+                        <span class="step-num">...</span>
+                        <span class="step-name">Component lives</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step destroy">
+                        <span class="step-num">9</span>
+                        <span class="step-name">ngOnDestroy</span>
+                        <span class="step-note">💀 Cleanup time!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

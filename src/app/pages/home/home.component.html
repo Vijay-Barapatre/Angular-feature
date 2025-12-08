@@ -1,0 +1,128 @@
+<!-- 
+  HOME PAGE TEMPLATE
+  Displays feature categories and navigation cards
+-->
+
+<div class="home-container fade-in">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">🎓 Angular Features Learning Platform</h1>
+        <p class="hero-description">
+            Master Angular one feature at a time with hands-on examples, detailed explanations, and interactive
+            exercises.
+        </p>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <span class="stat-number">6+</span>
+                <span class="stat-label">Use Cases</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">10+</span>
+                <span class="stat-label">Features</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">💯</span>
+                <span class="stat-label">Practical</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Categories -->
+    <section class="features-section">
+        <!-- 
+      Loop through each category
+      *ngFor: Structural directive that repeats the template for each item
+    -->
+        <div *ngFor="let category of featureCategories" class="category-section">
+            <!-- Category Header -->
+            <div class="category-header">
+                <h2>
+                    <span class="category-icon">{{ category.icon }}</span>
+                    {{ category.name }}
+                </h2>
+                <p class="category-description">{{ category.description }}</p>
+            </div>
+
+            <!-- Feature Cards Grid -->
+            <div class="features-grid">
+                <!-- Loop through features in the category -->
+                <div *ngFor="let feature of category.features" class="feature-card"
+                    [class.coming-soon]="feature.status === 'coming-soon'">
+                    <!-- Feature Header -->
+                    <div class="feature-header">
+                        <h3 class="feature-name">{{ feature.name }}</h3>
+                        <!-- 
+              Status Badge
+              [class]: Property binding to conditionally apply CSS classes
+            -->
+                        <span class="status-badge" [class]="'status-' + feature.status">
+                            {{ feature.status === 'active' ? '✅ Active' : '🔜 Coming Soon' }}
+                        </span>
+                    </div>
+
+                    <!-- Feature Description -->
+                    <p class="feature-description">{{ feature.description }}</p>
+
+                    <!-- Use Cases Count -->
+                    <div class="feature-meta">
+                        <span class="use-cases-count" *ngIf="feature.useCases > 0">
+                            📚 {{ feature.useCases }} Use Cases
+                        </span>
+                    </div>
+
+                    <!-- Action Button -->
+                    <!-- 
+            [routerLink]: Property binding for navigation
+            *ngIf: Only show button if feature is active
+          -->
+                    <a *ngIf="feature.status === 'active'" [routerLink]="feature.route" class="btn btn-primary">
+                        Start Learning →
+                    </a>
+
+                    <!-- Coming Soon Indicator -->
+                    <div *ngIf="feature.status === 'coming-soon'" class="coming-soon-overlay">
+                        <p>Coming Soon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Path Section -->
+    <section class="learning-path-section">
+        <h2>🎯 Recommended Learning Path</h2>
+        <div class="learning-path-content">
+            <div class="path-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>&#64;Input & &#64;Output</h4>
+                    <p>Start with component communication basics</p>
+                </div>
+            </div>
+            <div class="path-arrow">→</div>
+            <div class="path-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Services & DI</h4>
+                    <p>Learn to share data across components</p>
+                </div>
+            </div>
+            <div class="path-arrow">→</div>
+            <div class="path-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Directives & Pipes</h4>
+                    <p>Enhance your templates</p>
+                </div>
+            </div>
+            <div class="path-arrow">→</div>
+            <div class="path-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Forms & Validation</h4>
+                    <p>Build interactive user inputs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

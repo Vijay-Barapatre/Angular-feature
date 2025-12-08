@@ -1,0 +1,100 @@
+<!-- INPUT/OUTPUT OVERVIEW PAGE -->
+
+<div class="overview-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/" class="back-link">← Back to Home</a>
+        <h1>📚 &#64;Input() & &#64;Output() Decorators</h1>
+        <p class="header-description">
+            Master parent-child component communication in Angular. Learn how to pass data down with &#64;Input() and
+            emit
+            events up with &#64;Output().
+        </p>
+    </div>
+
+    <!-- Use Cases Grid -->
+    <section class="use-cases-section">
+        <h2>📋 Use Cases & Examples</h2>
+
+        <div class="use-cases-grid">
+            <div *ngFor="let useCase of useCases" class="use-case-card">
+                <!-- Difficulty Badge -->
+                <div class="card-header">
+                    <span class="difficulty-badge" [class]="'difficulty-' + useCase.difficulty.toLowerCase()">
+                        {{ useCase.difficulty }}
+                    </span>
+                    <span class="use-case-icon">{{ useCase.icon }}</span>
+                </div>
+
+                <!-- Title -->
+                <h3>{{ useCase.id }}. {{ useCase.title }}</h3>
+
+                <!-- Description -->
+                <p class="use-case-description">{{ useCase.description }}</p>
+
+                <!-- Topics Covered -->
+                <div class="topics">
+                    <span *ngFor="let topic of useCase.topics" class="topic-tag">
+                        {{ topic }}
+                    </span>
+                </div>
+
+                <!-- Action Button -->
+                <a [routerLink]="useCase.route" class="btn btn-primary">
+                    View Example →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <h2>📖 Additional Resources</h2>
+
+        <div class="resources-grid">
+            <div *ngFor="let resource of resources" class="resource-card">
+                <span class="resource-icon">{{ resource.icon }}</span>
+                <h4>{{ resource.name }}</h4>
+                <p>{{ resource.description }}</p>
+                <a *ngIf="resource.route" [routerLink]="resource.route" class="btn btn-secondary btn-sm">
+                    Go →
+                </a>
+                <a *ngIf="resource.external" [href]="resource.external" target="_blank"
+                    class="btn btn-secondary btn-sm">
+                    Open →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Concepts -->
+    <section class="concepts-section">
+        <h2>🎯 Key Concepts</h2>
+
+        <div class="concepts-grid">
+            <div class="concept-card">
+                <h4>&#64;Input() - Data Down</h4>
+                <p>Allows a parent component to pass data to a child component via property binding.</p>
+                <code>&#64;Input() userName: string;</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>&#64;Output() - Events Up</h4>
+                <p>Allows a child component to emit events to the parent component using EventEmitter.</p>
+                <code>&#64;Output() userClick = new EventEmitter();</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Two-Way Binding</h4>
+                <p>Combine &#64;Input() and &#64;Output() with the Change suffix for [()] syntax support.</p>
+                <code>&#64;Input() value; &#64;Output() valueChange;</code>
+            </div>
+
+            <div class="concept-card">
+                <h4>Type Safety</h4>
+                <p>Use TypeScript types and interfaces for type-safe component communication.</p>
+                <code>&#64;Output() itemAdded = new EventEmitter&lt;Item&gt;();</code>
+            </div>
+        </div>
+    </section>
+</div>
