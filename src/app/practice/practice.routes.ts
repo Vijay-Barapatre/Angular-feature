@@ -90,5 +90,75 @@ export const PRACTICE_ROUTES: Routes = [
         path: 'pipes',
         loadChildren: () => import('./pipes/pipes-practice.routes')
             .then(m => m.PIPES_PRACTICE_ROUTES)
+    },
+
+    // Lifecycle Hooks Practice
+    {
+        path: 'lifecycle-hooks',
+        loadChildren: () => import('./lifecycle-hooks/lifecycle-practice.routes')
+            .then(m => m.LIFECYCLE_PRACTICE_ROUTES)
+    },
+
+    // Services & DI Practice
+    {
+        path: 'services-di',
+        loadChildren: () => import('./services-di/services-practice.component')
+            .then(m => m.SERVICES_PRACTICE_ROUTES)
+    },
+
+    // Template Forms Practice
+    {
+        path: 'template-forms',
+        loadChildren: () => import('./template-forms/template-forms-practice.component')
+            .then(m => m.TEMPLATE_FORMS_PRACTICE_ROUTES)
+    },
+
+    // Content Projection Practice
+    {
+        path: 'content-projection',
+        loadChildren: () => import('./content-projection/content-projection-practice.component')
+            .then(m => m.CONTENT_PROJECTION_PRACTICE_ROUTES)
+    },
+
+    // ViewChild/ContentChild Practice
+    {
+        path: 'viewchild-contentchild',
+        loadChildren: () => import('./viewchild-contentchild/viewchild-practice.component')
+            .then(m => m.VIEWCHILD_PRACTICE_ROUTES)
+    },
+
+    // Error Handling Practice
+    {
+        path: 'error-handling',
+        loadChildren: () => import('./error-handling/error-handling-practice.component')
+            .then(m => m.ERROR_HANDLING_PRACTICE_ROUTES)
+    },
+
+    // Dynamic Components Practice
+    {
+        path: 'dynamic-components',
+        loadChildren: () => import('./dynamic-components/dynamic-components-practice.component')
+            .then(m => m.DYNAMIC_COMPONENTS_PRACTICE_ROUTES)
+    },
+
+    // Host Binding Practice
+    {
+        path: 'host-binding',
+        loadChildren: () => import('./host-binding/host-binding-practice.component')
+            .then(m => m.HOST_BINDING_PRACTICE_ROUTES)
+    },
+
+    // Defer Views Practice
+    {
+        path: 'defer-views',
+        loadChildren: () => import('./defer-views/defer-views-practice.component')
+            .then(m => m.DEFER_VIEWS_PRACTICE_ROUTES)
+    },
+
+    // Performance Practice
+    {
+        path: 'performance',
+        loadChildren: () => import('./performance/performance-practice.component')
+            .then(m => m.PERFORMANCE_PRACTICE_ROUTES)
     }
 ];

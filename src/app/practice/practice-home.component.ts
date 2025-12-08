@@ -472,6 +472,106 @@ export class PracticeHomeComponent {
             complexCount: 5,
             status: 'available',
             difficulty: 'intermediate'
+        },
+        {
+            name: 'Lifecycle Hooks',
+            icon: '🔄',
+            description: 'Component lifecycle, OnInit, OnDestroy, AfterViewInit, and more',
+            route: '/practice/lifecycle-hooks',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Services & DI',
+            icon: '💉',
+            description: 'Dependency injection, providers, injection tokens, and scopes',
+            route: '/practice/services-di',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Template Forms',
+            icon: '📝',
+            description: 'Template-driven forms with ngModel, validation, and state',
+            route: '/practice/template-forms',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Content Projection',
+            icon: '📦',
+            description: 'ng-content, multi-slot projection, and conditional projection',
+            route: '/practice/content-projection',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'ViewChild/ContentChild',
+            icon: '🔍',
+            description: 'Query and access child elements, components, and projected content',
+            route: '/practice/viewchild-contentchild',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Error Handling',
+            icon: '⚠️',
+            description: 'Error boundaries, global handlers, HTTP errors, and recovery',
+            route: '/practice/error-handling',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Dynamic Components',
+            icon: '🔄',
+            description: 'ViewContainerRef, lazy loading, and ngComponentOutlet',
+            route: '/practice/dynamic-components',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'advanced'
+        },
+        {
+            name: 'Host Listener/Binding',
+            icon: '🎯',
+            description: 'Control host element properties and respond to events',
+            route: '/practice/host-binding',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Defer Views',
+            icon: '⏳',
+            description: 'Angular 17+ @defer for lazy loading template blocks',
+            route: '/practice/defer-views',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Performance',
+            icon: '⚡',
+            description: 'OnPush, trackBy, pure pipes, lazy loading, and optimization',
+            route: '/practice/performance',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'advanced'
         }
     ];
 
