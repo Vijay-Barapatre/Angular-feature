@@ -33,3 +33,5 @@ You need a reusable highlight directive that:
 2. Store original background before changing
 3. Use `ElementRef.nativeElement.style` for direct DOM access
 4. Or use `@HostBinding('style.backgroundColor')` for reactive binding
+
+4. Or use `@HostBinding('style.backgroundColor')` for reactive binding

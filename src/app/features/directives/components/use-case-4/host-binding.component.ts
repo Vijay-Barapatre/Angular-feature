@@ -3,9 +3,20 @@
  * USE CASE 4: @HOSTBINDING IN DIRECTIVES
  * ============================================================================
  * 
- * 💡 BINDING TO HOST ELEMENT PROPERTIES
- * @HostBinding binds directive properties to host element properties.
- * Works with: class, style, attributes, and properties.
+ * 💡 WHAT IS IT?
+ * @HostBinding allows a directive to link its internal property to a property 
+ * of the Host Element (DOM element it's attached to).
+ * 
+ * ❓ WHY DO WE NEED IT? (vs Renderer2)
+ * 1. Declarative Updates: Instead of manually calling `renderer.setStyle()` every time,
+ *    you simply return a value, and Angular updates the DOM automatically!
+ * 2. Less Code: No need to inject `ElementRef` or `Renderer2` for simple UI changes.
+ * 3. Reactive: Perfect for toggling state (e.g., specific classes) based on logic.
+ * 
+ * 🛠️ WHEN IS IT USEFUL?
+ * - Toggling CSS Classes: `@HostBinding('class.active') get isActive()`
+ * - Dynamic Styles: `@HostBinding('style.color') getColor()`
+ * - Accessibility: `@HostBinding('attr.aria-expanded') get isExpanded()`
  */
 
 import { Component, Directive, HostBinding, HostListener, Input, inject } from '@angular/core';
@@ -114,6 +125,12 @@ export class DynamicBindDirective {
     @HostBinding('style.borderRadius')
     get radius(): string {
         return '8px';
+    }
+
+    @HostBinding('style.color')
+    get color(): string {
+        const isBlack = this.bgColor?.toLowerCase() === 'black' || this.bgColor === '#000000';
+        return isBlack ? 'white' : 'black';
     }
 }
 

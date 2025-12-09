@@ -42,6 +42,36 @@ import { RouterLink } from '@angular/router';
                 </div>
             </section>
 
+            <section class="builtin-directives">
+                <h2>🛠️ Built-in Directives</h2>
+                <div class="builtin-grid">
+                    <div class="builtin-card">
+                        <h3>Attribute</h3>
+                        <ul>
+                            <li><code>[ngClass]</code> - Add/remove classes dynamically</li>
+                            <li><code>[ngStyle]</code> - Apply inline styles dynamically</li>
+                            <li><code>[(ngModel)]</code> - Two-way data binding</li>
+                        </ul>
+                    </div>
+                    <div class="builtin-card">
+                        <h3>Structural (Classic)</h3>
+                        <ul>
+                            <li><code>*ngIf</code> - Conditionally identify elements</li>
+                            <li><code>*ngFor</code> - Loop over a list</li>
+                            <li><code>*ngSwitch</code> - Switch between views</li>
+                        </ul>
+                    </div>
+                    <div class="builtin-card modern">
+                        <h3>Structural (Modern ✨)</h3>
+                        <ul>
+                            <li><code>&#64;if</code> - Build-in control flow</li>
+                            <li><code>&#64;for</code> - Built-in loop (faster)</li>
+                            <li><code>&#64;switch</code> - Built-in switch block</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
             <section class="use-cases">
                 <h2>📚 Use Cases</h2>
                 <div class="use-case-grid">
@@ -79,6 +109,17 @@ import { RouterLink } from '@angular/router';
         .type-card.component { border-top: 4px solid #667eea; }
         .type-card.attribute { border-top: 4px solid #4ade80; }
         .type-card.structural { border-top: 4px solid #f59e0b; }
+
+        .builtin-directives { margin-bottom: 3rem; }
+        .builtin-directives h2 { color: #1a1a2e; margin-bottom: 1.5rem; text-align: center; }
+        .builtin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .builtin-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #667eea; }
+        .builtin-card.modern { border-left-color: #f43f5e; background: #fff1f2; }
+        .builtin-card h3 { margin-top: 0; color: #1a1a2e; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        .builtin-card ul { padding-left: 1.2rem; margin: 0; color: #555; }
+        .builtin-card li { margin-bottom: 0.5rem; }
+        .builtin-card code { background: #e0e7ff; color: #4338ca; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9rem; }
+        .builtin-card.modern code { background: #ffe4e6; color: #be123c; }
 
         .use-cases h2 { color: #1a1a2e; margin-bottom: 1.5rem; }
         .use-case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1rem; }

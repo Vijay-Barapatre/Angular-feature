@@ -4,6 +4,42 @@
 
 ---
 
+## 📚 Overview: What is a Directive?
+
+A **Directive** is a class that adds behavior to elements in your Angular applications. Think of them as instructions for the DOM.
+
+### 🏛️ The Three Types of Directives
+
+1.  **Components** (`@Component`)
+    *   Directives *with a template*.
+    *   The building blocks of your UI.
+    *   Example: `<app-header>`, `<user-profile>`
+
+2.  **Attribute Directives** (`@Directive`)
+    *   Change the **appearance** or **behavior** of an element, component, or another directive.
+    *   They look like HTML attributes.
+    *   Example: `[ngClass]`, `[appHighlight]`
+
+3.  **Structural Directives** (`@Directive`)
+    *   Change the **DOM layout** by adding and removing DOM elements.
+    *   They usually start with a `*` (asterisk).
+    *   Example: `*ngIf`, `*ngFor`
+
+### 🛠️ Built-in Directives (The Toolkit)
+
+Angular comes with powerful built-in directives that you use every day:
+
+| Directive | Type | Purpose | Syntax |
+|-----------|------|---------|--------|
+| **NgIf** | Structural | Conditionally add/remove elements | `*ngIf="condition"` |
+| **NgFor** | Structural | Loop through a list | `*ngFor="let item of list"` |
+| **NgSwitch** | Structural | Switch between multiple views | `[ngSwitch]="value"` |
+| **NgClass** | Attribute | Add/remove CSS classes dynamically | `[ngClass]="{'active': isActive}"` |
+| **NgStyle** | Attribute | Set inline styles dynamically | `[ngStyle]="{'color': color}"` |
+| **NgModel** | Attribute | Two-way data binding (Forms) | `[(ngModel)]="name"` |
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Core Mechanism

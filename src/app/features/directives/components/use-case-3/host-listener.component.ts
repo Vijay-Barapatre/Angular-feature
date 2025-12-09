@@ -25,6 +25,16 @@ export class ClickCounterDirective {
     private clickCount = 0;
     @Output() countChanged = new EventEmitter<number>();
 
+    // 👂 CONCEPT: @HostListener SYNTAX
+    // -------------------------------------------------------------
+    // @HostListener(eventName, [args])
+    //
+    // 1. eventName: The DOM event to listen for (e.g., 'click', 'mouseenter').
+    // 2. [args]: Optional array of arguments to pass to the method.
+    //
+    // 💡 WHY USE THIS?
+    // It automatically removes the listener when the directive is destroyed!
+    // This prevents memory leaks that explicit .addEventListener often cause.
     @HostListener('click')
     onClick(): void {
         this.clickCount++;
@@ -80,6 +90,12 @@ export class HoverEffectDirective {
 export class KeyHandlerDirective {
     @Output() keyPressed = new EventEmitter<string>();
 
+    // 🧩 CONCEPT: PASSING ARGUMENTS ('$event')
+    // -------------------------------------------------------------
+    // To access the event object (e.g., to see which key was pressed),
+    // you MUST pass ['$event'] in the second argument array.
+    //
+    // Syntax: @HostListener('event', ['$event'])
     @HostListener('keydown', ['$event'])
     onKeyDown(event: KeyboardEvent): void {
         this.keyPressed.emit(event.key);
@@ -108,6 +124,14 @@ export class ClickOutsideDirective {
 
     @Output() clickOutside = new EventEmitter<void>();
 
+    // 🌍 CONCEPT: GLOBAL EVENTS (window/document)
+    // -------------------------------------------------------------
+    // You can listen to events OUTSIDE your element by prefixing with:
+    // - 'document:click'
+    // - 'window:scroll'
+    // - 'body:keydown'
+    //
+    // Useful for: Closing dropdowns when clicking away, shortcuts, scrolling.
     @HostListener('document:click', ['$event.target'])
     onClick(target: HTMLElement): void {
         const clickedInside = this.el.nativeElement.contains(target);
