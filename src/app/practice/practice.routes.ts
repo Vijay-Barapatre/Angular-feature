@@ -160,5 +160,61 @@ export const PRACTICE_ROUTES: Routes = [
         path: 'performance',
         loadChildren: () => import('./performance/performance-practice.component')
             .then(m => m.PERFORMANCE_PRACTICE_ROUTES)
+    },
+
+    // Animations Practice
+    {
+        path: 'animations',
+        loadChildren: () => import('./animations/animations-practice.component')
+            .then(m => m.ANIMATIONS_PRACTICE_ROUTES)
+    },
+
+    // Change Detection Practice
+    {
+        path: 'change-detection',
+        loadChildren: () => import('./change-detection/change-detection-practice.component')
+            .then(m => m.CHANGE_DETECTION_PRACTICE_ROUTES)
+    },
+
+    // Control Flow Practice
+    {
+        path: 'control-flow',
+        loadChildren: () => import('./control-flow/control-flow-practice.component')
+            .then(m => m.CONTROL_FLOW_PRACTICE_ROUTES)
+    },
+
+    // Standalone Components Practice
+    {
+        path: 'standalone-components',
+        loadChildren: () => import('./standalone-components/standalone-practice.component')
+            .then(m => m.STANDALONE_PRACTICE_ROUTES)
+    },
+
+    // NgRx Practice
+    {
+        path: 'ngrx',
+        loadChildren: () => import('./ngrx/ngrx-practice.component')
+            .then(m => m.NGRX_PRACTICE_ROUTES)
+    },
+
+    // MSAL Auth Practice
+    {
+        path: 'msal-auth',
+        loadChildren: () => import('./msal-auth/msal-auth-practice.component')
+            .then(m => m.MSAL_AUTH_PRACTICE_ROUTES)
+    },
+
+    // NgModule Practice
+    {
+        path: 'ngmodule',
+        loadChildren: () => import('./ngmodule/ngmodule-practice.component')
+            .then(m => m.NGMODULE_PRACTICE_ROUTES)
+    },
+
+    // i18n Practice
+    {
+        path: 'i18n',
+        loadChildren: () => import('./i18n/i18n-practice.component')
+            .then(m => m.I18N_PRACTICE_ROUTES)
     }
 ];

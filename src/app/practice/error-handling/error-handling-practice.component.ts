@@ -104,29 +104,201 @@ export class EHExercise1Component {
     }
 }
 
-@Component({ selector: 'app-eh-exercise-2', standalone: true, imports: [CommonModule], template: `<div class="exercise"><div class="instructions"><h2>🟦 Exercise 2: Error Boundaries</h2><p>Contain errors to specific component trees.</p></div><div class="demo"><p>Error boundaries prevent cascading failures.</p></div></div>`, styles: [`.exercise { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }`] })
+@Component({
+    selector: 'app-eh-exercise-2',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="exercise">
+            <div class="instructions">
+                <h2>🟦 Exercise 2: Error Boundaries</h2>
+                <p>Contain errors to specific component trees.</p>
+            </div>
+            <div class="demo">
+                <p>Error boundaries prevent cascading failures.</p>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .exercise { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+    `]
+})
 export class EHExercise2Component { }
 
-@Component({ selector: 'app-eh-exercise-3', standalone: true, imports: [CommonModule], template: `<div class="exercise"><div class="instructions"><h2>🟦 Exercise 3: HTTP Errors</h2><p>Handle HTTP errors with catchError.</p></div><div class="demo"><pre>http.get(url).pipe(\n  catchError(err => {{\n    console.error(err);\n    return EMPTY;\n  }})\n)</pre></div></div>`, styles: [`.exercise { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; } pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; }`] })
+@Component({
+    selector: 'app-eh-exercise-3',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="exercise">
+            <div class="instructions">
+                <h2>🟦 Exercise 3: HTTP Errors</h2>
+                <p>Handle HTTP errors with catchError.</p>
+            </div>
+            <div class="demo">
+                <pre>http.get(url).pipe(
+  catchError(err =&gt; &#123;
+    console.error(err);
+    return EMPTY;
+  &#125;)
+)</pre>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .exercise { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+        pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; }
+    `]
+})
 export class EHExercise3Component { }
 
-@Component({ selector: 'app-eh-exercise-4', standalone: true, imports: [CommonModule], template: `<div class="exercise"><div class="instructions"><h2>🟦 Exercise 4: Global Error Handler</h2><p>Implement custom ErrorHandler.</p></div><div class="demo"><pre>&#64;Injectable()\nexport class GlobalErrorHandler implements ErrorHandler {{\n  handleError(error: any): void {{\n    console.error('Global:', error);\n  }}\n}}</pre></div></div>`, styles: [`.exercise { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; } pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; overflow-x: auto; }`] })
+@Component({
+    selector: 'app-eh-exercise-4',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="exercise">
+            <div class="instructions">
+                <h2>🟦 Exercise 4: Global Error Handler</h2>
+                <p>Implement custom ErrorHandler.</p>
+            </div>
+            <div class="demo">
+                <pre>&#64;Injectable()
+export class GlobalErrorHandler implements ErrorHandler &#123;
+  handleError(error: any): void &#123;
+    console.error('Global:', error);
+  &#125;
+&#125;</pre>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .exercise { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+        pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    `]
+})
 export class EHExercise4Component { }
 
 // Complex Scenarios
-@Component({ selector: 'app-eh-scenario-1', standalone: true, imports: [CommonModule], template: `<div class="scenario"><div class="instructions"><h2>🟥 Scenario 1: Form Errors</h2><p>Display form validation errors gracefully.</p></div><div class="content"><p>Show errors inline and in summary.</p></div></div>`, styles: [`.scenario { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }`] })
+@Component({
+    selector: 'app-eh-scenario-1',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="scenario">
+            <div class="instructions">
+                <h2>🟥 Scenario 1: Form Errors</h2>
+                <p>Display form validation errors gracefully.</p>
+            </div>
+            <div class="content">
+                <p>Show errors inline and in summary.</p>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .scenario { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+    `]
+})
 export class EHScenario1Component { }
 
-@Component({ selector: 'app-eh-scenario-2', standalone: true, imports: [CommonModule], template: `<div class="scenario"><div class="instructions"><h2>🟥 Scenario 2: API Failures</h2><p>Handle different HTTP error codes.</p></div><div class="content"><p>401, 403, 404, 500 handling strategies.</p></div></div>`, styles: [`.scenario { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }`] })
+@Component({
+    selector: 'app-eh-scenario-2',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="scenario">
+            <div class="instructions">
+                <h2>🟥 Scenario 2: API Failures</h2>
+                <p>Handle different HTTP error codes.</p>
+            </div>
+            <div class="content">
+                <p>401, 403, 404, 500 handling strategies.</p>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .scenario { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+    `]
+})
 export class EHScenario2Component { }
 
-@Component({ selector: 'app-eh-scenario-3', standalone: true, imports: [CommonModule], template: `<div class="scenario"><div class="instructions"><h2>🟥 Scenario 3: Retry Logic</h2><p>Automatic retry with exponential backoff.</p></div><div class="content"><p>Use retry and retryWhen operators.</p></div></div>`, styles: [`.scenario { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }`] })
+@Component({
+    selector: 'app-eh-scenario-3',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="scenario">
+            <div class="instructions">
+                <h2>🟥 Scenario 3: Retry Logic</h2>
+                <p>Automatic retry with exponential backoff.</p>
+            </div>
+            <div class="content">
+                <p>Use retry and retryWhen operators.</p>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .scenario { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+    `]
+})
 export class EHScenario3Component { }
 
-@Component({ selector: 'app-eh-scenario-4', standalone: true, imports: [CommonModule], template: `<div class="scenario"><div class="instructions"><h2>🟥 Scenario 4: Error Logging</h2><p>Log errors to monitoring service.</p></div><div class="content"><p>Integrate with Sentry, LogRocket, etc.</p></div></div>`, styles: [`.scenario { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }`] })
+@Component({
+    selector: 'app-eh-scenario-4',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="scenario">
+            <div class="instructions">
+                <h2>🟥 Scenario 4: Error Logging</h2>
+                <p>Log errors to monitoring service.</p>
+            </div>
+            <div class="content">
+                <p>Integrate with Sentry, LogRocket, etc.</p>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .scenario { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+    `]
+})
 export class EHScenario4Component { }
 
-@Component({ selector: 'app-eh-scenario-5', standalone: true, imports: [CommonModule], template: `<div class="scenario"><div class="instructions"><h2>🟥 Scenario 5: Error Recovery</h2><p>Graceful degradation and recovery.</p></div><div class="content"><p>Fallback UI, cached data, retry options.</p></div></div>`, styles: [`.scenario { max-width: 800px; } .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; } .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }`] })
+@Component({
+    selector: 'app-eh-scenario-5',
+    standalone: true,
+    imports: [CommonModule],
+    template: `
+        <div class="scenario">
+            <div class="instructions">
+                <h2>🟥 Scenario 5: Error Recovery</h2>
+                <p>Graceful degradation and recovery.</p>
+            </div>
+            <div class="content">
+                <p>Fallback UI, cached data, retry options.</p>
+            </div>
+        </div>
+    `,
+    styles: [`
+        .scenario { max-width: 800px; }
+        .instructions { background: #fef2f2; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #ef4444; color: #1e1e2e; }
+        .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
+    `]
+})
 export class EHScenario5Component { }
 
 // ROUTES

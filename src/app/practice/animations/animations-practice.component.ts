@@ -1,36 +1,37 @@
 /**
- * DEFER VIEWS PRACTICE - COMPLETE SECTION
+ * ANIMATIONS PRACTICE - COMPLETE SECTION
  */
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet, Routes } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
-    selector: 'app-defer-views-practice',
+    selector: 'app-animations-practice',
     standalone: true,
     imports: [CommonModule, RouterLink, RouterOutlet],
     template: `
         <div class="practice-container">
             <header class="practice-header">
                 <a routerLink="/practice" class="back-link">← Back to Practice</a>
-                <h1>⏳ Defer Views Practice</h1>
-                <p class="subtitle">Angular 17+ deferred loading with &#64;defer</p>
+                <h1>🎬 Animations Practice</h1>
+                <p class="subtitle">Create smooth Angular animations</p>
             </header>
             <nav class="exercise-nav">
                 <div class="nav-section">
                     <h3>🟦 Basic Exercises</h3>
-                    <a routerLink="basic/exercise-1" routerLinkActive="active">Exercise 1: Basic &#64;defer</a>
-                    <a routerLink="basic/exercise-2" routerLinkActive="active">Exercise 2: Triggers</a>
-                    <a routerLink="basic/exercise-3" routerLinkActive="active">Exercise 3: Loading States</a>
-                    <a routerLink="basic/exercise-4" routerLinkActive="active">Exercise 4: Prefetching</a>
+                    <a routerLink="basic/exercise-1" routerLinkActive="active">Exercise 1: State Animations</a>
+                    <a routerLink="basic/exercise-2" routerLinkActive="active">Exercise 2: Enter/Leave</a>
+                    <a routerLink="basic/exercise-3" routerLinkActive="active">Exercise 3: Keyframes</a>
+                    <a routerLink="basic/exercise-4" routerLinkActive="active">Exercise 4: Query/Stagger</a>
                 </div>
                 <div class="nav-section">
                     <h3>🟥 Complex Scenarios</h3>
-                    <a routerLink="complex/scenario-1" routerLinkActive="active">Scenario 1: Heavy Component</a>
-                    <a routerLink="complex/scenario-2" routerLinkActive="active">Scenario 2: Image Gallery</a>
-                    <a routerLink="complex/scenario-3" routerLinkActive="active">Scenario 3: Dashboard</a>
-                    <a routerLink="complex/scenario-4" routerLinkActive="active">Scenario 4: Infinite Scroll</a>
-                    <a routerLink="complex/scenario-5" routerLinkActive="active">Scenario 5: Modal Content</a>
+                    <a routerLink="complex/scenario-1" routerLinkActive="active">Scenario 1: Page Transitions</a>
+                    <a routerLink="complex/scenario-2" routerLinkActive="active">Scenario 2: List Animations</a>
+                    <a routerLink="complex/scenario-3" routerLinkActive="active">Scenario 3: Modal Animation</a>
+                    <a routerLink="complex/scenario-4" routerLinkActive="active">Scenario 4: Accordion</a>
+                    <a routerLink="complex/scenario-5" routerLinkActive="active">Scenario 5: Carousel</a>
                 </div>
             </nav>
             <main class="exercise-content"><router-outlet></router-outlet></main>
@@ -39,145 +40,153 @@ import { RouterLink, RouterOutlet, Routes } from '@angular/router';
     styles: [`
         .practice-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
         .practice-header { margin-bottom: 1.5rem; }
-        .back-link { color: #14b8a6; text-decoration: none; }
-        h1 { margin: 0.5rem 0 0.25rem; color: #14b8a6; }
+        .back-link { color: #a855f7; text-decoration: none; }
+        h1 { margin: 0.5rem 0 0.25rem; color: #a855f7; }
         .subtitle { margin: 0; color: var(--text-secondary); }
         .exercise-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
         .nav-section { background: var(--bg-secondary); padding: 1rem; border-radius: 8px; }
         .nav-section h3 { margin: 0 0 0.75rem; }
         .nav-section a { display: block; padding: 0.5rem 0.75rem; border-radius: 4px; text-decoration: none; color: inherit; font-size: 0.9rem; margin-bottom: 0.25rem; }
-        .nav-section a:hover { background: rgba(20, 184, 166, 0.1); }
-        .nav-section a.active { background: #14b8a6; color: white; }
+        .nav-section a:hover { background: rgba(168, 85, 247, 0.1); }
+        .nav-section a.active { background: #a855f7; color: white; }
         .exercise-content { background: var(--bg-secondary); padding: 1.5rem; border-radius: 12px; min-height: 400px; }
     `]
 })
-export class DeferViewsPracticeComponent { }
+export class AnimationsPracticeComponent { }
 
 // Exercises
 @Component({
-    selector: 'app-dv-exercise-1',
+    selector: 'app-anim-exercise-1',
     standalone: true,
     imports: [CommonModule],
+    animations: [
+        trigger('fadeInOut', [
+            state('void', style({ opacity: 0 })),
+            state('*', style({ opacity: 1 })),
+            transition('void <=> *', animate('300ms ease-in-out'))
+        ])
+    ],
     template: `
         <div class="exercise">
             <div class="instructions">
-                <h2>🟦 Exercise 1: Basic &#64;defer</h2>
-                <p>Defer component loading until needed.</p>
+                <h2>🟦 Exercise 1: State Animations</h2>
+                <p>Create animations that respond to state changes.</p>
             </div>
             <div class="demo">
-                <pre>&#64;defer &#123;
-  &lt;heavy-component /&gt;
-&#125;</pre>
+                <button (click)="toggle()">Toggle Box</button>
+                @if (isVisible()) {
+                    <div class="box" @fadeInOut>Animated Box!</div>
+                }
             </div>
         </div>
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #f0fdfa; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #14b8a6; color: #1e1e2e; }
+        .instructions { background: #faf5ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #a855f7; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
-        pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; }
+        .demo button { padding: 0.75rem 1rem; background: #a855f7; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .box { margin-top: 1rem; padding: 2rem; background: #a855f7; color: white; border-radius: 8px; text-align: center; }
     `]
 })
-export class DVExercise1Component { }
+export class AnimExercise1Component {
+    isVisible = signal(true);
+    toggle(): void { this.isVisible.update(v => !v); }
+}
 
 @Component({
-    selector: 'app-dv-exercise-2',
+    selector: 'app-anim-exercise-2',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="exercise">
             <div class="instructions">
-                <h2>🟦 Exercise 2: Triggers</h2>
-                <p>Control when to load content.</p>
+                <h2>🟦 Exercise 2: Enter/Leave</h2>
+                <p>Animate elements entering and leaving DOM.</p>
             </div>
             <div class="demo">
-                <pre>&#64;defer (on viewport) &#123; &#125;
-&#64;defer (on interaction) &#123; &#125;
-&#64;defer (on hover) &#123; &#125;
-&#64;defer (on timer(2s)) &#123; &#125;</pre>
+                <pre>transition(':enter', [...])
+transition(':leave', [...])</pre>
             </div>
         </div>
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #f0fdfa; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #14b8a6; color: #1e1e2e; }
+        .instructions { background: #faf5ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #a855f7; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
         pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; }
     `]
 })
-export class DVExercise2Component { }
+export class AnimExercise2Component { }
 
 @Component({
-    selector: 'app-dv-exercise-3',
+    selector: 'app-anim-exercise-3',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="exercise">
             <div class="instructions">
-                <h2>🟦 Exercise 3: Loading States</h2>
-                <p>Show placeholder and loading UI.</p>
+                <h2>🟦 Exercise 3: Keyframes</h2>
+                <p>Create multi-step animations with keyframes.</p>
             </div>
             <div class="demo">
-                <pre>&#64;defer &#123;
-  &lt;content /&gt;
-&#125; &#64;placeholder &#123;
-  &lt;p&gt;Placeholder&lt;/p&gt;
-&#125; &#64;loading &#123;
-  &lt;spinner /&gt;
-&#125; &#64;error &#123;
-  &lt;p&gt;Error!&lt;/p&gt;
-&#125;</pre>
+                <pre>animate('1s', keyframes([...
+  style(&#123; opacity: 0 &#125;),
+  style(&#123; opacity: 0.5 &#125;),
+  style(&#123; opacity: 1 &#125;)
+]))</pre>
             </div>
         </div>
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #f0fdfa; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #14b8a6; color: #1e1e2e; }
+        .instructions { background: #faf5ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #a855f7; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
         pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; }
     `]
 })
-export class DVExercise3Component { }
+export class AnimExercise3Component { }
 
 @Component({
-    selector: 'app-dv-exercise-4',
+    selector: 'app-anim-exercise-4',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="exercise">
             <div class="instructions">
-                <h2>🟦 Exercise 4: Prefetching</h2>
-                <p>Prefetch content before display.</p>
+                <h2>🟦 Exercise 4: Query/Stagger</h2>
+                <p>Animate multiple elements with stagger.</p>
             </div>
             <div class="demo">
-                <pre>&#64;defer (on interaction; prefetch on idle) &#123;
-  &lt;content /&gt;
-&#125;</pre>
+                <pre>query(':enter', [
+  stagger('50ms', [
+    animate('300ms', ...)
+  ])
+])</pre>
             </div>
         </div>
     `,
     styles: [`
         .exercise { max-width: 800px; }
-        .instructions { background: #f0fdfa; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #14b8a6; color: #1e1e2e; }
+        .instructions { background: #faf5ff; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #a855f7; color: #1e1e2e; }
         .demo { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
         pre { background: #1e1e2e; color: #a6e3a1; padding: 1rem; border-radius: 8px; }
     `]
 })
-export class DVExercise4Component { }
+export class AnimExercise4Component { }
 
 // Complex Scenarios
 @Component({
-    selector: 'app-dv-scenario-1',
+    selector: 'app-anim-scenario-1',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="scenario">
             <div class="instructions">
-                <h2>🟥 Scenario 1: Heavy Component</h2>
-                <p>Defer loading of chart/table.</p>
+                <h2>🟥 Scenario 1: Page Transitions</h2>
+                <p>Animate route transitions.</p>
             </div>
             <div class="content">
-                <p>Improve initial page load time.</p>
+                <p>Use route animations with data.</p>
             </div>
         </div>
     `,
@@ -187,20 +196,20 @@ export class DVExercise4Component { }
         .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
     `]
 })
-export class DVScenario1Component { }
+export class AnimScenario1Component { }
 
 @Component({
-    selector: 'app-dv-scenario-2',
+    selector: 'app-anim-scenario-2',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="scenario">
             <div class="instructions">
-                <h2>🟥 Scenario 2: Image Gallery</h2>
-                <p>Lazy load images on viewport.</p>
+                <h2>🟥 Scenario 2: List Animations</h2>
+                <p>Animate list add/remove.</p>
             </div>
             <div class="content">
-                <p>Load images as user scrolls.</p>
+                <p>Stagger animations for lists.</p>
             </div>
         </div>
     `,
@@ -210,20 +219,20 @@ export class DVScenario1Component { }
         .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
     `]
 })
-export class DVScenario2Component { }
+export class AnimScenario2Component { }
 
 @Component({
-    selector: 'app-dv-scenario-3',
+    selector: 'app-anim-scenario-3',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="scenario">
             <div class="instructions">
-                <h2>🟥 Scenario 3: Dashboard Widgets</h2>
-                <p>Defer non-critical widgets.</p>
+                <h2>🟥 Scenario 3: Modal Animation</h2>
+                <p>Fade and scale modal.</p>
             </div>
             <div class="content">
-                <p>Load analytics widgets after main content.</p>
+                <p>Backdrop and modal animations.</p>
             </div>
         </div>
     `,
@@ -233,20 +242,20 @@ export class DVScenario2Component { }
         .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
     `]
 })
-export class DVScenario3Component { }
+export class AnimScenario3Component { }
 
 @Component({
-    selector: 'app-dv-scenario-4',
+    selector: 'app-anim-scenario-4',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="scenario">
             <div class="instructions">
-                <h2>🟥 Scenario 4: Infinite Scroll</h2>
-                <p>Load more on scroll.</p>
+                <h2>🟥 Scenario 4: Accordion</h2>
+                <p>Expand/collapse animation.</p>
             </div>
             <div class="content">
-                <p>Combine defer with scroll detection.</p>
+                <p>Height animation with auto.</p>
             </div>
         </div>
     `,
@@ -256,20 +265,20 @@ export class DVScenario3Component { }
         .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
     `]
 })
-export class DVScenario4Component { }
+export class AnimScenario4Component { }
 
 @Component({
-    selector: 'app-dv-scenario-5',
+    selector: 'app-anim-scenario-5',
     standalone: true,
     imports: [CommonModule],
     template: `
         <div class="scenario">
             <div class="instructions">
-                <h2>🟥 Scenario 5: Modal Content</h2>
-                <p>Load modal content on open.</p>
+                <h2>🟥 Scenario 5: Carousel</h2>
+                <p>Slide through items.</p>
             </div>
             <div class="content">
-                <p>Defer heavy modal content.</p>
+                <p>Transform-based transitions.</p>
             </div>
         </div>
     `,
@@ -279,20 +288,20 @@ export class DVScenario4Component { }
         .content { background: white; padding: 1.5rem; border-radius: 12px; color: #1e1e2e; }
     `]
 })
-export class DVScenario5Component { }
+export class AnimScenario5Component { }
 
-export const DEFER_VIEWS_PRACTICE_ROUTES: Routes = [
+export const ANIMATIONS_PRACTICE_ROUTES: Routes = [
     {
-        path: '', component: DeferViewsPracticeComponent, children: [
-            { path: 'basic/exercise-1', component: DVExercise1Component },
-            { path: 'basic/exercise-2', component: DVExercise2Component },
-            { path: 'basic/exercise-3', component: DVExercise3Component },
-            { path: 'basic/exercise-4', component: DVExercise4Component },
-            { path: 'complex/scenario-1', component: DVScenario1Component },
-            { path: 'complex/scenario-2', component: DVScenario2Component },
-            { path: 'complex/scenario-3', component: DVScenario3Component },
-            { path: 'complex/scenario-4', component: DVScenario4Component },
-            { path: 'complex/scenario-5', component: DVScenario5Component },
+        path: '', component: AnimationsPracticeComponent, children: [
+            { path: 'basic/exercise-1', component: AnimExercise1Component },
+            { path: 'basic/exercise-2', component: AnimExercise2Component },
+            { path: 'basic/exercise-3', component: AnimExercise3Component },
+            { path: 'basic/exercise-4', component: AnimExercise4Component },
+            { path: 'complex/scenario-1', component: AnimScenario1Component },
+            { path: 'complex/scenario-2', component: AnimScenario2Component },
+            { path: 'complex/scenario-3', component: AnimScenario3Component },
+            { path: 'complex/scenario-4', component: AnimScenario4Component },
+            { path: 'complex/scenario-5', component: AnimScenario5Component },
         ]
     }
 ];

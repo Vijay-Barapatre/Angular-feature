@@ -572,6 +572,86 @@ export class PracticeHomeComponent {
             complexCount: 5,
             status: 'available',
             difficulty: 'advanced'
+        },
+        {
+            name: 'Animations',
+            icon: '🎬',
+            description: 'State animations, enter/leave, keyframes, and stagger effects',
+            route: '/practice/animations',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'Change Detection',
+            icon: '🔬',
+            description: 'OnPush strategy, manual detection, Zone.js, and optimization',
+            route: '/practice/change-detection',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'advanced'
+        },
+        {
+            name: 'Control Flow',
+            icon: '🔀',
+            description: 'Angular 17+ @if, @for, @switch, and @empty syntax',
+            route: '/practice/control-flow',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'beginner'
+        },
+        {
+            name: 'Standalone Components',
+            icon: '🧩',
+            description: 'Modern Angular without NgModules, imports, and providers',
+            route: '/practice/standalone-components',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'NgRx',
+            icon: '🔴',
+            description: 'State management with Redux pattern, actions, reducers, and effects',
+            route: '/practice/ngrx',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'advanced'
+        },
+        {
+            name: 'MSAL Auth',
+            icon: '🔐',
+            description: 'Azure AD Authentication with MSAL, tokens, and SSO',
+            route: '/practice/msal-auth',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'advanced'
+        },
+        {
+            name: 'NgModule',
+            icon: '📦',
+            description: 'Module-based architecture, feature modules, and lazy loading',
+            route: '/practice/ngmodule',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
+        },
+        {
+            name: 'i18n',
+            icon: '🌍',
+            description: 'Internationalization, localization, and RTL support',
+            route: '/practice/i18n',
+            basicCount: 4,
+            complexCount: 5,
+            status: 'available',
+            difficulty: 'intermediate'
         }
     ];
 
