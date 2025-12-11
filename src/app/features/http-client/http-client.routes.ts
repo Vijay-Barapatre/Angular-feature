@@ -83,5 +83,11 @@ export const HTTP_CLIENT_ROUTES: Routes = [
         loadComponent: () => import('./components/use-case-8/file-operations.component')
             .then(m => m.FileOperationsComponent),
         title: 'File Upload/Download'
+    },
+    {
+        path: 'use-case-9',
+        loadComponent: () => import('./components/use-case-9/promise-patterns.component')
+            .then(m => m.PromisePatternsComponent),
+        title: 'Advanced Promise Patterns'
     }
 ];

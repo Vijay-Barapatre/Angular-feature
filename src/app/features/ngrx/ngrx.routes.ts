@@ -26,5 +26,21 @@ export const NGRX_ROUTES: Routes = [
             provideEffects(UserEffects)
         ]
     },
-    // Future use cases will be added here
+    {
+        path: 'use-case-3',
+        loadComponent: () => import('./components/use-case-3/entity-adapter.component').then(m => m.EntityAdapterComponent)
+    },
+    {
+        path: 'use-case-4',
+        loadComponent: () => import('./components/use-case-4/selectors-demo.component').then(m => m.SelectorsDemoComponent)
+    },
+    {
+        path: 'use-case-5',
+        loadComponent: () => import('./components/use-case-5/devtools-demo.component').then(m => m.DevToolsDemoComponent)
+    },
+    {
+        path: 'use-case-6',
+        loadComponent: () => import('./components/use-case-6/best-practices.component').then(m => m.BestPracticesComponent)
+    }
 ];
+

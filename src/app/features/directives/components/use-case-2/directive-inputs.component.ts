@@ -155,6 +155,15 @@ export class ConfigTooltipDirective implements OnInit {
     @Input() tooltipPosition: 'top' | 'bottom' | 'left' | 'right' = 'top';
     @Input() tooltipBg = '#1a1a2e';
 
+    // 🕒 LIFECYCLE HOOK: ngOnInit
+    // WHY HERE?
+    // 1. Inputs Ready: 'tooltipPosition' and 'tooltipBg' are available.
+    // 2. Setup Event Listeners: We bind mouseenter/mouseleave events.
+    //    These don't require the DOM to be "painted", just the element reference.
+    //
+    // WHY NOT ngAfterViewInit?
+    // - We're not accessing ViewChild or measuring pixel dimensions.
+    // - Event binding works fine in ngOnInit.
     ngOnInit(): void {
         this.renderer.setStyle(this.el.nativeElement, 'position', 'relative');
         this.renderer.setStyle(this.el.nativeElement, 'cursor', 'help');

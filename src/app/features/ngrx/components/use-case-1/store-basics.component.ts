@@ -1,3 +1,83 @@
+/**
+ * ============================================================================
+ * 🏬 NgRx Store Basics - Educational Component
+ * ============================================================================
+ * 
+ * This component demonstrates the fundamental concepts of NgRx:
+ * - Actions: Events that describe what happened
+ * - Reducers: Pure functions that handle state transitions
+ * - Selectors: Pure functions that extract slices of state
+ * - Store: The single source of truth for application state
+ * 
+ * ============================================================================
+ * 📚 THE REDUX PATTERN
+ * ============================================================================
+ * 
+ * The Redux pattern (which NgRx implements) follows a unidirectional data flow:
+ * 
+ *   ┌──────────────────────────────────────────────────────────────┐
+ *   │                                                              │
+ *   │   Component ──dispatch──> Action ──> Reducer ──> Store      │
+ *   │       ▲                                            │        │
+ *   │       └──────────select (Observable)───────────────┘        │
+ *   │                                                              │
+ *   └──────────────────────────────────────────────────────────────┘
+ * 
+ * ============================================================================
+ * 🎯 KEY CONCEPTS
+ * ============================================================================
+ * 
+ * 1. ACTIONS - "What happened"
+ *    - Simple objects with a `type` property
+ *    - Created with `createAction()` function
+ *    - Can carry a payload via `props<T>()`
+ *    - Naming convention: '[Feature] Event Name'
+ * 
+ * 2. REDUCERS - "How state changes"
+ *    - Pure functions: (state, action) => newState
+ *    - MUST be immutable (never modify state directly)
+ *    - MUST be synchronous (no API calls!)
+ *    - Use spread operator for immutable updates
+ * 
+ * 3. SELECTORS - "How to get state"
+ *    - Pure functions that extract state slices
+ *    - Memoized for performance (cached results)
+ *    - Composable (selectors can use other selectors)
+ *    - Return Observables when used with store.select()
+ * 
+ * 4. STORE - "Where state lives"
+ *    - Single source of truth for the app
+ *    - State is read-only (can only change via actions)
+ *    - Changes are made with pure functions (reducers)
+ * 
+ * ============================================================================
+ * ⚠️ COMMON PITFALLS
+ * ============================================================================
+ * 
+ * ❌ BAD: Mutating state in reducer
+ *    on(increment, state => { state.count++; return state; })
+ * 
+ * ✅ GOOD: Returning new state object
+ *    on(increment, state => ({ ...state, count: state.count + 1 }))
+ * 
+ * ❌ BAD: API calls in reducer
+ *    on(loadUsers, state => { this.http.get(...); return state; })
+ * 
+ * ✅ GOOD: Async operations in Effects (see Use Case 2)
+ * 
+ * ============================================================================
+ * 🔍 WHY NGRX OVER SERVICES?
+ * ============================================================================
+ * 
+ * For simple apps, a service with BehaviorSubject is fine.
+ * NgRx shines in large apps because:
+ * 
+ * - Predictable state changes via strict unidirectional flow
+ * - Time-travel debugging with Redux DevTools
+ * - Clear separation of concerns (UI vs state vs side effects)
+ * - Memoized selectors for performance
+ * - Testable: Actions, reducers, and selectors are pure functions
+ */
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';

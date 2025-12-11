@@ -123,6 +123,16 @@ export class UserProfileComponent implements OnInit {
   activatedRoute = inject(ActivatedRoute);
   user!: UserProfile;
 
+  // 🕒 LIFECYCLE HOOK: ngOnInit
+  // WHY HERE?
+  // 1. Resolver Data Ready: By the time this component is created, the Resolver
+  //    has ALREADY fetched the data. We just need to read it.
+  // 2. Subscribe to Route Data: We access the 'data' observable from ActivatedRoute
+  //    to get the pre-fetched 'userData'.
+  //
+  // 🔑 KEY INSIGHT:
+  // Resolvers are like "Pre-fetch Middleware" - they run BEFORE the component loads.
+  // So by the time ngOnInit runs, the data is already sitting and waiting.
   ngOnInit() {
     // 2. Subscribe to the data
     //    The Resolver has ALREADY run at this point.

@@ -54,6 +54,52 @@ async loadSequential(): Promise<void> {
 
 ---
 
+## 4. ❓ Interview Questions
+
+### Basic Questions
+
+#### Q1: What's the difference between lastValueFrom and firstValueFrom?
+**Answer:**
+| Function | Returns | Use When |
+|----------|---------|----------|
+| `lastValueFrom` | Last emitted value | HTTP (waits for complete) |
+| `firstValueFrom` | First emitted value | Hot streams (take first) |
+
+#### Q2: Why is toPromise() deprecated?
+**Answer:** It was ambiguous. `lastValueFrom()` and `firstValueFrom()` make it explicit which value you want.
+
+---
+
+### Scenario-Based Questions
+
+#### Scenario 1: Sequential API Calls
+**Question:** You need to: 1) Get user, 2) Get user's orders, 3) Get order details. Each depends on the previous. How?
+
+**Answer:**
+```typescript
+async loadUserOrderDetails(userId: number) {
+    const user = await lastValueFrom(this.api.getUser(userId));
+    const orders = await lastValueFrom(this.api.getOrders(user.id));
+    const details = await lastValueFrom(this.api.getOrderDetails(orders[0].id));
+    return { user, orders, details };
+}
+```
+
+#### Scenario 2: Timeout
+**Question:** Implement a 5-second timeout for an API call using Promises.
+
+**Answer:**
+```typescript
+const result = await Promise.race([
+    lastValueFrom(this.api.getData()),
+    new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout')), 5000)
+    )
+]);
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid
@@ -72,3 +118,4 @@ mindmap
       No cancellation
       Single value only
 ```
+

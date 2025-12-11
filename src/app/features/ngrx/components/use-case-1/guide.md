@@ -170,7 +170,7 @@ on(increment, state => ({
 
 ## 7. ❓ Interview & Concept Questions
 
-### Core Concepts
+### Basic Questions
 
 **Q1: Why use NgRx instead of a simple Service with BehaviorSubject?**
 > A: Services are great for simple state. NgRx provides structure, debugging (Redux DevTools), strict one-way data flow, and separation of concerns (side effects vs state updates) crucial for large enterprise apps.
@@ -178,20 +178,157 @@ on(increment, state => ({
 **Q2: What is a "Pure Function" in the context of Reducers?**
 > A: A function that given the same input (state + action) always returns the same output, without any side effects (API calls, changing global vars).
 
-### Debugging
-
 **Q3: The UI isn't updating but the action is dispatched. Why?**
 > A: Likely state mutation in the reducer. Ensure you return a **new object** (`...state`) instead of modifying `state`. Also check if the selector is correctly looking at the right feature slice.
-
-### Implementation
 
 **Q4: Can I handle API calls in Reducers?**
 > A: **NO!** Reducers must be synchronous and pure. API calls belong in **Effects**.
 
-### Performance
-
 **Q5: What is Selector Memoization?**
 > A: It's a caching mechanism. If the inputs to a selector haven't changed, it returns the last calculated value without re-running the function, saving CPU cycles.
+
+---
+
+### Scenario-Based Questions
+
+#### Scenario 1: Shopping Cart
+**Question:** Design the actions and state for a shopping cart that can add items, remove items, update quantity, and clear cart.
+
+**Answer:**
+```typescript
+// Actions
+export const addToCart = createAction('[Cart] Add Item', props<{ product: Product, quantity: number }>());
+export const removeFromCart = createAction('[Cart] Remove Item', props<{ productId: string }>());
+export const updateQuantity = createAction('[Cart] Update Quantity', props<{ productId: string, quantity: number }>());
+export const clearCart = createAction('[Cart] Clear');
+
+// State
+interface CartState {
+    items: CartItem[];
+    totalQuantity: number;
+    totalPrice: number;
+}
+
+// Reducer
+on(addToCart, (state, { product, quantity }) => {
+    const existing = state.items.find(i => i.productId === product.id);
+    if (existing) {
+        return {
+            ...state,
+            items: state.items.map(i => 
+                i.productId === product.id 
+                    ? { ...i, quantity: i.quantity + quantity }
+                    : i
+            )
+        };
+    }
+    return {
+        ...state,
+        items: [...state.items, { productId: product.id, name: product.name, price: product.price, quantity }]
+    };
+})
+```
+
+---
+
+#### Scenario 2: Optimistic Updates
+**Question:** User clicks "Like" button. Update UI immediately, but if API fails, rollback.
+
+**Answer:**
+```typescript
+// Actions
+export const likePost = createAction('[Post] Like', props<{ postId: string }>());
+export const likePostSuccess = createAction('[Post] Like Success', props<{ postId: string }>());
+export const likePostFailure = createAction('[Post] Like Failure', props<{ postId: string, previousLikes: number }>());
+
+// Reducer - Optimistically increment
+on(likePost, (state, { postId }) => ({
+    ...state,
+    posts: state.posts.map(p => 
+        p.id === postId ? { ...p, likes: p.likes + 1 } : p
+    )
+}))
+
+// Reducer - Rollback on failure
+on(likePostFailure, (state, { postId, previousLikes }) => ({
+    ...state,
+    posts: state.posts.map(p => 
+        p.id === postId ? { ...p, likes: previousLikes } : p
+    )
+}))
+```
+
+---
+
+#### Scenario 3: Loading Multiple Entities
+**Question:** Dashboard needs to load users, products, and orders. How do you track loading state for each?
+
+**Answer:**
+```typescript
+interface AppState {
+    users: { data: User[], loading: boolean, error: string | null };
+    products: { data: Product[], loading: boolean, error: string | null };
+    orders: { data: Order[], loading: boolean, error: string | null };
+}
+
+// Selectors
+export const selectUsersLoading = createSelector(selectUserState, state => state.loading);
+export const selectProductsLoading = createSelector(selectProductState, state => state.loading);
+
+// Combined loading selector
+export const selectDashboardLoading = createSelector(
+    selectUsersLoading,
+    selectProductsLoading,
+    selectOrdersLoading,
+    (u, p, o) => u || p || o  // True if ANY is loading
+);
+```
+
+---
+
+#### Scenario 4: Derived State
+**Question:** You have a list of items with prices. Create a selector that computes total, tax, and grand total.
+
+**Answer:**
+```typescript
+export const selectCartItems = createSelector(selectCartState, state => state.items);
+
+export const selectSubtotal = createSelector(
+    selectCartItems,
+    items => items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+);
+
+export const selectTax = createSelector(
+    selectSubtotal,
+    subtotal => subtotal * 0.1  // 10% tax
+);
+
+export const selectGrandTotal = createSelector(
+    selectSubtotal,
+    selectTax,
+    (subtotal, tax) => subtotal + tax
+);
+```
+**Why selectors?** Memoization! If items haven't changed, tax doesn't recompute.
+
+---
+
+### Advanced Questions
+
+**Q6: When would you use `createFeatureSelector` vs direct selector?**
+> A: `createFeatureSelector` is for top-level feature slices registered with `StoreModule.forFeature()`. It provides type safety and simplifies accessing nested state.
+
+**Q7: How do you combine multiple reducers?**
+> A: Use `ActionReducerMap` for root state:
+```typescript
+export const reducers: ActionReducerMap<AppState> = {
+    counter: counterReducer,
+    users: userReducer
+};
+```
+
+**Q8: What's the difference between State and ViewModel?**
+> A: State is the raw data in store. ViewModel is derived/computed data for the UI (from selectors). Keep state normalized, derive complex structures via selectors.
 
 ---
 
@@ -217,3 +354,4 @@ mindmap
       Dispatch
       Select
 ```
+

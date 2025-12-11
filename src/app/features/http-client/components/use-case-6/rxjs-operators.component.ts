@@ -3,12 +3,59 @@
  * USE CASE 6: RxJS OPERATORS FOR HTTP (ENHANCED)
  * ============================================================================
  * 
- * 💡 REAL-WORLD SCENARIOS:
- * 1. Type-ahead search with debounce and switchMap
- * 2. Parallel dashboard loading with forkJoin
- * 3. Dependent requests (chain) with concatMap
- * 4. Pagination with scroll loading
- * 5. Real-time updates with polling + distinctUntilChanged
+ * 🎯 WHAT THIS DEMONSTRATES:
+ * Advanced RxJS patterns for real-world HTTP scenarios.
+ * These patterns solve common problems that simple requests can't handle.
+ * 
+ * 💡 KEY OPERATORS EXPLAINED:
+ * 
+ * 1. TYPE-AHEAD SEARCH OPERATORS:
+ *    
+ *    debounceTime(300)
+ *      - Waits 300ms after user stops typing
+ *      - Prevents API call on every keystroke
+ *      - "laptop" = 1 call instead of 6!
+ *    
+ *    distinctUntilChanged()
+ *      - Only emits if value changed from previous
+ *      - Prevents duplicate searches
+ *    
+ *    switchMap(term => search(term))
+ *      - CANCELS previous request when new one starts
+ *      - Perfect for search (only latest matters)
+ *      - User types "lap" → request starts
+ *      - User types "laptop" → "lap" request CANCELLED
+ * 
+ * 2. PARALLEL LOADING (forkJoin):
+ *    
+ *    forkJoin({ users, products, stats })
+ *      - Runs all requests IN PARALLEL
+ *      - Waits for ALL to complete
+ *      - Returns object with all results
+ *      - Fails if ANY request fails
+ *    
+ *    Sequential: 500ms + 500ms + 500ms = 1500ms
+ *    Parallel:   500ms (all at once!) = 500ms
+ * 
+ * 3. SEQUENTIAL CHAINING (concatMap):
+ *    
+ *    concatMap(user => fetchOrders(user.id))
+ *      - Runs requests IN ORDER
+ *      - Waits for each to complete before next
+ *      - Use when order matters
+ *    
+ * 4. OPERATOR COMPARISON:
+ *    
+ *    switchMap  - Cancel previous (search)
+ *    concatMap  - Queue in order (form steps)
+ *    mergeMap   - Run all parallel (no order)
+ *    exhaustMap - Ignore while busy (prevent double-click)
+ * 
+ * ⚠️ COMMON MISTAKES:
+ * - Using map instead of switchMap (map doesn't flatten!)
+ * - Nested subscribes (use switchMap instead)
+ * - Not debouncing search (too many API calls)
+ * - Using mergeMap for search (doesn't cancel)
  */
 
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
@@ -247,6 +294,15 @@ export class RxjsOperatorsComponent implements OnInit, OnDestroy {
     loadingChain = false;
     chainSteps: { text: string; complete: boolean }[] = [];
 
+    // 🕒 LIFECYCLE HOOK: ngOnInit
+    // WHY HERE?
+    // 1. Setup RxJS Pipelines: We configure the search Subject with operators.
+    // 2. Load Initial Data: Fetch the first page of posts for scroll demo.
+    //    These need to happen once the component is ready to display.
+    //
+    // WHY NOT CONSTRUCTOR?
+    // - RxJS setup in constructor is fine, but ngOnInit is more testable.
+    // - Loading data in constructor can cause issues with SSR and testing.
     ngOnInit(): void {
         this.setupSearch();
         this.loadInitialPosts();
@@ -369,6 +425,17 @@ export class RxjsOperatorsComponent implements OnInit, OnDestroy {
         ).subscribe();
     }
 
+    // 🕒 LIFECYCLE HOOK: ngOnDestroy
+    // WHY HERE?
+    // 1. Complete Subject: We emit to destroy$ to trigger takeUntil operators.
+    //    This automatically unsubscribes all pipelines using takeUntil(this.destroy$).
+    // 2. Complete Subject: After next(), we call complete() for proper cleanup.
+    //
+    // 🛡️ PATTERN: takeUntil + Subject
+    // This is the cleanest RxJS cleanup pattern:
+    // - Declare: private destroy$ = new Subject<void>();
+    // - Use: .pipe(takeUntil(this.destroy$))
+    // - Cleanup: this.destroy$.next(); this.destroy$.complete();
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

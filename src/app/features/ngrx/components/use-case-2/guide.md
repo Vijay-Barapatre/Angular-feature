@@ -141,7 +141,7 @@ Effects keep your components **pure**. Your component handles user input (`dispa
 
 ## 7. ❓ Interview & Concept Questions
 
-### Core Concepts
+### Basic Questions
 
 **Q1: Why not call the service directly in the Component?**
 > A: Separation of concerns. Components should be about UI. Moving logic to Effects makes components easier to test and reuse, and centralizes side effects management.
@@ -149,18 +149,176 @@ Effects keep your components **pure**. Your component handles user input (`dispa
 **Q2: What happens if I forget `catchError` in an Effect?**
 > A: The effect stream will error out and complete. It will stop listening for new actions until the application is reloaded.
 
-### Architecture
-
 **Q3: Can an Effect dispatch multiple actions?**
 > A: Yes! return `switchMap(() => [action1(), action2()])` or use `switchMap` returning an array of actions.
 
 **Q4: Do Effects always handle Observables?**
 > A: Mostly, but you can create "Non-dispatching" effects (`{ dispatch: false }`) for things that don't return an action, like `localStorage.setItem` or `console.log`.
 
-### Scenario Based
+---
 
-**Q5: Implement a "Search" feature.**
-> A: Listen for `[Search] Input`, use `debounceTime(300)`, `distinctUntilChanged()`, then `switchMap` to API. This prevents spamming the server and ensures out-of-order responses don't overwrite newer ones.
+### Scenario-Based Questions
+
+#### Scenario 1: Type-ahead Search
+**Question:** Implement a search feature that: waits 300ms after typing, doesn't search for same query twice, cancels pending requests when new search starts.
+
+**Answer:**
+```typescript
+search$ = createEffect(() => 
+    this.actions$.pipe(
+        ofType(searchProducts),
+        debounceTime(300),              // Wait 300ms
+        distinctUntilChanged((prev, curr) => 
+            prev.query === curr.query    // Skip if same query
+        ),
+        switchMap(({ query }) =>        // Cancel previous
+            this.productService.search(query).pipe(
+                map(results => searchSuccess({ results })),
+                catchError(error => of(searchFailure({ error: error.message })))
+            )
+        )
+    )
+);
+```
+
+---
+
+#### Scenario 2: Retry with Backoff
+**Question:** API is flaky. Retry 3 times with exponential backoff before failing.
+
+**Answer:**
+```typescript
+loadData$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(loadData),
+        mergeMap(() =>
+            this.api.getData().pipe(
+                retry({
+                    count: 3,
+                    delay: (error, retryCount) => timer(Math.pow(2, retryCount) * 1000)
+                }),
+                map(data => loadDataSuccess({ data })),
+                catchError(error => of(loadDataFailure({ error: error.message })))
+            )
+        )
+    )
+);
+```
+
+---
+
+#### Scenario 3: Chain of API Calls
+**Question:** After creating a user, automatically load their profile and permissions.
+
+**Answer:**
+```typescript
+// Effect that chains multiple API calls
+createUser$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(createUser),
+        mergeMap(({ userData }) =>
+            this.userService.create(userData).pipe(
+                switchMap(user => forkJoin({
+                    profile: this.profileService.load(user.id),
+                    permissions: this.permService.load(user.id)
+                }).pipe(
+                    map(({ profile, permissions }) => 
+                        createUserComplete({ user, profile, permissions })
+                    )
+                )),
+                catchError(error => of(createUserFailure({ error })))
+            )
+        )
+    )
+);
+```
+
+---
+
+#### Scenario 4: Prevent Double Submit
+**Question:** Prevent user from clicking "Save" multiple times while request is in progress.
+
+**Answer:**
+```typescript
+saveForm$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(saveForm),
+        exhaustMap(({ formData }) =>  // Ignores new clicks while busy
+            this.formService.save(formData).pipe(
+                map(result => saveFormSuccess({ result })),
+                catchError(error => of(saveFormFailure({ error })))
+            )
+        )
+    )
+);
+```
+**Why exhaustMap?** It ignores new emissions while the inner Observable is still running.
+
+---
+
+#### Scenario 5: Navigation After Success
+**Question:** After successful login, redirect to dashboard.
+
+**Answer:**
+```typescript
+loginSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(loginSuccess),
+        tap(() => this.router.navigate(['/dashboard']))
+    ),
+    { dispatch: false }  // No action dispatched
+);
+```
+
+---
+
+#### Scenario 6: Polling
+**Question:** Poll API every 30 seconds for updates while user is on dashboard.
+
+**Answer:**
+```typescript
+startPolling$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(startDashboardPolling),
+        switchMap(() => 
+            interval(30000).pipe(
+                takeUntil(this.actions$.pipe(ofType(stopDashboardPolling))),
+                mergeMap(() => this.api.getUpdates().pipe(
+                    map(updates => pollingSuccess({ updates })),
+                    catchError(() => EMPTY)  // Silently ignore polling errors
+                ))
+            )
+        )
+    )
+);
+```
+
+---
+
+### Advanced Questions
+
+**Q5: What's the difference between switchMap, mergeMap, concatMap, exhaustMap?**
+> A:
+| Operator | Behavior | Use Case |
+|----------|----------|----------|
+| `switchMap` | Cancels previous | Search, autocomplete |
+| `mergeMap` | Runs all in parallel | Independent loads |
+| `concatMap` | Queues in order | Sequential saves |
+| `exhaustMap` | Ignores while busy | Prevent double-click |
+
+**Q6: How do you unit test an Effect?**
+> A: Use `provideMockActions()` and marble testing:
+```typescript
+it('should load users', () => {
+    actions$ = hot('-a', { a: loadUsers() });
+    const expected = cold('-b', { b: loadUsersSuccess({ users: mockUsers }) });
+    
+    expect(effects.loadUsers$).toBeObservable(expected);
+});
+```
+
+**Q7: Can Effects listen to multiple actions?**
+> A: Yes! Use `ofType(action1, action2, action3)` to listen for any of them.
 
 ---
 
@@ -189,3 +347,4 @@ mindmap
       Local Storage
       Analytics
 ```
+

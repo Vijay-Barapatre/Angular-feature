@@ -3,11 +3,53 @@
  * USE CASE 7: CACHING STRATEGIES
  * ============================================================================
  * 
- * 💡 LIGHTBULB MOMENT:
- * Don't make the same API call twice! Cache responses to improve:
- * - Performance (faster load times)
- * - Server load (fewer requests)
- * - UX (instant data on revisit)
+ * 🎯 WHAT THIS DEMONSTRATES:
+ * How to cache HTTP responses to avoid redundant API calls.
+ * Critical for performance and reducing server load.
+ * 
+ * 💡 KEY CONCEPTS:
+ * 
+ * 1. WHY CACHE?
+ *    - Performance: Instant data on repeat visits
+ *    - Bandwidth: Fewer network requests
+ *    - Server load: Less stress on backend
+ *    - UX: No loading spinners for cached data
+ * 
+ * 2. shareReplay() OPERATOR:
+ *    
+ *    The magic RxJS operator for caching Observables.
+ *    
+ *    Without shareReplay:
+ *    - Each subscription triggers a NEW HTTP request
+ *    - Click 3 times = 3 API calls
+ *    
+ *    With shareReplay(1):
+ *    - First subscription triggers HTTP request
+ *    - Subsequent subscriptions get CACHED value
+ *    - Click 3 times = 1 API call!
+ *    
+ *    The (1) means "cache the last 1 emission"
+ * 
+ * 3. CACHE INVALIDATION:
+ *    Set the cached Observable to null to force a fresh request.
+ *    Call this when:
+ *    - User creates/updates/deletes data
+ *    - Cache TTL expires
+ *    - User manually refreshes
+ * 
+ * 4. CACHING STRATEGIES:
+ *    
+ *    | Strategy     | Persistence | Use Case                    |
+ *    |--------------|-------------|-----------------------------|
+ *    | shareReplay  | In-memory   | Simple, session-only cache  |
+ *    | BehaviorSubject | In-memory | Need current value access |
+ *    | localStorage | Browser     | Persist across sessions     |
+ *    | Interceptor  | Global      | Cache multiple endpoints    |
+ * 
+ * ⚠️ WHEN NOT TO CACHE:
+ * - User-specific data that changes frequently
+ * - Time-sensitive data (stock prices, notifications)
+ * - After mutations (POST/PUT/DELETE)
  */
 
 import { Component, inject } from '@angular/core';

@@ -35,6 +35,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     <a routerLink="basic/exercise-4" routerLinkActive="active">
                         Exercise 4: Error Handling
                     </a>
+                    <a routerLink="basic/exercise-5" routerLinkActive="active">
+                        Exercise 5: API Chaining
+                    </a>
+                    <a routerLink="basic/exercise-6" routerLinkActive="active">
+                        Exercise 6: Parallel Calls
+                    </a>
                 </div>
                 <div class="nav-section">
                     <h3>🟥 Complex Scenarios</h3>
@@ -52,6 +58,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </a>
                     <a routerLink="complex/scenario-5" routerLinkActive="active">
                         Scenario 5: Polling & SSE
+                    </a>
+                    <a routerLink="complex/scenario-6" routerLinkActive="active">
+                        Scenario 6: Promise Patterns
+                    </a>
+                    <a routerLink="complex/scenario-7" routerLinkActive="active">
+                        Scenario 7: Type-ahead Search
                     </a>
                 </div>
             </nav>

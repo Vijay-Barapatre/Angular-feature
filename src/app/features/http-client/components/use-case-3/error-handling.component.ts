@@ -3,12 +3,57 @@
  * USE CASE 3: ERROR HANDLING & RETRY (ENHANCED)
  * ============================================================================
  * 
- * 💡 REAL-WORLD SCENARIOS:
- * 1. Exponential backoff with jitter
- * 2. Circuit breaker pattern
- * 3. Error classification (retryable vs non-retryable)
- * 4. User-friendly error messages
- * 5. Error logging and reporting
+ * 🎯 WHAT THIS DEMONSTRATES:
+ * Professional-grade error handling strategies for HTTP requests.
+ * These patterns are used in production apps at scale.
+ * 
+ * 💡 KEY CONCEPTS COVERED:
+ * 
+ * 1. ERROR CLASSIFICATION:
+ *    Categorize errors to determine proper response:
+ *    - Network errors (status 0): Connection issues, offline
+ *    - Client errors (4xx): Bad request, unauthorized, not found
+ *    - Server errors (5xx): Server crashed, overloaded
+ *    
+ * 2. WHICH ERRORS ARE RETRYABLE?
+ *    ✅ RETRY:
+ *      - Status 0 (network offline, timeout)
+ *      - Status 429 (rate limited - with backoff)
+ *      - Status 500, 502, 503, 504 (server issues, temporary)
+ *    
+ *    ❌ DON'T RETRY:
+ *      - Status 400 (bad request - fix your data)
+ *      - Status 401 (unauthorized - need to login)
+ *      - Status 403 (forbidden - not allowed)
+ *      - Status 404 (not found - won't magically appear)
+ * 
+ * 3. EXPONENTIAL BACKOFF WITH JITTER:
+ *    Wait progressively longer between retries:
+ *    - Retry 1: Wait 1s (+random 0-1s)
+ *    - Retry 2: Wait 2s (+random 0-1s)
+ *    - Retry 3: Wait 4s (+random 0-1s)
+ *    
+ *    WHY JITTER? Prevents "thundering herd" where all clients
+ *    retry at exactly the same time, overwhelming the server.
+ * 
+ * 4. CIRCUIT BREAKER PATTERN:
+ *    Stop calling a failing service to give it time to recover.
+ *    States:
+ *    - CLOSED: Normal operation, requests pass through
+ *    - OPEN: Service is down, requests blocked
+ *    - HALF-OPEN: Testing if service recovered
+ * 
+ * 5. GRACEFUL DEGRADATION:
+ *    When primary source fails, try alternatives:
+ *    1. Live API ❌
+ *    2. Cached data ✅
+ *    3. Static fallback ✅
+ * 
+ * ⚠️ PRODUCTION CONSIDERATIONS:
+ * - Log errors to monitoring service (Sentry, DataDog)
+ * - Show user-friendly messages (not technical errors)
+ * - Don't retry infinitely (set max attempts)
+ * - Consider circuit breaker for external APIs
  */
 
 import { Component, inject } from '@angular/core';
@@ -17,14 +62,25 @@ import { ApiService } from '../../services/api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, retry, timer, retryWhen, delayWhen, tap, take, of, throwError, Observable, finalize, map, scan } from 'rxjs';
 
-// Error classification
+/**
+ * 📦 CLASSIFIED ERROR INTERFACE
+ * 
+ * Instead of just passing raw HttpErrorResponse around,
+ * we classify it into a structured format that's easier to work with.
+ * 
+ * Benefits:
+ * - Type safety for error handling
+ * - Consistent error shape across the app
+ * - Centralized error classification logic
+ * - User-friendly messages separate from technical details
+ */
 interface ClassifiedError {
-    code: number;
-    type: 'network' | 'client' | 'server' | 'unknown';
-    message: string;
-    userMessage: string;
-    isRetryable: boolean;
-    originalError: any;
+    code: number;           // HTTP status code (0, 400, 500, etc.)
+    type: 'network' | 'client' | 'server' | 'unknown';  // Error category
+    message: string;        // Technical message (for logging)
+    userMessage: string;    // User-friendly message (for UI)
+    isRetryable: boolean;   // Should we retry this request?
+    originalError: any;     // Original error for debugging
 }
 
 @Component({
@@ -190,19 +246,55 @@ export class ErrorHandlingComponent {
     retrying = false;
     backoffLog: { time: string; message: string; type: string }[] = [];
 
-    // Scenario 3: Circuit Breaker
+    // =========================================================================
+    // SCENARIO 3: CIRCUIT BREAKER - STATE PROPERTIES
+    // =========================================================================
+    /**
+     * 🔌 CIRCUIT BREAKER STATE
+     * 
+     * The circuit can be in one of three states:
+     * - 'closed': Normal operation, all requests pass through
+     * - 'open':   Circuit tripped, all requests blocked (fail fast)
+     * - 'half-open': Testing state, one request allowed to test recovery
+     */
     circuitState: 'closed' | 'open' | 'half-open' = 'closed';
+
+    /**
+     * 📊 FAILURE COUNTER
+     * Tracks consecutive failures. When it reaches threshold, circuit opens.
+     */
     failureCount = 0;
+
+    /**
+     * ✅ SUCCESS COUNTER
+     * Tracks successful requests (for demo/stats purposes).
+     */
     successCount = 0;
+
+    /**
+     * 🎯 FAILURE THRESHOLD
+     * After this many consecutive failures, circuit opens.
+     * Lower = more sensitive (opens quickly)
+     * Higher = more tolerant (takes more failures)
+     */
     failureThreshold = 3;
+
+    /**
+     * ⏱️ COOLDOWN PERIOD (seconds)
+     * How long circuit stays OPEN before moving to HALF-OPEN.
+     * This gives the failing service time to recover.
+     */
     circuitCooldown = 30;
 
     // Scenario 4: Graceful Degradation
     degradationResult: { source: string; data: any } | null = null;
 
+    // =========================================================================
+    // SCENARIO 1: ERROR CLASSIFICATION
+    // =========================================================================
     /**
-     * SCENARIO 1: Error Classification
-     * Classify errors to determine proper handling strategy.
+     * 🏷️ TEST ERROR CLASSIFICATION
+     * Triggers different HTTP error codes to see how they're classified.
      */
     testError(code: number): void {
         this.classifiedError = null;
@@ -215,6 +307,10 @@ export class ErrorHandlingComponent {
         ).subscribe();
     }
 
+    /**
+     * 🔍 CLASSIFY ERROR
+     * Analyzes HTTP error and categorizes it.
+     */
     private classifyError(error: HttpErrorResponse): ClassifiedError {
         const errorMessages: Record<number, string> = {
             400: 'Please check your input and try again.',
@@ -233,7 +329,7 @@ export class ErrorHandlingComponent {
             isRetryable = true;
         } else if (error.status >= 400 && error.status < 500) {
             type = 'client';
-            isRetryable = error.status === 429; // Rate limit is retryable
+            isRetryable = error.status === 429;
         } else if (error.status >= 500) {
             type = 'server';
             isRetryable = true;
@@ -249,16 +345,19 @@ export class ErrorHandlingComponent {
         };
     }
 
+    // =========================================================================
+    // SCENARIO 2: EXPONENTIAL BACKOFF
+    // =========================================================================
     /**
-     * SCENARIO 2: Exponential Backoff with Jitter
-     * Prevents all clients from retrying simultaneously.
+     * ⏱️ TEST EXPONENTIAL BACKOFF
+     * Demonstrates retry with increasing delays.
      */
     testExponentialBackoff(): void {
         this.retrying = true;
         this.backoffLog = [];
         let attempt = 0;
 
-        const jitter = () => Math.random() * 1000; // 0-1 second jitter
+        const jitter = () => Math.random() * 1000;
 
         this.apiService.getError(500).pipe(
             tap(() => {
@@ -294,37 +393,172 @@ export class ErrorHandlingComponent {
         });
     }
 
+    // =========================================================================
+    // SCENARIO 3: CIRCUIT BREAKER PATTERN
+    // =========================================================================
     /**
-     * SCENARIO 3: Circuit Breaker
-     * Stop making requests to failing service.
+     * ⚡ CIRCUIT BREAKER PATTERN - DETAILED EXPLANATION
+     * 
+     * ═══════════════════════════════════════════════════════════════════════
+     * WHAT IS IT?
+     * ═══════════════════════════════════════════════════════════════════════
+     * 
+     * The Circuit Breaker is a design pattern that prevents an application
+     * from repeatedly trying to execute an operation that's likely to fail.
+     * 
+     * Imagine your house's electrical circuit breaker:
+     * - When too much current flows → BREAKER TRIPS (opens)
+     * - Electricity stops flowing → PREVENTS FIRE/DAMAGE
+     * - You fix the problem → RESET THE BREAKER
+     * - Normal operation resumes
+     * 
+     * Same concept for API calls!
+     * 
+     * ═══════════════════════════════════════════════════════════════════════
+     * THE THREE STATES
+     * ═══════════════════════════════════════════════════════════════════════
+     * 
+     * ┌─────────────────────────────────────────────────────────────────────┐
+     * │                                                                     │
+     * │   🟢 CLOSED (Normal)     🔴 OPEN (Blocked)      🟡 HALF-OPEN       │
+     * │   ─────────────────     ────────────────       ────────────        │
+     * │   All requests pass     All requests           One test request    │
+     * │   through normally      are BLOCKED            allowed through     │
+     * │                         (fail immediately)                         │
+     * │                                                                     │
+     * └─────────────────────────────────────────────────────────────────────┘
+     * 
+     * ═══════════════════════════════════════════════════════════════════════
+     * STATE TRANSITIONS (HOW IT WORKS)
+     * ═══════════════════════════════════════════════════════════════════════
+     * 
+     *                    ┌──────────────┐
+     *            ┌──────►│   CLOSED     │◄──────┐
+     *            │       │  (Normal)    │       │
+     *            │       └──────┬───────┘       │
+     *            │              │               │
+     *            │     Failures >= Threshold    │ Success in
+     *            │              │               │ half-open
+     *            │              ▼               │
+     *            │       ┌──────────────┐       │
+     *            │       │    OPEN      │       │
+     *            │       │  (Blocked)   │       │
+     *            │       └──────┬───────┘       │
+     *            │              │               │
+     *            │     After cooldown period    │
+     *            │              │               │
+     *            │              ▼               │
+     *            │       ┌──────────────┐       │
+     *            │       │  HALF-OPEN   │───────┘
+     *     Failure│       │  (Testing)   │
+     *     in     │       └──────────────┘
+     *     half-  │              │
+     *     open   │       Failure in half-open
+     *            └──────────────┘
+     * 
+     * ═══════════════════════════════════════════════════════════════════════
+     * REAL-WORLD EXAMPLE
+     * ═══════════════════════════════════════════════════════════════════════
+     * 
+     * Scenario: Your app calls a payment service that's down.
+     * 
+     * WITHOUT Circuit Breaker:
+     * - User clicks "Pay" → 30 second timeout → Error
+     * - User clicks again → Another 30 second timeout → Error
+     * - User is frustrated, server is overwhelmed with retry requests
+     * 
+     * WITH Circuit Breaker:
+     * - User clicks "Pay" → Fail (failure count: 1)
+     * - User clicks again → Fail (failure count: 2)
+     * - User clicks again → Fail (failure count: 3) → CIRCUIT OPENS!
+     * - User clicks again → INSTANT fail: "Service unavailable, try later"
+     * - After 30 seconds → HALF-OPEN, one request allowed
+     * - If success → CIRCUIT CLOSES, normal operation
+     * - If fail → CIRCUIT stays OPEN for another 30 seconds
+     * 
+     * ═══════════════════════════════════════════════════════════════════════
+     * WHY USE IT?
+     * ═══════════════════════════════════════════════════════════════════════
+     * 
+     * 1. FAIL FAST: Users get immediate feedback instead of waiting
+     * 2. PROTECT DOWNSTREAM: Don't overwhelm a struggling service
+     * 3. SELF-HEALING: Automatically recovers when service is back
+     * 4. SAVE RESOURCES: No wasted network requests to dead service
+     * 
+     * ═══════════════════════════════════════════════════════════════════════
+     * CONFIGURATION (This implementation)
+     * ═══════════════════════════════════════════════════════════════════════
+     * 
+     * failureThreshold = 3   → Open circuit after 3 consecutive failures
+     * circuitCooldown = 30   → Wait 30 seconds before trying again
      */
     testCircuitBreaker(): void {
+        // ─────────────────────────────────────────────────────────────────
+        // STEP 1: CHECK IF CIRCUIT IS OPEN
+        // ─────────────────────────────────────────────────────────────────
+        // If circuit is OPEN, reject immediately without making API call.
+        // This is the "fail fast" behavior - don't waste time on a dead service.
         if (this.circuitState === 'open') {
             this.addLog('Circuit is OPEN - request blocked', 'error');
-            return;
+            return;  // Exit immediately - no API call made!
         }
 
+        // ─────────────────────────────────────────────────────────────────
+        // STEP 2: MAKE THE API CALL (circuit is CLOSED or HALF-OPEN)
+        // ─────────────────────────────────────────────────────────────────
         this.apiService.getRandomFail().pipe(
+            // ─────────────────────────────────────────────────────────────
+            // STEP 3a: ON SUCCESS
+            // ─────────────────────────────────────────────────────────────
             tap(() => {
                 this.successCount++;
+
+                // If we were in HALF-OPEN state and request succeeded,
+                // the service is recovered! Close the circuit.
                 if (this.circuitState === 'half-open') {
-                    this.circuitState = 'closed';
-                    this.failureCount = 0;
+                    this.circuitState = 'closed';  // Back to normal!
+                    this.failureCount = 0;         // Reset failure counter
+                    // Circuit is now fully operational again
                 }
             }),
+
+            // ─────────────────────────────────────────────────────────────
+            // STEP 3b: ON FAILURE
+            // ─────────────────────────────────────────────────────────────
             catchError(error => {
+                // Increment failure counter
                 this.failureCount++;
+
+                // Check if we've hit the failure threshold
                 if (this.failureCount >= this.failureThreshold) {
+                    // ─────────────────────────────────────────────────────
+                    // TRIP THE CIRCUIT! (CLOSED → OPEN)
+                    // ─────────────────────────────────────────────────────
+                    // Too many failures - stop trying!
                     this.circuitState = 'open';
+
+                    // ─────────────────────────────────────────────────────
+                    // SET COOLDOWN TIMER (OPEN → HALF-OPEN)
+                    // ─────────────────────────────────────────────────────
+                    // After cooldown period, allow ONE test request
+                    // to check if service has recovered.
                     setTimeout(() => {
                         this.circuitState = 'half-open';
-                    }, this.circuitCooldown * 1000);
+                        // Now one request will be allowed through to test
+                    }, this.circuitCooldown * 1000);  // 30 seconds
                 }
-                return of(null);
+
+                return of(null);  // Swallow error, don't crash
             })
         ).subscribe();
     }
 
+    /**
+     * 🔄 RESET CIRCUIT
+     * 
+     * Manually reset the circuit breaker to CLOSED state.
+     * Use this when you know the service is back up.
+     */
     resetCircuit(): void {
         this.circuitState = 'closed';
         this.failureCount = 0;

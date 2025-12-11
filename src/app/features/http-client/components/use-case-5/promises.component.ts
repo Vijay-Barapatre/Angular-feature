@@ -3,10 +3,53 @@
  * USE CASE 5: PROMISE-BASED REQUESTS
  * ============================================================================
  * 
- * 💡 LIGHTBULB MOMENT:
- * While Observables are powerful, sometimes Promises are simpler.
- * Use lastValueFrom() to convert Observable to Promise.
- * (toPromise() is deprecated!)
+ * 🎯 WHAT THIS DEMONSTRATES:
+ * How to use async/await syntax with Angular's HttpClient by converting
+ * Observables to Promises.
+ * 
+ * 💡 KEY CONCEPTS:
+ * 
+ * 1. OBSERVABLE VS PROMISE:
+ *    
+ *    Observable:
+ *    - Can emit multiple values over time
+ *    - Lazy (nothing happens until you subscribe)
+ *    - Can be cancelled (unsubscribe)
+ *    - Has powerful operators (map, filter, switchMap)
+ *    
+ *    Promise:
+ *    - Emits single value (resolves once)
+ *    - Eager (starts immediately when created)
+ *    - Cannot be cancelled
+ *    - Simpler async/await syntax
+ * 
+ * 2. WHEN TO USE PROMISES:
+ *    ✅ Simple one-time requests (fetch user, submit form)
+ *    ✅ When you need sequential async flow
+ *    ✅ When working with Promise-based libraries
+ *    ✅ When async/await improves readability
+ *    
+ *    ❌ Avoid for:
+ *    - Streams (WebSocket, polling)
+ *    - Type-ahead search (need cancellation)
+ *    - Complex transformations (use RxJS operators)
+ * 
+ * 3. CONVERSION METHODS:
+ *    
+ *    lastValueFrom() - Recommended for HTTP (single emission)
+ *    - Waits for Observable to complete
+ *    - Resolves with the LAST emitted value
+ *    - Rejects if Observable errors
+ *    
+ *    firstValueFrom() - For streams that emit multiple times
+ *    - Resolves with the FIRST emitted value
+ *    - Unsubscribes after first emission
+ *    
+ * ⚠️ DEPRECATED:
+ * .toPromise() is deprecated! Use lastValueFrom() instead.
+ * 
+ *   ❌ const data = await this.http.get(url).toPromise();
+ *   ✅ const data = await lastValueFrom(this.http.get(url));
  */
 
 import { Component, inject } from '@angular/core';

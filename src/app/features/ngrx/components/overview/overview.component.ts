@@ -42,7 +42,49 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Add more cards as we implement use cases -->
+                <!-- Use Case 3: Entity Adapter -->
+                <div class="feature-card" routerLink="use-case-3">
+                    <div class="card-icon">📦</div>
+                    <h3>Entity Adapter</h3>
+                    <p>Efficient collection management with normalization</p>
+                    <div class="tags">
+                        <span>Collections</span>
+                        <span>CRUD</span>
+                    </div>
+                </div>
+
+                <!-- Use Case 4: Selectors Deep Dive -->
+                <div class="feature-card" routerLink="use-case-4">
+                    <div class="card-icon">🔍</div>
+                    <h3>Selectors Deep Dive</h3>
+                    <p>Memoization, composition, and performance</p>
+                    <div class="tags">
+                        <span>Memoization</span>
+                        <span>Derived State</span>
+                    </div>
+                </div>
+
+                <!-- Use Case 5: DevTools -->
+                <div class="feature-card" routerLink="use-case-5">
+                    <div class="card-icon">🛠️</div>
+                    <h3>DevTools Integration</h3>
+                    <p>Time-travel debugging and state inspection</p>
+                    <div class="tags">
+                        <span>Debugging</span>
+                        <span>Time Travel</span>
+                    </div>
+                </div>
+
+                <!-- Use Case 6: Best Practices -->
+                <div class="feature-card" routerLink="use-case-6">
+                    <div class="card-icon">📋</div>
+                    <h3>Best Practices</h3>
+                    <p>Patterns, anti-patterns, and production tips</p>
+                    <div class="tags">
+                        <span>Patterns</span>
+                        <span>Architecture</span>
+                    </div>
+                </div>
             </div>
         </div>
     `,

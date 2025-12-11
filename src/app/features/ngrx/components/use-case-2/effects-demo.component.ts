@@ -1,3 +1,88 @@
+/**
+ * ============================================================================
+ * ⚡ NgRx Effects - Educational Component
+ * ============================================================================
+ * 
+ * This component demonstrates NgRx Effects - the mechanism for handling
+ * side effects like API calls, navigation, local storage, etc.
+ * 
+ * ============================================================================
+ * 📚 WHY EFFECTS?
+ * ============================================================================
+ * 
+ * Reducers MUST be pure and synchronous. But real apps need:
+ * - HTTP API calls
+ * - Navigation
+ * - Local storage access
+ * - Timers/polling
+ * 
+ * Effects isolate these "side effects" from your components and reducers.
+ * 
+ * ============================================================================
+ * 🔄 THE EFFECTS FLOW
+ * ============================================================================
+ * 
+ *   Component
+ *      │
+ *      ▼ dispatch(loadUsers())
+ *   ┌──────────────────────────────────────────────────────────────┐
+ *   │                        EFFECT                                │
+ *   │   1. Listen for action (ofType)                              │
+ *   │   2. Call API service                                        │
+ *   │   3. Map success → dispatch loadUsersSuccess({ users })      │
+ *   │   4. Catch error → dispatch loadUsersFailure({ error })      │
+ *   └──────────────────────────────────────────────────────────────┘
+ *      │
+ *      ▼ Success/Failure action
+ *   Reducer (updates state)
+ *      │
+ *      ▼
+ *   Component (receives via selector)
+ * 
+ * ============================================================================
+ * 🎯 THE ACTION TRIAD
+ * ============================================================================
+ * 
+ * For every async operation, create THREE actions:
+ * 
+ * 1. TRIGGER: loadUsers()        - Component dispatches this
+ * 2. SUCCESS: loadUsersSuccess() - Effect dispatches on success
+ * 3. FAILURE: loadUsersFailure() - Effect dispatches on error
+ * 
+ * This pattern allows the reducer to:
+ * - Set loading=true on TRIGGER
+ * - Set loading=false, data=payload on SUCCESS
+ * - Set loading=false, error=message on FAILURE
+ * 
+ * ============================================================================
+ * 🔧 FLATTENING OPERATORS
+ * ============================================================================
+ * 
+ * | Operator     | Behavior                 | Use Case              |
+ * |--------------|--------------------------|----------------------|
+ * | switchMap    | Cancel previous request  | Search autocomplete  |
+ * | mergeMap     | Run all in parallel      | Independent loads    |
+ * | concatMap    | Queue in order           | Sequential saves     |
+ * | exhaustMap   | Ignore while busy        | Login button         |
+ * 
+ * ============================================================================
+ * ⚠️ CRITICAL: ERROR HANDLING
+ * ============================================================================
+ * 
+ * ALWAYS use catchError INSIDE the inner pipe!
+ * 
+ * ❌ BAD - Effect stream dies on first error:
+ *    mergeMap(() => this.api.getData().pipe(
+ *        map(data => loadSuccess({ data }))
+ *        // No catchError = STREAM DIES
+ *    ))
+ * 
+ * ✅ GOOD - Effect keeps working after errors:
+ *    mergeMap(() => this.api.getData().pipe(
+ *        map(data => loadSuccess({ data })),
+ *        catchError(err => of(loadFailure({ error: err.message })))
+ *    ))
+ */
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';

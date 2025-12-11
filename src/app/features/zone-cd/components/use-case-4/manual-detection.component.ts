@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-manual-detection',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
-    changeDetection: ChangeDetectionStrategy.OnPush, // 🛡️ CRITICAL: We take control
-    template: `
+  selector: 'app-manual-detection',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush, // 🛡️ CRITICAL: We take control
+  template: `
     <div class="use-case-container fade-in">
       <div class="page-header">
         <a routerLink="/zone-cd" class="back-link">← Back to Overview</a>
@@ -35,7 +35,7 @@ import { RouterLink } from '@angular/router';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .use-case-container { max-width: 800px; margin: 0 auto; padding: 20px; }
     .page-header { margin-bottom: 30px; }
     .back-link { text-decoration: none; color: var(--primary-color); display: inline-block; margin-bottom: 10px; }
@@ -68,21 +68,32 @@ import { RouterLink } from '@angular/router';
   `]
 })
 export class ManualDetectionComponent implements OnInit {
-    count = 0;
-    lastChecked = new Date();
+  count = 0;
+  lastChecked = new Date();
 
-    constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
-    ngOnInit() {
-        setInterval(() => {
-            this.count++;
-            console.log(`[ManualDetection] Count increments to ${this.count}, but UI won't update automatically.`);
-        }, 1000);
-    }
+  // 🕒 LIFECYCLE HOOK: ngOnInit
+  // WHY HERE?
+  // 1. Component Ready: The component is initialized and about to be displayed.
+  // 2. Start Background Process: We start a setInterval to simulate a live data stream.
+  //    This is a common pattern for timers, WebSocket connections, or polling.
+  //
+  // ⚠️ IMPORTANT for OnPush:
+  // The counter updates every second, but the UI won't update automatically
+  // because we're using OnPush strategy. We must call detectChanges() manually.
+  //
+  // 🛡️ CLEANUP NOTE: In a real app, you MUST clear the interval in ngOnDestroy!
+  ngOnInit() {
+    setInterval(() => {
+      this.count++;
+      console.log(`[ManualDetection] Count increments to ${this.count}, but UI won't update automatically.`);
+    }, 1000);
+  }
 
-    manualCheck() {
-        this.lastChecked = new Date();
-        // 🛡️ CRITICAL: Manually running CD for this component and children
-        this.cdr.detectChanges();
-    }
+  manualCheck() {
+    this.lastChecked = new Date();
+    // 🛡️ CRITICAL: Manually running CD for this component and children
+    this.cdr.detectChanges();
+  }
 }

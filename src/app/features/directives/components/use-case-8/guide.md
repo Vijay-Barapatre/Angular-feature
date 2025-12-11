@@ -4,6 +4,35 @@
 
 ---
 
+## 0. 🏗️ The Directives Power Duo: TemplateRef & ViewContainerRef
+
+Before building structural directives like `*appPermission`, you must understand these two concepts. They are the engine behind any `*asterisk` directive.
+
+### 🧩 The Analogy
+Imagine you are a **Printing Press Operator**:
+
+1.  **TemplateRef (The Rubber Stamp) 🏷️**:
+    *   This is the *blueprint*. It allows you to create copies of a specific design (HTML).
+    *   Holding the stamp doesn't put ink on paper; it just holds the *potential* to create the image.
+    *   In Angular: It holds the `<ng-template>` content but doesn't render it.
+
+2.  **ViewContainerRef (The Paper Slot) 📄**:
+    *   This is the *specific location* on the paper where you can press the stamp.
+    *   It's an anchor point in the DOM.
+    *   You can "clear" this slot (erase the page) or "create embedded view" (stamp the image).
+
+### 💡 When to use?
+*   **Structural Directives (`*`)**: Whenever you want to **add** or **remove** elements from the DOM based on logic (like permissions, roles, or loading state).
+*   **Dynamic Components**: When you need to load a component simply by code, not by HTML selector.
+
+### 🛠️ Use Cases
+*   `*ngIf`, `*ngFor` (Built-in)
+*   `*appPermission` (Show/Hide based on role)
+*   `*appFeatureFlag` (Show/Hide based on configuration)
+*   `*skeletonLoader` (Show skeleton while loading, then stamp the content)
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Core Mechanism

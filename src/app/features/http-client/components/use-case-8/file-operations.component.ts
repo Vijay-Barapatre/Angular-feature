@@ -3,11 +3,58 @@
  * USE CASE 8: FILE UPLOAD/DOWNLOAD
  * ============================================================================
  * 
- * 💡 LIGHTBULB MOMENT:
- * File operations require special handling:
- * - reportProgress for upload/download progress
- * - responseType: 'blob' for downloads
- * - FormData for multipart uploads
+ * 🎯 WHAT THIS DEMONSTRATES:
+ * How to handle file operations with progress tracking in Angular.
+ * File handling requires special HTTP configurations.
+ * 
+ * 💡 KEY CONCEPTS:
+ * 
+ * 1. FILE UPLOAD:
+ *    
+ *    Use FormData to send files:
+ *    
+ *    const formData = new FormData();
+ *    formData.append('file', selectedFile);
+ *    http.post('/api/upload', formData)
+ *    
+ *    ⚠️ DON'T set Content-Type header manually!
+ *    Browser automatically sets it with boundary for multipart.
+ * 
+ * 2. PROGRESS TRACKING:
+ *    
+ *    Standard POST doesn't report progress.
+ *    Use HttpRequest with reportProgress: true:
+ *    
+ *    const req = new HttpRequest('POST', url, formData, {
+ *        reportProgress: true
+ *    });
+ *    
+ *    Then listen for HttpEventType.UploadProgress
+ * 
+ * 3. HttpEventType VALUES:
+ *    
+ *    | Type            | Meaning                       |
+ *    |-----------------|-------------------------------|
+ *    | Sent (0)        | Request has been sent         |
+ *    | UploadProgress (1) | Upload progress event      |
+ *    | ResponseHeader (2) | Headers received          |
+ *    | DownloadProgress (3) | Download progress event |
+ *    | Response (4)    | Full response received        |
+ * 
+ * 4. FILE DOWNLOAD:
+ *    
+ *    Use responseType: 'blob' to get binary data:
+ *    
+ *    http.get(url, { responseType: 'blob' })
+ *    
+ *    Then create a download link:
+ *    const url = URL.createObjectURL(blob);
+ *    window.open(url);
+ * 
+ * ⚠️ IMPORTANT:
+ * - Total bytes may be undefined if server doesn't send Content-Length
+ * - Unsubscribe cancels the upload (useful for cancel button)
+ * - Large files may need chunked upload strategy
  */
 
 import { Component, inject } from '@angular/core';

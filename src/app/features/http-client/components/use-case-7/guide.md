@@ -66,6 +66,64 @@ export class ApiService {
 
 ---
 
+## 4. ❓ Interview Questions
+
+### Basic Questions
+
+#### Q1: How does shareReplay(1) work?
+**Answer:** It caches the last emitted value and replays it to new subscribers without making a new HTTP request.
+
+#### Q2: When should you invalidate the cache?
+**Answer:**
+- After creating/updating/deleting data
+- When cache TTL expires
+- On user logout
+- When user manually refreshes
+
+---
+
+### Scenario-Based Questions
+
+#### Scenario 1: Multiple Components Need Same Data
+**Question:** Three components all need the user list. How do you prevent 3 API calls?
+
+**Answer:**
+```typescript
+// Service
+private usersCache$: Observable<User[]> | null = null;
+
+getUsersCached(): Observable<User[]> {
+    if (!this.usersCache$) {
+        this.usersCache$ = this.http.get<User[]>(url).pipe(
+            shareReplay(1)
+        );
+    }
+    return this.usersCache$;
+}
+```
+
+#### Scenario 2: Cache with Expiration
+**Question:** Cache should expire after 5 minutes. How do you implement this?
+
+**Answer:**
+```typescript
+private usersCache$: Observable<User[]> | null = null;
+private cacheExpiry = 0;
+private CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+getUsersCached(): Observable<User[]> {
+    if (!this.usersCache$ || Date.now() > this.cacheExpiry) {
+        this.cacheExpiry = Date.now() + this.CACHE_TTL;
+        this.usersCache$ = this.http.get<User[]>(url).pipe(
+            shareReplay(1)
+        );
+    }
+    return this.usersCache$;
+}
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid
@@ -83,3 +141,4 @@ mindmap
       BehaviorSubject
       Interceptor cache
 ```
+

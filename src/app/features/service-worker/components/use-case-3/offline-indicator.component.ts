@@ -4,10 +4,10 @@ import { fromEvent, merge, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-offline-indicator',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-offline-indicator',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="h-full flex flex-col">
       <div class="p-6">
         <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-100">
@@ -55,26 +55,42 @@ import { map } from 'rxjs/operators';
   `
 })
 export class OfflineIndicatorComponent implements OnInit, OnDestroy {
-    isOnline = true;
-    private subscription!: Subscription;
+  isOnline = true;
+  private subscription!: Subscription;
 
-    ngOnInit() {
-        // Initial check
-        this.isOnline = navigator.onLine;
+  // 🕒 LIFECYCLE HOOK: ngOnInit
+  // WHY HERE?
+  // 1. Browser API Access: We check `navigator.onLine` for initial status.
+  // 2. Event Subscription: We subscribe to window 'online' and 'offline' events.
+  //    This must happen after component initialization but before user interaction.
+  //
+  // WHY NOT CONSTRUCTOR?
+  // - Setting up subscriptions in constructor can complicate testing.
+  // - ngOnInit is the Angular-recommended place for initialization logic.
+  ngOnInit() {
+    // Initial check
+    this.isOnline = navigator.onLine;
 
-        // Listen to window events
-        this.subscription = merge(
-            fromEvent(window, 'online').pipe(map(() => true)),
-            fromEvent(window, 'offline').pipe(map(() => false))
-        ).subscribe(isOnline => {
-            this.isOnline = isOnline;
-            console.log('Network status changed:', isOnline ? 'Online' : 'Offline');
-        });
+    // Listen to window events
+    this.subscription = merge(
+      fromEvent(window, 'online').pipe(map(() => true)),
+      fromEvent(window, 'offline').pipe(map(() => false))
+    ).subscribe(isOnline => {
+      this.isOnline = isOnline;
+      console.log('Network status changed:', isOnline ? 'Online' : 'Offline');
+    });
+  }
+
+  // 🕒 LIFECYCLE HOOK: ngOnDestroy
+  // WHY HERE?
+  // 1. Cleanup Subscription: We MUST unsubscribe to prevent memory leaks.
+  //    If we don't, the subscription keeps listening even after the component
+  //    is removed from the DOM, causing memory to accumulate.
+  //
+  // 🛡️ CRITICAL: ALWAYS unsubscribe from Observables in ngOnDestroy!
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
-
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
+  }
 }

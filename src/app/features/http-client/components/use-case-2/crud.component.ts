@@ -3,12 +3,62 @@
  * USE CASE 2: CRUD OPERATIONS (ENHANCED)
  * ============================================================================
  * 
- * 💡 REAL-WORLD SCENARIOS:
- * 1. Optimistic Updates (update UI immediately, rollback on error)
- * 2. Bulk Operations (select multiple, batch delete)
- * 3. Inline Editing (edit in place without modal)
- * 4. Pagination with CRUD
- * 5. Search + Filter + CRUD
+ * 🎯 WHAT THIS DEMONSTRATES:
+ * Complete Create, Read, Update, Delete operations using Angular HttpClient.
+ * Shows real-world patterns beyond basic CRUD.
+ * 
+ * 💡 KEY CONCEPTS COVERED:
+ * 
+ * 1. HTTP METHODS:
+ *    - GET: Read/fetch data (idempotent - same result every time)
+ *    - POST: Create new resource (not idempotent - creates new each time)
+ *    - PUT: Update entire resource (idempotent - same result if repeated)
+ *    - PATCH: Update partial resource (for partial updates)
+ *    - DELETE: Remove resource (idempotent)
+ * 
+ * 2. OPTIMISTIC UPDATES:
+ *    - Update UI immediately before server confirms
+ *    - Rollback if server request fails
+ *    - Better UX (no waiting for spinner)
+ *    
+ * 3. BULK OPERATIONS:
+ *    - Select multiple items
+ *    - Batch delete/update
+ *    - Confirm before destructive actions
+ * 
+ * 4. INLINE EDITING:
+ *    - Edit data in-place (no modal)
+ *    - Cancel to revert changes
+ *    - Save sends to server
+ * 
+ * 5. SEARCH WITH DEBOUNCE:
+ *    - Filter as you type
+ *    - debounceTime prevents excessive filtering
+ *    - Client-side filter (could be server-side for large datasets)
+ * 
+ * ⚠️ IMPORTANT PATTERNS:
+ * 
+ * OPTIMISTIC UPDATE PATTERN:
+ * 1. Store original data (for rollback)
+ * 2. Update UI immediately
+ * 3. Send request to server
+ * 4. On error: Rollback to original
+ * 5. On success: Optional - sync with server response
+ * 
+ * PESSIMISTIC UPDATE PATTERN (simpler, safer):
+ * 1. Send request to server
+ * 2. Wait for response
+ * 3. Update UI with server response
+ * 
+ * 🔗 HTTP STATUS CODES TO KNOW:
+ * - 200 OK: Success (usually GET, PUT)
+ * - 201 Created: Resource created (POST)
+ * - 204 No Content: Success but no body (DELETE)
+ * - 400 Bad Request: Invalid data sent
+ * - 401 Unauthorized: Need to login
+ * - 403 Forbidden: Not allowed
+ * - 404 Not Found: Resource doesn't exist
+ * - 500 Server Error: Backend issue
  */
 
 import { Component, inject, OnInit } from '@angular/core';
@@ -249,6 +299,15 @@ export class CrudComponent implements OnInit {
     // Operation log
     operationLog: { time: string; message: string; type: 'info' | 'success' | 'error' | 'warning' }[] = [];
 
+    // 🕒 LIFECYCLE HOOK: ngOnInit
+    // WHY HERE?
+    // 1. Component is fully initialized: All injected services (ApiService) are ready.
+    // 2. Safe to make HTTP requests: The component is about to be displayed.
+    // 3. Setup subscriptions: RxJS search Subject needs to be configured before user interaction.
+    //
+    // WHY NOT CONSTRUCTOR?
+    // - Constructor should be simple and fast (only for basic initialization).
+    // - HTTP calls in constructor can cause issues with testing and SSR.
     ngOnInit(): void {
         this.loadUsers();
         this.setupSearch();
@@ -291,8 +350,55 @@ export class CrudComponent implements OnInit {
         this.searchSubject.next(term);
     }
 
+    /**
+     * 🔍 APPLY SEARCH FILTER
+     * 
+     * Filters the users array based on search term.
+     * Uses spread operator to create copies.
+     */
     applyFilter(): void {
         if (!this.searchTerm.trim()) {
+            // =====================================================================
+            // SPREAD OPERATOR EXPLAINED: [...this.users]
+            // =====================================================================
+            // 
+            // [...this.users] creates a SHALLOW COPY of the array.
+            // 
+            // The three dots (...) is called the "spread operator".
+            // It "spreads" all elements of an array into a new array.
+            // 
+            // WHY USE IT?
+            // -----------
+            // If we did: this.filteredUsers = this.users;
+            // Both variables point to the SAME array in memory.
+            // Modifying one would affect the other!
+            // 
+            // With spread: this.filteredUsers = [...this.users];
+            // We create a NEW array with the same elements.
+            // Now they are independent arrays.
+            // 
+            // VISUAL EXAMPLE:
+            // ---------------
+            // const original = [1, 2, 3];
+            // 
+            // ❌ const copy = original;         // Same reference!
+            //    copy.push(4);
+            //    console.log(original); // [1, 2, 3, 4] - MODIFIED!
+            // 
+            // ✅ const copy = [...original];    // New array!
+            //    copy.push(4);
+            //    console.log(original); // [1, 2, 3] - Unchanged!
+            // 
+            // OTHER USES:
+            // -----------
+            // Combine arrays: [...arr1, ...arr2]
+            // Add element:    [...arr, newItem]
+            // Copy object:    { ...obj }
+            // 
+            // ⚠️ WARNING: This is a SHALLOW copy!
+            // For nested objects, inner objects are still shared.
+            // Use structuredClone() for deep copies.
+            // =====================================================================
             this.filteredUsers = [...this.users];
         } else {
             const term = this.searchTerm.toLowerCase();
@@ -320,27 +426,56 @@ export class CrudComponent implements OnInit {
         }
     }
 
-    // Create
+    /**
+     * 📝 OPEN CREATE FORM
+     * 
+     * Shows the create form and initializes with default values.
+     */
     openCreateForm(): void {
         this.showCreateForm = true;
         this.newUser = { name: '', email: '', age: 25, isActive: true };
     }
 
+    // =========================================================================
+    // CREATE - POST REQUEST
+    // =========================================================================
+    /**
+     * ➕ CREATE NEW USER
+     * 
+     * HTTP Method: POST
+     * Endpoint: /api/users
+     * Body: New user data (JSON)
+     * Response: Created user with server-generated ID
+     * 
+     * FLOW:
+     * 1. Validate input (guard clause)
+     * 2. Set creating flag (disable button)
+     * 3. Send POST request with user data
+     * 4. On success: Add to local array, close form
+     * 5. On error: Show error message
+     * 
+     * POST vs PUT:
+     * - POST: Create NEW resource, server assigns ID
+     * - PUT: Update EXISTING resource at specific ID
+     */
     createUser(): void {
+        // Guard clause: Validate required fields
         if (!this.newUser.name || !this.newUser.email) return;
 
         this.creating = true;
         this.log(`Creating user: ${this.newUser.name}`, 'info');
 
+        // POST request with new user data
         this.apiService.createUser({
             ...this.newUser,
             avatar: '👤',
             roles: ['user'],
             favoriteColors: []
         }).pipe(
-            finalize(() => this.creating = false)
+            finalize(() => this.creating = false)  // Always reset flag
         ).subscribe({
             next: (user) => {
+                // Add to start of array (newest first)
                 this.users.unshift(user);
                 this.applyFilter();
                 this.showCreateForm = false;
@@ -350,39 +485,94 @@ export class CrudComponent implements OnInit {
         });
     }
 
-    // Inline Edit
+    // =========================================================================
+    // READ / INLINE EDIT START
+    // =========================================================================
+    /**
+     * ✏️ START INLINE EDITING
+     * 
+     * Instead of opening a modal, we edit the row in-place.
+     * 
+     * IMPORTANT: Clone the user object!
+     * If we don't clone, changes would mutate the original immediately,
+     * making "Cancel" impossible and breaking optimistic update rollback.
+     * 
+     * { ...user } creates a shallow copy (good enough for flat objects)
+     * For nested objects, use structuredClone() or lodash deepClone
+     */
     startEdit(user: User): void {
         this.editingId = user.id;
-        this.editingUser = { ...user }; // Clone to avoid mutation
+        this.editingUser = { ...user }; // Clone to avoid direct mutation
         this.log(`Editing user: ${user.name}`, 'info');
     }
 
+    /**
+     * ❌ CANCEL EDITING
+     * 
+     * Simply clear the editing state.
+     * Because we cloned, the original data is untouched.
+     */
     cancelEdit(): void {
         this.editingId = null;
         this.editingUser = null;
         this.log('Edit cancelled', 'warning');
     }
 
+    // =========================================================================
+    // UPDATE - PUT REQUEST WITH OPTIMISTIC UPDATE
+    // =========================================================================
+    /**
+     * 💾 SAVE EDIT - OPTIMISTIC UPDATE PATTERN
+     * 
+     * HTTP Method: PUT (full update) or PATCH (partial update)
+     * Endpoint: /api/users/{id}
+     * Body: Updated user data
+     * 
+     * 🚀 OPTIMISTIC UPDATE EXPLAINED:
+     * 
+     * Instead of: Request → Wait → Update UI (slow, poor UX)
+     * We do:      Update UI → Request → Rollback if fails (fast, great UX)
+     * 
+     * STEPS:
+     * 1. Save original data (for rollback)
+     * 2. Update UI immediately (user sees instant feedback)
+     * 3. Send request to server
+     * 4. If SUCCESS: We're already updated, just clear editing state
+     * 5. If ERROR: Rollback to original data, show error
+     * 
+     * WHY USE THIS:
+     * - Faster perceived performance
+     * - Apps feel snappier
+     * - Users don't wait for spinner
+     * 
+     * WHEN NOT TO USE:
+     * - Critical data (financial transactions)
+     * - When server validation is complex
+     * - When rollback would confuse users
+     */
     saveEdit(): void {
         if (!this.editingUser) return;
 
         this.log(`Saving: ${this.editingUser.name}`, 'info');
 
-        // OPTIMISTIC UPDATE: Update UI immediately
+        // STEP 1: Store original for rollback
         const index = this.users.findIndex(u => u.id === this.editingId);
         const originalUser = { ...this.users[index] };
+
+        // STEP 2: Update UI immediately (OPTIMISTIC!)
         this.users[index] = { ...this.editingUser };
         this.applyFilter();
 
-        // Then sync with server
+        // STEP 3: Sync with server
         this.apiService.updateUser(this.editingUser.id, this.editingUser).subscribe({
             next: () => {
+                // STEP 4a: Success - just cleanup
                 this.log(`Updated: ${this.editingUser!.name}`, 'success');
                 this.editingId = null;
                 this.editingUser = null;
             },
             error: (err) => {
-                // ROLLBACK on error
+                // STEP 4b: Error - ROLLBACK!
                 this.users[index] = originalUser;
                 this.applyFilter();
                 this.log(`Update failed, rolled back: ${err.message}`, 'error');
@@ -390,23 +580,47 @@ export class CrudComponent implements OnInit {
         });
     }
 
-    // Delete
+    // =========================================================================
+    // DELETE - DELETE REQUEST WITH OPTIMISTIC UPDATE
+    // =========================================================================
+    /**
+     * 🗑️ DELETE USER - OPTIMISTIC DELETE PATTERN
+     * 
+     * HTTP Method: DELETE
+     * Endpoint: /api/users/{id}
+     * Response: Usually 204 No Content (empty body)
+     * 
+     * Same optimistic pattern as update:
+     * 1. Confirm with user (destructive action!)
+     * 2. Save backup (for rollback)
+     * 3. Remove from UI immediately
+     * 4. Send DELETE request
+     * 5. If error: Restore from backup
+     * 
+     * ⚠️ ALWAYS CONFIRM DESTRUCTIVE ACTIONS!
+     * Users can't undo server-side deletes.
+     */
     deleteUser(user: User): void {
+        // ALWAYS confirm destructive actions
         if (!confirm(`Delete ${user.name}?`)) return;
 
         this.log(`Deleting: ${user.name}`, 'info');
 
-        // OPTIMISTIC DELETE
+        // STEP 1: Save backup for rollback
         const index = this.users.findIndex(u => u.id === user.id);
         const backup = this.users[index];
+
+        // STEP 2: Remove from UI immediately (OPTIMISTIC!)
         this.users.splice(index, 1);
         this.applyFilter();
         this.selectedIds.delete(user.id);
 
+        // STEP 3: Send DELETE request to server
         this.apiService.deleteUser(user.id).subscribe({
             next: () => this.log(`Deleted: ${user.name}`, 'success'),
             error: (err) => {
-                // ROLLBACK
+                // STEP 4: Error - ROLLBACK!
+                // Insert back at original position
                 this.users.splice(index, 0, backup);
                 this.applyFilter();
                 this.log(`Delete failed, restored: ${err.message}`, 'error');
@@ -414,15 +628,45 @@ export class CrudComponent implements OnInit {
         });
     }
 
-    // Bulk Delete
+    // =========================================================================
+    // BULK DELETE - BATCH OPERATIONS
+    // =========================================================================
+    /**
+     * 🗑️ BULK DELETE - BATCH OPERATION
+     * 
+     * Deletes multiple selected items at once.
+     * 
+     * REAL-WORLD CONSIDERATIONS:
+     * 
+     * 1. BACKEND BATCH ENDPOINT (preferred):
+     *    DELETE /api/users/batch
+     *    Body: { ids: [1, 2, 3] }
+     *    - Single request, atomic operation
+     *    - All succeed or all fail
+     * 
+     * 2. PARALLEL INDIVIDUAL REQUESTS:
+     *    Promise.all([delete(1), delete(2), delete(3)])
+     *    - Multiple requests at once
+     *    - Partial success possible
+     *    - More complex error handling
+     * 
+     * 3. SEQUENTIAL REQUESTS (what we do here for demo):
+     *    - Simple but slow
+     *    - OK for small batches
+     * 
+     * This demo uses optimistic update on client,
+     * but in production you'd want server-side batch.
+     */
     bulkDelete(): void {
         const count = this.selectedIds.size;
+
+        // ALWAYS confirm bulk destructive actions
         if (!confirm(`Delete ${count} users?`)) return;
 
         this.log(`Bulk deleting ${count} users...`, 'warning');
 
-        // In real app, you'd have a batch delete endpoint
-        // For demo, we delete one by one with optimistic updates
+        // For demo: Optimistic delete without server calls
+        // In real app: Use batch endpoint or Promise.all
         const idsToDelete = [...this.selectedIds];
         idsToDelete.forEach(id => {
             const index = this.users.findIndex(u => u.id === id);

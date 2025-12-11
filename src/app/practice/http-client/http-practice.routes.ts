@@ -12,6 +12,9 @@ export const HTTP_PRACTICE_ROUTES: Routes = [
         loadComponent: () => import('./http-practice.component')
             .then(m => m.HttpPracticeComponent),
         children: [
+            // =============================================
+            // BASIC EXERCISES
+            // =============================================
             {
                 path: 'basic/exercise-1',
                 loadComponent: () => import('./basic/exercise-1-get.component')
@@ -32,6 +35,21 @@ export const HTTP_PRACTICE_ROUTES: Routes = [
                 loadComponent: () => import('./basic/exercise-4-errors.component')
                     .then(m => m.Exercise4ErrorsComponent)
             },
+            {
+                // NEW: API Chaining with switchMap/concatMap
+                path: 'basic/exercise-5',
+                loadComponent: () => import('./basic/exercise-5-chaining.component')
+                    .then(m => m.Exercise5ChainingComponent)
+            },
+            {
+                // NEW: Parallel API calls with forkJoin
+                path: 'basic/exercise-6',
+                loadComponent: () => import('./basic/exercise-6-parallel.component')
+                    .then(m => m.Exercise6ParallelComponent)
+            },
+            // =============================================
+            // COMPLEX SCENARIOS
+            // =============================================
             {
                 path: 'complex/scenario-1',
                 loadComponent: () => import('./complex/scenario-1-crud.component')
@@ -56,6 +74,18 @@ export const HTTP_PRACTICE_ROUTES: Routes = [
                 path: 'complex/scenario-5',
                 loadComponent: () => import('./complex/scenario-5-polling.component')
                     .then(m => m.Scenario5PollingComponent)
+            },
+            {
+                // NEW: Promise Patterns (Promise.all, allSettled, race)
+                path: 'complex/scenario-6',
+                loadComponent: () => import('./complex/scenario-6-promises.component')
+                    .then(m => m.Scenario6PromisesComponent)
+            },
+            {
+                // NEW: Type-ahead Search with debounce + switchMap
+                path: 'complex/scenario-7',
+                loadComponent: () => import('./complex/scenario-7-typeahead.component')
+                    .then(m => m.Scenario7TypeaheadComponent)
             },
             { path: '', redirectTo: 'basic/exercise-1', pathMatch: 'full' }
         ]

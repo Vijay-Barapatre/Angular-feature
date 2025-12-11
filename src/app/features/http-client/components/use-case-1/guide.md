@@ -211,17 +211,141 @@ Think of Observables like a **magazine subscription**:
 
 ## 7. ❓ Interview & Concept Questions
 
-### Q1: Why does HttpClient return an Observable instead of a Promise?
+### Basic Questions
+
+#### Q1: Why does HttpClient return an Observable instead of a Promise?
 **A:** Observables are lazy (don't execute until subscribed), cancellable, support multiple values, and have powerful operators like retry, debounce, and switchMap.
 
-### Q2: What happens if you don't unsubscribe from an HTTP Observable?
+#### Q2: What happens if you don't unsubscribe from an HTTP Observable?
 **A:** Technically HTTP Observables complete after one response, BUT keeping the subscription reference can prevent garbage collection and lead to memory leaks, especially with side effects.
 
-### Q3: Which is better: subscribe() or async pipe?
+#### Q3: Which is better: subscribe() or async pipe?
 **A:** Async pipe is preferred because it auto-unsubscribes on component destroy, works well with OnPush change detection, and requires less boilerplate.
 
-### Q4: How do you type an HTTP response?
+#### Q4: How do you type an HTTP response?
 **A:** Use generics: `this.http.get<User[]>(url)` returns `Observable<User[]>`.
+
+---
+
+### Scenario-Based Questions
+
+#### Scenario 1: Loading State Management
+**Question:** You need to show a spinner while loading users, display data when loaded, and show an error message if the request fails. How do you implement all three states?
+
+**Answer:**
+```typescript
+interface LoadState {
+    loading: boolean;
+    error: string | null;
+    data: User[] | null;
+}
+
+state: LoadState = { loading: false, error: null, data: null };
+
+fetchUsers(): void {
+    this.state = { loading: true, error: null, data: null };
+    
+    this.apiService.getUsers().pipe(
+        finalize(() => this.state.loading = false)
+    ).subscribe({
+        next: (users) => this.state.data = users,
+        error: (err) => this.state.error = err.message
+    });
+}
+```
+
+---
+
+#### Scenario 2: Multiple Subscriptions
+**Question:** You have a users$ Observable in your component. Two parts of your template use `users$ | async`. How many HTTP requests are made?
+
+**Answer:**
+**Two requests!** Each async pipe creates a new subscription.
+
+**Fix:** Use `shareReplay(1)` to share the response:
+```typescript
+users$ = this.apiService.getUsers().pipe(
+    shareReplay(1)  // Cache and share
+);
+```
+
+---
+
+#### Scenario 3: Component Destroyed Mid-Request
+**Question:** User navigates away while an HTTP request is in progress. What happens? How do you prevent issues?
+
+**Answer:**
+Without cleanup, the subscription may try to update destroyed component = memory leak or errors.
+
+**Fix 1: Async Pipe** (automatic cleanup)
+```html
+@if (users$ | async; as users) {
+    ...
+}
+```
+
+**Fix 2: takeUntil Pattern**
+```typescript
+private destroy$ = new Subject<void>();
+
+ngOnInit() {
+    this.apiService.getUsers().pipe(
+        takeUntil(this.destroy$)
+    ).subscribe(users => this.users = users);
+}
+
+ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+}
+```
+
+---
+
+#### Scenario 4: Conditional Fetching
+**Question:** Only fetch users if the user is logged in. How do you implement this?
+
+**Answer:**
+```typescript
+users$ = this.authService.isLoggedIn$.pipe(
+    switchMap(isLoggedIn => 
+        isLoggedIn 
+            ? this.apiService.getUsers() 
+            : of([])  // Return empty if not logged in
+    )
+);
+```
+
+---
+
+### Advanced Questions
+
+#### Q5: What's the difference between `tap()` and `map()`?
+**Answer:**
+| Operator | Purpose | Returns |
+|----------|---------|---------|
+| `tap()` | Side effects (logging) | Same value (unchanged) |
+| `map()` | Transform data | New value |
+
+```typescript
+// tap: for side effects (doesn't change data)
+.pipe(tap(users => console.log('Fetched', users.length)))
+
+// map: to transform data
+.pipe(map(users => users.filter(u => u.active)))
+```
+
+#### Q6: When would you use `finalize()` vs putting code in the subscribe callback?
+**Answer:**
+`finalize()` runs whether the Observable completes OR errors. Subscribe's complete callback only runs on success.
+
+```typescript
+// finalize: ALWAYS runs (success or error)
+.pipe(finalize(() => this.loading = false))
+
+// subscribe complete: ONLY on success
+.subscribe({ complete: () => this.loading = false })
+```
 
 ---
 
@@ -247,3 +371,4 @@ mindmap
       Component subscribes
       Always handle errors
 ```
+

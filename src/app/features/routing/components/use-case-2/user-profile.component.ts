@@ -4,18 +4,18 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map, Observable } from 'rxjs';
 
 interface User {
-    id: number;
-    name: string;
-    role: string;
-    bio: string;
-    avatarColor: string;
+  id: number;
+  name: string;
+  role: string;
+  bio: string;
+  avatarColor: string;
 }
 
 @Component({
-    selector: 'app-user-profile',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
-    template: `
+  selector: 'app-user-profile',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  template: `
     <div class="p-6">
       <div class="mb-6">
         <a routerLink="../.." class="text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-2">
@@ -73,51 +73,65 @@ interface User {
   `
 })
 export class UserProfileComponent implements OnInit {
-    user$: Observable<User | undefined>;
+  user$: Observable<User | undefined>;
 
-    private users: User[] = [
-        {
-            id: 1,
-            name: 'Alice Johnson',
-            role: 'Frontend Engineer',
-            bio: 'Alice is a UI/UX expert with a passion for accessible design and performant web applications.',
-            avatarColor: 'from-pink-500 to-rose-500'
-        },
-        {
-            id: 2,
-            name: 'Bob Smith',
-            role: 'Product Designer',
-            bio: 'Bob bridges the gap between design and engineering, ensuring pixel-perfect implementations.',
-            avatarColor: 'from-blue-500 to-cyan-500'
-        },
-        {
-            id: 3,
-            name: 'Charlie Brown',
-            role: 'Project Manager',
-            bio: 'Charlie keeps the team on track and ensures clear communication across all stakeholders.',
-            avatarColor: 'from-green-500 to-emerald-500'
-        },
-        {
-            id: 4,
-            name: 'Diana Prince',
-            role: 'DevOps Specialist',
-            bio: 'Diana orchestrates our cloud infrastructure and CI/CD pipelines for seamless deployments.',
-            avatarColor: 'from-purple-500 to-violet-500'
-        }
-    ];
-
-    constructor(private route: ActivatedRoute) {
-        // Observable approach handles route changes within the same component
-        this.user$ = this.route.paramMap.pipe(
-            map(params => {
-                const id = Number(params.get('id')); // 🛡️ CRITICAL: Convert string to number
-                return this.users.find(u => u.id === id);
-            })
-        );
+  private users: User[] = [
+    {
+      id: 1,
+      name: 'Alice Johnson',
+      role: 'Frontend Engineer',
+      bio: 'Alice is a UI/UX expert with a passion for accessible design and performant web applications.',
+      avatarColor: 'from-pink-500 to-rose-500'
+    },
+    {
+      id: 2,
+      name: 'Bob Smith',
+      role: 'Product Designer',
+      bio: 'Bob bridges the gap between design and engineering, ensuring pixel-perfect implementations.',
+      avatarColor: 'from-blue-500 to-cyan-500'
+    },
+    {
+      id: 3,
+      name: 'Charlie Brown',
+      role: 'Project Manager',
+      bio: 'Charlie keeps the team on track and ensures clear communication across all stakeholders.',
+      avatarColor: 'from-green-500 to-emerald-500'
+    },
+    {
+      id: 4,
+      name: 'Diana Prince',
+      role: 'DevOps Specialist',
+      bio: 'Diana orchestrates our cloud infrastructure and CI/CD pipelines for seamless deployments.',
+      avatarColor: 'from-purple-500 to-violet-500'
     }
+  ];
 
-    ngOnInit() {
-        // Alternative: Snapshot (only good if component is recreated)
-        // const id = this.route.snapshot.paramMap.get('id');
-    }
+  // 🕒 LIFECYCLE: Constructor
+  // WHY HERE?
+  // 1. Observable Pipeline: We're setting up a declarative RxJS pipeline.
+  //    The actual subscription happens in the template with `async` pipe.
+  // 2. No Side Effects: We're not "doing" anything yet, just defining how data flows.
+  //    This is safe in the constructor because it's pure definition.
+  //
+  // 🆚 VS ngOnInit:
+  // Either works! But since this is just creating an Observable (not subscribing),
+  // the constructor is fine. If we were calling .subscribe(), ngOnInit would be better.
+  constructor(private route: ActivatedRoute) {
+    // Observable approach handles route changes within the same component
+    this.user$ = this.route.paramMap.pipe(
+      map(params => {
+        const id = Number(params.get('id')); // 🛡️ CRITICAL: Convert string to number
+        return this.users.find(u => u.id === id);
+      })
+    );
+  }
+
+  // 🕒 LIFECYCLE HOOK: ngOnInit
+  // WHY EMPTY HERE?
+  // The Observable is already set up in the constructor.
+  // This ngOnInit is kept as a placeholder to show the alternative "snapshot" approach.
+  ngOnInit() {
+    // Alternative: Snapshot (only good if component is recreated)
+    // const id = this.route.snapshot.paramMap.get('id');
+  }
 }
