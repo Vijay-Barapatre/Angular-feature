@@ -86,6 +86,60 @@ total = computed(() =>
 
 ---
 
+## 📊 Spreadsheet Formula Analogy (Easy to Remember!)
+
+Think of computed signals like **Excel formulas**:
+
+| Concept | Spreadsheet Analogy | Memory Trick |
+|---------|--------------------|--------------| 
+| **signal()** | 📝 **Cell value**: A1 = 100, B1 = 2 | **"Input cell"** |
+| **computed()** | 📐 **Formula cell**: C1 = A1 * B1 | **"Formula cell"** |
+| **Auto-update** | 🔄 **Recalculate**: Change A1, C1 updates instantly | **"Live formula"** |
+| **Read-only** | 🔒 **Formula = locked**: Can't type into C1 directly | **"Output only"** |
+| **Memoization** | 💾 **Cached result**: Same inputs = skip recalc | **"Smart cache"** |
+
+### 📖 Story to Remember:
+
+> 📊 **The Smart Spreadsheet**
+>
+> You're building a spreadsheet with formulas:
+>
+> **Setting Up Cells:**
+> ```typescript
+> // A1: Price (editable cell)
+> const price = signal(100);
+>
+> // B1: Quantity (editable cell)
+> const quantity = signal(2);
+>
+> // C1: =A1*B1 (formula cell - AUTO-UPDATES!)
+> const total = computed(() => price() * quantity());
+> ```
+>
+> **How It Works:**
+> ```
+> Initial: price=100, quantity=2 → total=200
+>
+> User types in A1: price.set(150)
+> → Spreadsheet recalculates: total=300 ✨
+>
+> User types in C1: total.set(999)
+> → ERROR! Can't type into formula cell! 🔒
+> ```
+>
+> **Computed = Excel formula. Changes inputs? Output auto-updates!**
+
+### 🎯 Quick Reference:
+```
+📝 signal()     = Editable cell (input values)
+📐 computed()   = Formula cell (derived values)
+🔄 Dependencies = Cells used in formula
+🔒 Read-only    = Can't directly modify formula cell
+💾 Memoization  = Skip recalc if inputs unchanged
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

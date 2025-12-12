@@ -87,6 +87,59 @@ providers: [
 
 ---
 
+## 🤝 Secret Handshake Analogy (Easy to Remember!)
+
+Think of InjectionToken like a **secret handshake**:
+
+| Concept | Handshake Analogy | Memory Trick |
+|---------|------------------|--------------| 
+| **InjectionToken** | 🤝 **Secret handshake**: Unique identifier for your request | **"Unique key"** |
+| **String token** | 👋 **Regular wave**: Anyone can copy it (collision risk!) | **"Not unique"** |
+| **useValue** | 📦 **Package contents**: "When they show handshake, give THIS" | **"The actual value"** |
+| **factory** | 🏭 **Generate on demand**: Create value when needed | **"Lazy creation"** |
+| **inject(TOKEN)** | 🙋 **Show handshake**: "I know the secret, give me access" | **"Request value"** |
+
+### 📖 Story to Remember:
+
+> 🤝 **The Secret Club**
+>
+> Your app is a club with secret handshakes:
+>
+> **Creating the Handshake (Token):**
+> ```typescript
+> // This handshake is UNIQUE to your club
+> export const API_URL = new InjectionToken<string>('API URL');
+>
+> // ❌ String = anyone can copy
+> { provide: 'API_URL', useValue: '...' }  // Collision possible!
+>
+> // ✅ Token = secret handshake only YOU know
+> { provide: API_URL, useValue: 'https://api.myapp.com' }
+> ```
+>
+> **Using the Handshake:**
+> ```typescript
+> @Injectable()
+> export class ApiService {
+>   private url = inject(API_URL);  // 🙋 Show handshake, get value!
+>   
+>   // Now I have access: 'https://api.myapp.com'
+> }
+> ```
+>
+> **Unique handshake = no impersonators!**
+
+### 🎯 Quick Reference:
+```
+🤝 InjectionToken  = Secret handshake (unique identifier)
+👋 String token    = Regular wave (collision risk)
+📦 useValue        = What to give when handshake matches
+🏭 factory         = Generate value on demand
+🙋 inject(TOKEN)   = Show handshake, get value
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

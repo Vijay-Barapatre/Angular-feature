@@ -89,6 +89,59 @@ constructor() {
 
 ---
 
+## 🚨 Motion Sensor Analogy (Easy to Remember!)
+
+Think of effect() like a **motion sensor light**:
+
+| Concept | Sensor Analogy | Memory Trick |
+|---------|---------------|--------------| 
+| **effect()** | 🚨 **Motion sensor**: Watches and reacts | **"Auto-reaction"** |
+| **Signal** | 🚶 **Motion**: Something changes (movement) | **"The trigger"** |
+| **Callback** | 💡 **Light turns on**: Automatic reaction | **"Side effect"** |
+| **Auto-tracking** | 👁️ **Smart sensor**: Knows what to watch | **"No manual setup"** |
+| **No return** | 🔇 **Just light**: Doesn't produce anything | **"Action only"** |
+
+### 📖 Story to Remember:
+
+> 🚨 **The Smart Home System**
+>
+> Your app is a smart home with motion sensors:
+>
+> **Setting up the sensor:**
+> ```typescript
+> name = signal('John');
+>
+> constructor() {
+>   // 🚨 Install motion sensor
+>   effect(() => {
+>     // 💡 Light turns on when motion detected
+>     console.log(`Hello ${this.name()}!`);
+>   });
+> }
+> ```
+>
+> **How it works:**
+> ```
+> name.set('Jane');  // 🚶 Motion detected!
+>                    // 💡 Log: "Hello Jane!"
+> 
+> name.set('Bob');   // 🚶 More motion!
+>                    // 💡 Log: "Hello Bob!"
+> ```
+>
+> **Sensor automatically knows WHAT to watch. No wiring needed!**
+
+### 🎯 Quick Reference:
+```
+🚨 effect()      = Motion sensor (watches & reacts)
+🚶 signal()      = Movement (triggers reaction)
+💡 callback      = Light (the side effect)
+👁️ Auto-track   = Knows what to watch
+🔇 No return     = Action only, no value produced
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

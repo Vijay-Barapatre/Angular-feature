@@ -89,6 +89,54 @@ export class UsersComponent {
 
 ---
 
+## 🍳 Restaurant Kitchen Analogy (Easy to Remember!)
+
+Think of Dependency Injection like a **restaurant kitchen**:
+
+| Concept | Kitchen Analogy | Memory Trick |
+|---------|----------------|--------------| 
+| **Service** | 👨‍🍳 **Specialized chef**: Makes one type of dish (API calls, auth, etc.) | **"Expert at one thing"** |
+| **DI** | 🍽️ **Kitchen manager**: Assigns chefs to stations, you just ask | **"Manager provides"** |
+| **inject()** | 📋 **"I need the sushi chef"**: Ask and receive | **"Request dependency"** |
+| **providedIn: 'root'** | 👨‍🍳 **Head chef**: One for entire restaurant, available everywhere | **"Singleton chef"** |
+| **providers: [Service]** | 👨‍🍳 **Private chef**: One per table/station (component-level) | **"Instance per scope"** |
+
+### 📖 Story to Remember:
+
+> 🍳 **The Restaurant Kitchen**
+>
+> You're running a restaurant (your app):
+>
+> **Without DI (do everything yourself):**
+> ```typescript
+> class WaiterComponent {
+>   // Waiter must learn to cook! 😰
+>   private chef = new SushiChef();  // Creates own chef
+>   private oven = new Oven();       // Buys own equipment
+> }
+> ```
+>
+> **With DI (professional kitchen):**
+> ```typescript
+> class WaiterComponent {
+>   // Just ask the kitchen manager
+>   private chef = inject(SushiChef);  // Manager provides the chef!
+>   // No need to know how chef was trained
+> }
+> ```
+>
+> **The waiter doesn't cook. The waiter asks for a chef. The manager (DI) provides one.**
+
+### 🎯 Quick Reference:
+```
+👨‍🍳 @Injectable()    = "I'm a chef you can request"
+🍽️ inject()          = "Kitchen, send me the sushi chef"
+👨‍🍳 providedIn:root  = One head chef for whole restaurant (singleton)
+👨‍🍳 providers: []    = Private chef for this table (new instance)
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

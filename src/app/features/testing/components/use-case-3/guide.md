@@ -113,6 +113,57 @@ const mockUserService = createUserServiceMock();
 
 ---
 
+## 🎬 Stunt Double Analogy (Easy to Remember!)
+
+Think of mocking like **stunt doubles in movies**:
+
+| Concept | Movie Analogy | Memory Trick |
+|---------|---------------|--------------| 
+| **Real Service** | 🎭 **Lead actor**: Real performance, expensive, unpredictable | **"Production"** |
+| **Mock Service** | 🤸 **Stunt double**: Controlled, safe, predictable | **"Test double"** |
+| **createSpyObj** | 🎬 **Casting call**: "I need a double!" | **"Create mock"** |
+| **returnValue** | 📜 **Script**: "When called, do exactly THIS" | **"Control output"** |
+| **toHaveBeenCalled** | 🎥 **Director check**: "Did the stunt happen?" | **"Verify call"** |
+
+### 📖 Story to Remember:
+
+> 🎬 **The Action Movie Set**
+>
+> Your component is filming a dangerous scene:
+>
+> **Using Real Actor (Real Service):**
+> ```
+> Real HTTP calls 💸 (expensive!)
+> Network delays ⏳
+> Unpredictable results 🎲
+> Could fail randomly 💥
+> ```
+>
+> **Using Stunt Double (Mock):**
+> ```typescript
+> // Cast a stunt double
+> mockService = jasmine.createSpyObj('Service', ['getData']);
+>
+> // Give them the script
+> mockService.getData.and.returnValue(of({ id: 1 }));
+>
+> // Check the performance
+> expect(mockService.getData).toHaveBeenCalled();
+> ```
+>
+> **Safe, fast, predictable tests! 🎬**
+
+### 🎯 Quick Reference:
+```
+🎭 Real service      = Lead actor (production)
+🤸 Mock service      = Stunt double (controlled)
+🎬 createSpyObj      = Cast the double
+📜 returnValue       = The script (what to return)
+🎥 toHaveBeenCalled  = "Did they do the stunt?"
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

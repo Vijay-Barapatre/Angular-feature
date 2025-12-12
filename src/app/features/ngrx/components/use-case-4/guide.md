@@ -243,6 +243,54 @@ createSelector(selectUserState, state => state.loading);
 
 ---
 
+## 🧮 Calculator with Memory Analogy (Easy to Remember!)
+
+Think of selectors like a **calculator with memory feature**:
+
+| Concept | Calculator Analogy | Memory Trick |
+|---------|-------------------|--------------| 
+| **Selector** | 🧮 **M+ button**: Store computed result | **"Cache result"** |
+| **Memoization** | 💾 **Memory recall**: If same inputs, recall stored answer | **"Skip computation"** |
+| **Input selectors** | 🔢 **Numbers entered**: What's being calculated | **"Dependencies"** |
+| **Composed** | ➕ **Chain operations**: Subtotal → Tax → Total | **"Build on others"** |
+| **Recompute** | 🔄 **New inputs**: Different numbers = recalculate | **"When state changes"** |
+
+### 📖 Story to Remember:
+
+> 🧮 **The Smart Calculator**
+>
+> You're computing shopping totals:
+>
+> **First calculation:**
+> ```typescript
+> selectSubtotal: 10 + 20 + 15 = 45  // ⚙️ Computed
+> store._memoized = 45;              // 💾 Stored!
+> ```
+>
+> **Same inputs? Memory recall:**
+> ```typescript
+> selectSubtotal again?  // 💾 Recall: 45 (no math!)
+> ```
+>
+> **Composed calculations:**
+> ```typescript
+> selectSubtotal = 45      // Already in memory
+> selectTax = 45 * 0.1 = 4.5
+> selectTotal = 45 + 4.5 = 49.5
+> // Each level uses previous memory!
+> ```
+
+### 🎯 Quick Reference:
+```
+🧮 Selector       = Calculator with memory
+💾 Memoization    = Store result (M+)
+🔢 Inputs         = Dependencies
+➕ Composed       = Chain calculations
+🔄 Recompute      = New numbers entered
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

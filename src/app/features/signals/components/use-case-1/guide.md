@@ -84,6 +84,54 @@ export class CounterComponent {
 
 ---
 
+## 📻 Walkie-Talkie Analogy (Easy to Remember!)
+
+Think of Signals like **walkie-talkies**:
+
+| Concept | Walkie-Talkie Analogy | Memory Trick |
+|---------|----------------------|--------------| 
+| **Signal** | 📻 **Walkie-talkie**: Holds current message, instantly readable | **"Current value holder"** |
+| **signal()** | 📢 **Check message**: "What's the current message?" | **"Read now"** |
+| **set()** | 📡 **New broadcast**: "Everyone, new message is X!" | **"Replace message"** |
+| **update()** | 🔄 **Modify message**: "Add to current message..." | **"Transform current"** |
+| **computed()** | 🔗 **Relay station**: Listens to others, broadcasts combined | **"Derived value"** |
+
+### 📖 Story to Remember:
+
+> 📻 **The Radio Station**
+>
+> Your component is a radio station broadcasting values:
+>
+> **Observable (old radio - complex):**
+> ```typescript
+> temperature$.subscribe(t => console.log(t));  // Must tune in
+> // Don't forget to unsubscribe!!!
+> // Complex RxJS operators needed
+> ```
+>
+> **Signal (walkie-talkie - simple):**
+> ```typescript
+> const temperature = signal(72);
+> 
+> console.log(temperature());     // 📻 Just check it: 72
+> temperature.set(75);            // 📡 Broadcast new value
+> temperature.update(t => t + 1); // 🔄 Modify: 76
+> // No cleanup needed! ✅
+> ```
+>
+> **Signals are simpler: just call to read, set to write, done!**
+
+### 🎯 Quick Reference:
+```
+📻 signal(value)  = Create walkie-talkie with initial message
+📢 signal()       = Read current message
+📡 set(newValue)  = Broadcast new message
+🔄 update(fn)     = Transform current message
+🔗 computed()     = Combine signals automatically
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

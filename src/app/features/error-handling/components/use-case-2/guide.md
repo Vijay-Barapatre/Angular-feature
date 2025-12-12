@@ -93,6 +93,59 @@ if (error.status === 401) {
 
 ---
 
+## 🚧 Toll Booth Analogy (Easy to Remember!)
+
+Think of HTTP error interceptor like a **toll booth inspector**:
+
+| Concept | Toll Booth Analogy | Memory Trick |
+|---------|-------------------|--------------| 
+| **Interceptor** | 🚧 **Toll booth**: Every car must pass through | **"All requests pass here"** |
+| **catchError** | 🚨 **Inspector**: "Let me check this response..." | **"Error handler"** |
+| **401 status** | 🪪 **No valid pass**: "Come back with ID!" | **"Unauthorized"** |
+| **500 status** | 🔥 **Road on fire**: "Road closed, try later" | **"Server error"** |
+| **retry** | 🔄 **"Try again lane"**: Give another chance | **"Automatic retry"** |
+
+### 📖 Story to Remember:
+
+> 🚧 **The Toll Booth Inspector**
+>
+> Every HTTP response passes through your toll booth:
+>
+> **The Inspection Process:**
+> ```typescript
+> // Inspector at every booth
+> return next(req).pipe(
+>   catchError((error) => {
+>     switch (error.status) {
+>       case 401:  // 🪪 No valid pass
+>         message = "Show your ID! (Login again)";
+>         break;
+>       case 403:  // 🚫 Wrong lane
+>         message = "You can't use this road!";
+>         break;
+>       case 500:  // 🔥 Road on fire
+>         message = "Road closed, try later!";
+>         break;
+>     }
+>     notify(message);
+>     return throwError(() => error);  // Report to headquarters
+>   })
+> );
+> ```
+>
+> **One inspector handles ALL roads (requests)!**
+
+### 🎯 Quick Reference:
+```
+🚧 Interceptor   = Toll booth (all requests pass through)
+🚨 catchError    = Inspector (checks responses)
+🪪 401           = No valid pass (login needed)
+🔥 500           = Road on fire (server error)
+🔄 retry         = Try again lane
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

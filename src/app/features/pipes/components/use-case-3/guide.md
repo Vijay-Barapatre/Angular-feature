@@ -91,6 +91,57 @@ get filteredUsers() {
 
 ---
 
+## 🏎️ Sports Car vs Bus Analogy (Easy to Remember!)
+
+Think of Pure vs Impure pipes like **sports car vs city bus**:
+
+| Type | Vehicle Analogy | Memory Trick |
+|------|----------------|--------------| 
+| **Pure pipe** | 🏎️ **Sports car**: Fast, efficient, goes only when needed | **"Smart & fast"** |
+| **Impure pipe** | 🚌 **City bus**: Runs every minute whether needed or not | **"Always running"** |
+| **Memoization** | 💾 **Memory**: Sports car remembers last trip, doesn't recalculate | **"Cached result"** |
+| **Reference change** | 🔑 **New car**: Pure pipe only runs when you get a NEW car | **"New reference"** |
+| **Mutation** | 🎨 **Repaint car**: Same car, new color - Pure pipe doesn't notice | **"Same reference"** |
+
+### 📖 Story to Remember:
+
+> 🏎️ **The City Transportation Problem**
+>
+> You need to get around the city (transform data):
+>
+> **Pure Pipe (Sports Car):**
+> ```typescript
+> @Pipe({ pure: true })  // Default
+> 
+> // 🏎️ Starts ONLY when you get a NEW car (reference change)
+> items = [...items, newItem];  // New array = NEW CAR = Pipe runs
+> 
+> // 🎨 Repaint same car? Sports car stays parked. 
+> items.push(newItem);  // Same array = Same car = Pipe DOESN'T run
+> ```
+>
+> **Impure Pipe (City Bus):**
+> ```typescript
+> @Pipe({ pure: false })
+> 
+> // 🚌 Bus runs EVERY 10 seconds no matter what
+> // Even if nobody's waiting at the stop
+> // Wastes fuel! (CPU cycles)
+> ```
+>
+> **Use sports car (pure) unless you NEED the bus schedule!**
+
+### 🎯 Quick Reference:
+```
+🏎️ Pure (default)    = Sports car (efficient, runs when needed)
+🚌 Impure            = City bus (runs constantly, expensive)
+💾 Memoization       = Sports car remembers last trip
+🔑 New reference     = Get a new car = Pipe runs
+🎨 Mutation          = Repaint car = Pipe ignores
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

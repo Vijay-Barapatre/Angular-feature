@@ -75,6 +75,51 @@ providers: [
 
 ---
 
+## 🎰 Vending Machine Analogy (Easy to Remember!)
+
+Think of useFactory like a **smart vending machine**:
+
+| Concept | Vending Machine Analogy | Memory Trick |
+|---------|------------------------|--------------| 
+| **useFactory** | 🎰 **Vending machine**: Makes choices based on input | **"Dynamic creation"** |
+| **Factory function** | ⚙️ **Machine logic**: Decides what to dispense | **"Decision function"** |
+| **deps array** | 🪙 **Coins/buttons**: What machine needs to decide | **"Dependencies"** |
+| **Return value** | 🥤 **Product dispensed**: The service you get | **"Instance created"** |
+| **useValue** | 📦 **Pre-packaged box**: Same item every time | **"Static value"** |
+
+### 📖 Story to Remember:
+
+> 🎰 **The Smart Vending Machine**
+>
+> Your app needs a logger service:
+>
+> **Factory decides what you get:**
+> ```typescript
+> {
+>   provide: Logger,
+>   useFactory: (isProd: boolean) => {
+>     // Machine checks: "Production mode?"
+>     return isProd 
+>       ? new ProductionLogger()   // 🔴 Red can
+>       : new DebugLogger();       // 🟢 Green can
+>   },
+>   deps: [IS_PRODUCTION]  // 🪙 Coins inserted
+> }
+> ```
+>
+> **Machine makes the decision, not you!**
+
+### 🎯 Quick Reference:
+```
+🎰 useFactory     = Vending machine (dynamic)
+📦 useValue       = Pre-packaged (static)
+⚙️ Factory fn     = Decision logic
+🪙 deps           = Inputs needed
+🥤 Return         = Service dispensed
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

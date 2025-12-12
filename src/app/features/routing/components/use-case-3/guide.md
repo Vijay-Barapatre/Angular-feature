@@ -85,12 +85,55 @@ Be careful not to update the URL in response to a URL change if that update trig
 2.  **Dashboards**: Date range filters (`?start=2023-01-01&end=2023-12-31`).
 3.  **Pagination**: Page numbers (`?page=2&limit=50`).
 
-## 📝 The Analogy
+## 📌 Sticky Notes Analogy (Easy to Remember!)
 
-Think of Query Parameters like **Sticky Notes on a File Folder**.
-The File Folder (Route) is "Employee Records".
-The Query Params are notes attached to it: "Only the ones from IT Department" (`?dept=IT`) and "Sort by Name" (`?sort=name`).
-Anyone you hand the folder to sees the exact same organized view because the instructions are attached to the outside.
+Think of Query Parameters like **sticky notes on a file folder**:
+
+| Concept | Sticky Note Analogy | Memory Trick |
+|---------|--------------------|--------------| 
+| **Route path** | 📁 **File folder**: "/products" is "Product Records" | **"The page"** |
+| **Query params** | 📌 **Sticky notes**: Instructions attached to folder | **"?key=value"** |
+| **merge** | 📝 **Add note**: Keep existing notes, add new one | **"Combine params"** |
+| **preserve** | 🔒 **Keep all**: Don't change the notes | **"Carry over"** |
+| **Share URL** | 📤 **Hand folder**: Anyone sees same organized view | **"Shareable state"** |
+
+### 📖 Story to Remember:
+
+> 📌 **The Office Filing System**
+>
+> URLs are file folders with instructions:
+>
+> **Attaching notes:**
+> ```typescript
+> // /products is the folder
+> // ? adds sticky notes!
+> 
+> /products?category=shoes&sort=price
+> //         📌 "Shoes only"
+> //                    📌 "Sort by price"
+> ```
+>
+> **Updating notes:**
+> ```typescript
+> router.navigate([], {
+>   queryParams: { q: 'sneakers' },
+>   queryParamsHandling: 'merge'  // 📝 Add note, keep others!
+> });
+> 
+> // Before: ?category=shoes&sort=price
+> // After:  ?category=shoes&sort=price&q=sneakers
+> ```
+>
+> **Hand the folder to anyone - they see the same view!**
+
+### 🎯 Quick Reference:
+```
+📁 Route          = File folder (the page)
+📌 ?key=value     = Sticky notes (filters)
+📝 merge          = Add note, keep others
+🔒 preserve       = Keep all notes unchanged
+📤 Share URL      = Hand folder with instructions
+```
 
 ## ❓ Interview & Concept Questions
 

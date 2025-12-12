@@ -94,6 +94,56 @@ export class FileSizePipe implements PipeTransform {
 
 ---
 
+## 🍳 Recipe Analogy (Easy to Remember!)
+
+Think of custom pipes like **secret family recipes**:
+
+| Concept | Recipe Analogy | Memory Trick |
+|---------|---------------|--------------| 
+| **Custom Pipe** | 🍳 **Secret recipe**: Your special way to transform ingredients | **"Your custom formula"** |
+| **transform()** | 👨‍🍳 **Cooking process**: Takes raw ingredients, returns cooked dish | **"The magic"** |
+| **Input value** | 🥔 **Raw ingredient**: "Raw potatoes" | **"What goes in"** |
+| **Output** | 🍟 **Finished dish**: "French fries" | **"What comes out"** |
+| **Arguments** | 🧂 **Seasonings**: "How salty? How crispy?" | **"Customization"** |
+
+### 📖 Story to Remember:
+
+> 🍳 **The Family Recipe Book**
+>
+> You're creating custom recipes (pipes) for your restaurant (app):
+>
+> **Creating a Recipe (Custom Pipe):**
+> ```typescript
+> @Pipe({ name: 'truncate' })
+> export class TruncatePipe implements PipeTransform {
+>   // The recipe/cooking process
+>   transform(text: string, limit = 50, trail = '...') {
+>     // Raw ingredient (text) → Process → Finished dish
+>     return text.length > limit ? text.slice(0, limit) + trail : text;
+>   }
+> }
+> ```
+>
+> **Using the Recipe:**
+> ```html
+> {{ longDescription | truncate:100:'...' }}
+> <!-- Raw: "This is a very long description that goes on and on..."
+>      Cooked: "This is a very long description that goes on..."  -->
+> ```
+>
+> **One recipe (pipe), many dishes (usages)!**
+
+### 🎯 Quick Reference:
+```
+🍳 Custom Pipe     = Family recipe (your formula)
+👨‍🍳 transform()    = Cooking process (the logic)
+🥔 Input value     = Raw ingredient
+🍟 Output          = Finished dish
+🧂 Arguments       = Seasonings/customization
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

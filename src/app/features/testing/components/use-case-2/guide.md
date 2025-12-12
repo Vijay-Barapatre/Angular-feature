@@ -111,6 +111,63 @@ it('should update signal', () => {
 
 ---
 
+## 🧮 Calculator Test Analogy (Easy to Remember!)
+
+Think of service testing like **testing a calculator**:
+
+| Concept | Calculator Analogy | Memory Trick |
+|---------|-------------------|--------------| 
+| **Service** | 🧮 **Calculator**: Pure logic, no screen | **"Just the brain"** |
+| **TestBed.inject** | 🔌 **Get the calculator**: Obtain the device | **"Get instance"** |
+| **Call method** | 🔢 **Press buttons**: add(2, 3) | **"Execute function"** |
+| **Assert result** | ✅ **Check display**: Should show 5 | **"Verify output"** |
+| **No DOM** | 📵 **No screen test**: Just math, no display | **"Pure logic only"** |
+
+### 📖 Story to Remember:
+
+> 🧮 **Testing the Calculator Factory**
+>
+> You're quality-testing calculators (services):
+>
+> **Getting the Calculator:**
+> ```typescript
+> beforeEach(() => {
+>   service = TestBed.inject(CalculatorService);  // 🔌 Get one from factory
+>   // OR for simple services:
+>   service = new CalculatorService();            // 🔧 Build directly
+> });
+> ```
+>
+> **Testing it works:**
+> ```typescript
+> it('should add numbers', () => {
+>   // 🔢 Press buttons
+>   const result = service.add(2, 3);
+>   
+>   // ✅ Check display
+>   expect(result).toBe(5);
+> });
+> ```
+>
+> **Why it's easy:**
+> ```
+> Component Testing = Test whole phone (screen, buttons, apps)
+> Service Testing   = Test just the calculator chip (pure logic)
+> 
+> No DOM. No templates. Just JavaScript. ✨
+> ```
+
+### 🎯 Quick Reference:
+```
+🧮 Service          = Calculator (pure logic)
+🔌 TestBed.inject   = Get calculator from factory
+🔧 new Service()    = Build calculator directly
+🔢 method()         = Press buttons
+✅ expect()         = Check the display
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

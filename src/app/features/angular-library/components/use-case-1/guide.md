@@ -199,13 +199,47 @@ Enterprise Architecture:
 
 ---
 
-## 📝 The Analogy
+## 🧱 LEGO Box Analogy (Easy to Remember!)
 
-> Think of a library like a **LEGO box** 🧱:
-> - The `public-api.ts` is the **box label** showing what pieces are inside
-> - Components are individual **LEGO bricks**
-> - Applications are the **creations** you build using those bricks
-> - You don't rebuild bricks each time - you reuse them!
+Think of an Angular Library like a **LEGO box**:
+
+| Concept | LEGO Analogy | Memory Trick |
+|---------|-------------|--------------|
+| **Library** | 📦 **LEGO Box**: A package containing reusable pieces | **"One box, many creations"** |
+| **public-api.ts** | 🏷️ **Box Label**: Shows what's inside (visible to buyers) | **"The front door"** |
+| **Components** | 🧱 **LEGO Bricks**: Individual reusable pieces | **"Build blocks"** |
+| **Application** | 🏰 **Your Creation**: The castle YOU build using bricks | **"Final product"** |
+| **peerDependencies** | 🔌 **"Batteries not included"**: Consumer provides Angular | **"You supply the power"** |
+
+### 📖 Story to Remember:
+
+> 🧱 **The LEGO Factory**
+>
+> Imagine LEGO (library creator) and kids (app developers):
+>
+> **Library Creator (LEGO Factory):**
+> ```
+> 1. Design new bricks (create components)
+> 2. Put them in a box (build library)
+> 3. Print the label (public-api.ts)
+> 4. Ship to stores (npm publish)
+> ```
+>
+> **App Developer (Kid building castle):**
+> ```
+> 1. Buy the LEGO box (npm install)
+> 2. Open and read instructions (import components)
+> 3. Build your castle (use in app)
+> 4. Show your friends! (deploy)
+> ```
+
+### 🎯 Quick Reference:
+```
+📦 Library   = LEGO Box (reusable package)
+🏷️ public-api = Box Label (what's available)
+🧱 Component  = Individual Brick (reusable piece)
+🏰 App        = Your Creation (uses the bricks)
+```
 
 ---
 

@@ -107,6 +107,59 @@ isValidUrl(url: string): boolean {
 
 ---
 
+## 🛂 Border Security Analogy (Easy to Remember!)
+
+Think of XSS prevention like **airport border security**:
+
+| Concept | Security Analogy | Memory Trick |
+|---------|------------------|--------------| 
+| **XSS Attack** | 🎭 **Smuggler**: Trying to sneak weapons (malicious code) in | **"The threat"** |
+| **Angular sanitization** | 🛂 **Border patrol**: Scans ALL incoming luggage | **"Default protection"** |
+| **{{ interpolation }}** | 📦 **Sealed package**: Contents locked, can't open | **"Safe by default"** |
+| **[innerHTML]** | 🚪 **VIP entrance**: Bypasses security, contents exposed | **"Dangerous bypass"** |
+| **DomSanitizer** | 🎫 **VIP pass issuer**: "I trust this person, let them through" | **"Trust marker"** |
+
+### 📖 Story to Remember:
+
+> 🛂 **Airport Security**
+>
+> Your Angular app is an airport. User input is incoming luggage:
+>
+> **Default Security (Safe):**
+> ```html
+> {{ userComment }}
+> <!-- Border patrol scans ALL "luggage" -->
+> <!-- <script>alert('xss')</script> → displayed as TEXT, not executed -->
+> <!-- Threat NEUTRALIZED ✅ -->
+> ```
+>
+> **VIP Bypass (Dangerous):**
+> ```html
+> <div [innerHTML]="userComment"></div>
+> <!-- VIP entrance! No scanning! -->
+> <!-- <script>alert('xss')</script> → EXECUTES! -->
+> <!-- Threat GETS THROUGH ❌ -->
+> ```
+>
+> **Proper VIP Handling:**
+> ```typescript
+> // Only for TRUSTED sources (like your own CMS)
+> this.sanitizer.bypassSecurityTrustHtml(trustedHtml);
+> // "I personally vouch for this luggage"
+> ```
+>
+> **NEVER give VIP passes to strangers (user input)!**
+
+### 🎯 Quick Reference:
+```
+🛂 {{ value }}       = Full security scan (safe by default)
+🚪 [innerHTML]       = VIP bypass (dangerous, avoid)
+🎫 DomSanitizer      = VIP pass (only for trusted content)
+🔒 Never trust       = User input is a stranger!
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

@@ -225,13 +225,47 @@ Smart/Dumb Pattern in Libraries:
 
 ---
 
-## 📝 The Analogy
+## 🛋️ IKEA Furniture Analogy (Easy to Remember!)
 
-> Think of library components like **IKEA furniture** 🛋️:
-> - Each piece (component) has a **unique product code** (selector prefix)
-> - Comes with **assembly instructions** (API documentation)
-> - Can be used in **any room** (any application)
-> - **One design, many customers** (one source, many consumers)
+Think of library components like **IKEA furniture**:
+
+| Concept | IKEA Analogy | Memory Trick |
+|---------|-------------|--------------|
+| **Component** | 🛋️ **Furniture Piece**: KALLAX shelf, BILLY bookcase | **"Ready-made piece"** |
+| **Selector Prefix** | 🏷️ **Product Code**: KALLAX-5x5, not just "shelf" | **"Unique SKU"** |
+| **Inputs/Outputs** | 📐 **Customization Options**: Color, size, with/without doors | **"Configure your piece"** |
+| **Standalone** | 📦 **Self-contained**: Doesn't need other furniture to work | **"Works alone"** |
+| **providedIn: 'root'** | 🌐 **One per store**: Single inventory system for all | **"Shared service"** |
+
+### 📖 Story to Remember:
+
+> 🏪 **The IKEA Store Visit**
+>
+> You're furnishing your apartment (building an app):
+>
+> **At IKEA (Library):**
+> ```
+> - Browse showroom → See available components
+> - Check product code → Unique selector prefix (ui-button)
+> - Pick color/size → Input properties
+> - Get assembly guide → Component documentation
+> ```
+>
+> **At Home (Your App):**
+> ```
+> - Import piece → import { ButtonComponent }
+> - Place in room → Use in template
+> - Customize → Set inputs
+> - Done! → Working UI
+> ```
+
+### 🎯 Quick Reference:
+```
+🛋️ Component = Furniture piece (reusable UI element)
+🏷️ Prefix    = Product code (unique identifier)
+📐 Inputs    = Customization options (color, size)
+📦 Standalone = Self-contained (no dependencies)
+```
 
 ---
 

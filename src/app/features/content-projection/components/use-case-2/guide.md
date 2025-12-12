@@ -61,6 +61,60 @@
 
 ---
 
+## 📬 Mail Sorting Analogy (Easy to Remember!)
+
+Think of multi-slot projection like **sorting mail into different mailboxes**:
+
+| Concept | Mail Analogy | Memory Trick |
+|---------|-------------|--------------| 
+| **Child component** | 📬 **Apartment mailroom**: Multiple labeled mailboxes | **"The sorter"** |
+| **select="[header]"** | 📪 **Box A: "Bills only"**: Only accepts specific mail | **"Labeled slot"** |
+| **select="[footer]"** | 📪 **Box B: "Magazines"**: Only accepts magazines | **"Another labeled slot"** |
+| **No selector** | 📫 **General box**: Catches everything else | **"Catch-all"** |
+| **Parent content** | ✉️ **Mail pieces**: Sorted into correct boxes | **"Your content"** |
+
+### 📖 Story to Remember:
+
+> 📬 **The Apartment Mailroom**
+>
+> Your component is an apartment with multiple mailboxes:
+>
+> **The Mailroom (Child Component):**
+> ```html
+> <div class="mailroom">
+>   <div class="bills">
+>     <ng-content select="[dialog-title]"></ng-content>  <!-- Bills box -->
+>   </div>
+>   <div class="general">
+>     <ng-content></ng-content>  <!-- General mail -->
+>   </div>
+>   <div class="magazines">
+>     <ng-content select="[dialog-actions]"></ng-content>  <!-- Magazine box -->
+>   </div>
+> </div>
+> ```
+>
+> **The Mail (Parent Content):**
+> ```html
+> <app-dialog>
+>   <h2 dialog-title>Bill</h2>       <!-- → Goes to bills box -->
+>   <p>Random letter</p>              <!-- → Goes to general box -->
+>   <button dialog-actions>OK</button> <!-- → Goes to magazines box -->
+> </app-dialog>
+> ```
+>
+> **Each piece of mail is sorted into the RIGHT mailbox!**
+
+### 🎯 Quick Reference:
+```
+📬 Child template    = Mailroom with labeled boxes
+📪 select="[attr]"   = Labeled mailbox (specific content)
+📫 <ng-content>      = General mailbox (catch-all)
+✉️ Parent content    = Mail pieces to be sorted
+```
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid
