@@ -652,6 +652,16 @@ export class PracticeHomeComponent {
             complexCount: 5,
             status: 'available',
             difficulty: 'intermediate'
+        },
+        {
+            name: 'Server-Side Rendering',
+            icon: '🖥️',
+            description: 'Platform detection, Transfer State, SEO, and prerendering',
+            route: '/practice/ssr',
+            basicCount: 4,
+            complexCount: 4,
+            status: 'available',
+            difficulty: 'advanced'
         }
     ];
 

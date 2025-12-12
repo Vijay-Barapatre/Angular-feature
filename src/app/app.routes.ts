@@ -310,6 +310,15 @@ export const routes: Routes = [
     },
 
     /**
+     * SERVER-SIDE RENDERING (SSR) FEATURE
+     * Demonstrates Angular Universal, hydration, transfer state, and prerendering
+     */
+    {
+        path: 'ssr',
+        loadChildren: () => import('./features/ssr/ssr.routes').then(m => m.SSR_ROUTES)
+    },
+
+    /**
      * PRACTICE EXERCISES
      * Centralized practice section for all features
      */

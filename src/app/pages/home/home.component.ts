@@ -331,6 +331,14 @@ export class HomeComponent {
                     status: 'active',
                     useCases: 6,
                     color: 'accent'
+                },
+                {
+                    name: '🖥️ Server-Side Rendering',
+                    route: '/ssr',
+                    description: 'Angular Universal, hydration, transfer state, SEO, and prerendering',
+                    status: 'active',
+                    useCases: 6,
+                    color: 'primary'
                 }
             ]
         }

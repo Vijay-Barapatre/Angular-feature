@@ -216,5 +216,12 @@ export const PRACTICE_ROUTES: Routes = [
         path: 'i18n',
         loadChildren: () => import('./i18n/i18n-practice.component')
             .then(m => m.I18N_PRACTICE_ROUTES)
+    },
+
+    // SSR Practice
+    {
+        path: 'ssr',
+        loadChildren: () => import('./ssr/ssr-practice.routes')
+            .then(m => m.SSR_PRACTICE_ROUTES)
     }
 ];
