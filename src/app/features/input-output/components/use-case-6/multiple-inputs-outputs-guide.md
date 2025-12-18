@@ -37,6 +37,75 @@ graph TD
     style C_Outputs fill:#fff3e0,stroke:#ff6f00
 ```
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PARENT COMPONENT                                           │
+│                                                             │
+│   user = { username: 'Dev', bio: 'Coding...', notify: true }│
+│                                                             │
+│   Template:                                                 │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ <app-profile-editor                                   │ │
+│   │   [username]="user.username"  ──────────────┐         │ │
+│   │   [bio]="user.bio"  ────────────────────────┤         │ │
+│   │   [notifications]="user.notify"  ───────────┤         │ │
+│   │                                             │         │ │
+│   │   (save)="handleSave($event)"  ◄────────────│─────┐   │ │
+│   │   (cancel)="handleCancel()"  ◄──────────────│─────┤   │ │
+│   │   (fieldChange)="logChange($event)">  ◄─────│─────┤   │ │
+│   │ </app-profile-editor>                       │     │   │ │
+│   └─────────────────────────────────────────────│─────│───┘ │
+│                                                 │     │     │
+│   handleSave(newData: UserData) {               │     │     │
+│     this.user = newData;  ◄─────────────────────│─────┘     │
+│   }                                             │           │
+└─────────────────────────────────────────────────│───────────┘
+                                                  │
+                        Multiple ⬇️ Inputs        │  ⬆️ Multiple Outputs
+                                                  │
+┌─────────────────────────────────────────────────│───────────┐
+│  CHILD COMPONENT (Profile Editor)               │           │
+│                                                 ▼           │
+│   // --- INPUTS ---                                         │
+│   @Input() username: string = '';  ◄────────────┘           │
+│   @Input() bio: string = '';                                │
+│   @Input() notifications: boolean = false;                  │
+│                                                             │
+│   // --- INTERNAL STATE (Never mutate inputs!) ---          │
+│   tempUsername = '';                                        │
+│   tempBio = '';                                             │
+│                                                             │
+│   ngOnChanges() {                                           │
+│     this.tempUsername = this.username;  // Sync on change   │
+│     this.tempBio = this.bio;                                │
+│   }                                                         │
+│                                                             │
+│   // --- OUTPUTS ---                                        │
+│   @Output() save = new EventEmitter<UserData>();            │
+│   @Output() cancel = new EventEmitter<void>();              │
+│   @Output() fieldChange = new EventEmitter<string>();       │
+│                                                             │
+│   onSave() {                                                │
+│     this.save.emit({                                        │
+│       username: this.tempUsername,  // Emit full object     │
+│       bio: this.tempBio,                                    │
+│       notifications: this.notifications                     │
+│     }); ─────────────────────────────────────────────► UP   │
+│   }                                                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Multiple Inputs/Outputs Pattern:**
+1. Parent passes individual properties via multiple `@Input()` bindings
+2. Child copies inputs to internal `temp` state (never mutate inputs!)
+3. User edits the internal state
+4. On Save: Child emits the full object via `@Output()`
+5. Parent receives atomic update with all changes
+
+> **Key Takeaway**: Use internal state (`temp...`) to avoid mutating inputs. Emit complete objects for atomic updates!
+
 ---
 
 ## 2. 🚀 Step-by-Step Implementation Guide
