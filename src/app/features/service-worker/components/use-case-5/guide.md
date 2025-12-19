@@ -62,3 +62,37 @@ If you need to remove the SW entirely:
 
 1.  **Production Bug**: You pushed a bad bug that is cached. You can tell users "Click this link to fix it" (link has `?ngsw-bypass`).
 2.  **CDN Issues**: If your CDN purges old files too aggressively, you will hit unrecoverable states often.
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  UNRECOVERABLE STATE & BYPASS                               │
+│                                                             │
+│   THE PROBLEM:                                              │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ 1. SW caches index.html → points to main.old.js       │ │
+│   │ 2. You deploy new version (main.new.js)               │ │
+│   │ 3. Server deletes main.old.js                         │ │
+│   │ 4. User opens app → SW serves cached index.html       │ │
+│   │ 5. Browser requests main.old.js → 404! 💥             │ │
+│   │ 6. App crashes blank (UNRECOVERABLE STATE)            │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   THE FIX:                                                  │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ updates.unrecoverable.subscribe(event => {            │ │
+│   │   console.error('Unrecoverable:', event.reason);      │ │
+│   │   document.location.reload();  // Force fresh fetch   │ │
+│   │ });                                                   │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   BYPASS: Add ?ngsw-bypass=true to URL (debugging)         │
+│   PREVENTION: Keep previous build files on server briefly  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Always handle unrecoverable state! Keep old build files on server for a few days. Use ?ngsw-bypass for debugging!
+

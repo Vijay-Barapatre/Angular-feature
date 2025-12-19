@@ -41,6 +41,84 @@ export class ApiService {
 }
 ```
 
+### 📊 Data Flow Diagram
+
+```mermaid
+flowchart LR
+    subgraph Provider["📦 Provider Config"]
+        Token["InjectionToken<string>"]
+        Value["useValue: 'https://api.com'"]
+    end
+    
+    subgraph Consumer["🎯 Service/Component"]
+        Inject["inject(API_URL)"]
+        Use["this.http.get(url)"]
+    end
+    
+    Token --> Inject
+    Value --> Inject
+    Inject --> Use
+    
+    style Token fill:#e1f5fe,stroke:#0288d1
+```
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  INJECTION TOKEN SYSTEM                                     │
+│                                                             │
+│   ① DEFINE TOKEN (Unique Key)                               │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ export const API_URL = new InjectionToken<string>(    │ │
+│   │   'API Base URL'  // Description for debugging        │ │
+│   │ );                                                    │ │
+│   │                                                       │ │
+│   │ // Token is unique object reference, not a string!    │ │
+│   │ // Two tokens with same name are DIFFERENT tokens     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│          │                                                  │
+│          ▼                                                  │
+│   ② PROVIDE VALUE (app.config.ts)                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ providers: [                                          │ │
+│   │   { provide: API_URL, useValue: 'https://api.com' }   │ │
+│   │ ]                                                     │ │
+│   │                                                       │ │
+│   │ // "When someone asks for API_URL token,              │ │
+│   │ //  give them this string value"                      │ │
+│   └───────────────────────────────────────────────────────┘ │
+│          │                                                  │
+│          ▼                                                  │
+│   ③ INJECT IN SERVICE                                       │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ @Injectable({ providedIn: 'root' })                   │ │
+│   │ export class ApiService {                             │ │
+│   │   private apiUrl = inject(API_URL);  // string type!  │ │
+│   │                                                       │ │
+│   │   getData() {                                         │ │
+│   │     return this.http.get(`${this.apiUrl}/data`);      │ │
+│   │   }  // Uses: 'https://api.com/data'                  │ │
+│   │ }                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ❌ STRING TOKENS (Collision Risk!):                       │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ { provide: 'API_URL', useValue: 'https://a.com' }     │ │
+│   │ { provide: 'API_URL', useValue: 'https://b.com' }     │ │
+│   │ // ⚠️ Second overwrites first! String collision!      │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**InjectionToken Benefits:**
+1. **Type-safe**: Generic `<string>` ensures correct type at inject site
+2. **Unique**: Object reference, not string - no collision possible
+3. **Tree-shakable**: Unused tokens removed from bundle
+4. **Self-documenting**: Description helps debugging
+
+> **Key Takeaway**: Use `InjectionToken<T>` for non-class values like config strings, objects, or feature flags. Never use string tokens!
+
 ---
 
 ## 3. ❓ Interview Questions

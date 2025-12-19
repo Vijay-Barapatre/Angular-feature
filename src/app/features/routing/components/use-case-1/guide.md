@@ -128,6 +128,44 @@ A common error is the link not working and no error in console, but the URL does
 2.  **Sidebar Menus**: Dashboard sidebars highlighting the active section (e.g., "Analytics" vs "Reports").
 3.  **Breadcrumbs**: Navigation trails showing current location hierarchy.
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  SPA NAVIGATION: routerLink vs href                         │
+│                                                             │
+│   TRADITIONAL (href) - Full Page Reload:                    │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ User clicks <a href="/about">                         │ │
+│   │        │                                              │ │
+│   │        ▼ Browser fetches NEW HTML page                │ │
+│   │        ▼ Downloads ALL assets again                   │ │
+│   │        ▼ Re-runs ALL JavaScript                       │ │
+│   │        ▼ WHITE FLASH! 😫                              │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ANGULAR SPA (routerLink) - Component Swap:                │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ User clicks <a routerLink="/about">                   │ │
+│   │        │                                              │ │
+│   │        ▼ Router intercepts click                      │ │
+│   │        ▼ Updates URL via History API                  │ │
+│   │        ▼ Destroys old component                       │ │
+│   │        ▼ Creates new component                        │ │
+│   │        ▼ INSTANT! No page reload! 🚀                  │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   KEY DIRECTIVES:                                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ routerLink="/path"     → Navigate to path             │ │
+│   │ routerLinkActive="cls" → Add class when active        │ │
+│   │ <router-outlet>        → Where component renders      │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Use `routerLink` NOT `href` for SPA navigation. The app stays loaded, only components change!
+
 ## 🏪 Magic House Analogy (Easy to Remember!)
 
 Think of routing like a **magic house that rearranges itself**:

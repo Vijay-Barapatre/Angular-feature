@@ -93,6 +93,27 @@ graph TD
 
 > **Key Takeaway**: Always use TypeScript interfaces with `EventEmitter<T>`. Avoid `any` - it defeats the purpose of TypeScript!
 
+### 🎨 Visual Data Flow Diagram
+
+![Use Case 4: Complete data flow with 10 numbered steps showing @Input, user action, CartEvent, and @Output](./typed-payload-flow.png)
+
+**Complete Data Flow Sequence (① → ⑩):**
+1. ① `products` array loops via `*ngFor`
+2. ② `[product]` binding sends Product object **DOWN** (PURPLE)
+3. ③ Child receives via `@Input() product`
+4. ④ User clicks "Add to Cart" button
+5. ⑤ Child builds `CartEvent` using `product.id` and `quantity`
+6. ⑥ Child emits via `itemAdded.emit(event)` (ORANGE **UP**)
+7. ⑦ Parent receives via `(itemAdded)='onItemAdded($event)'`
+8. ⑧ Parent uses `event.productId` to find product
+9. ⑨ Parent uses `event.quantity` for cart item
+10. ⑩ Cart updated with `{ product, quantity }`
+
+**Color Legend:**
+- 🟣 **PURPLE** = `@Input` data flow DOWN (`product`)
+- 🟠 **ORANGE** = `@Output` event flow UP (`itemAdded`)
+- 🟢 **GREEN** = Typed payload interface (`CartEvent`)
+
 ---
 
 ## 2. 🚀 Step-by-Step Implementation Guide

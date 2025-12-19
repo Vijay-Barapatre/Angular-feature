@@ -33,6 +33,82 @@ export class UserCardComponent {
 3. Async pipe emits
 4. Manual `markForCheck()`
 
+### 📊 Data Flow Diagram
+
+```mermaid
+flowchart TD
+    subgraph Triggers["✅ OnPush CD Triggers"]
+        Input["@Input ref changes"]
+        Event["Component event"]
+        Async["async pipe emits"]
+        Mark["markForCheck()"]
+    end
+    
+    subgraph Skip["❌ Ignored"]
+        Mutation["Object mutation"]
+        External["External change"]
+    end
+    
+    Triggers --> CD["Change Detection"]
+    Skip -.-x CD
+    
+    style Skip fill:#ffebee,stroke:#c62828
+```
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PARENT COMPONENT                                           │
+│                                                             │
+│   user = { name: 'John' };                                  │
+│   <app-user-card [user]="user"></app-user-card>             │
+│                                                             │
+│   ❌ MUTATION (Won't trigger OnPush)                        │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ this.user.name = 'Jane';  // Same object reference!   │ │
+│   │ // Child WON'T see the change                         │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ✅ NEW REFERENCE (Triggers OnPush)                        │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ this.user = { ...this.user, name: 'Jane' };  // NEW!  │ │
+│   │ // Child WILL see the change                          │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  CHILD COMPONENT (OnPush)                                   │
+│                                                             │
+│   @Component({                                              │
+│     changeDetection: ChangeDetectionStrategy.OnPush         │
+│   })                                                        │
+│                                                             │
+│   CD TRIGGERS:                                              │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ ① @Input reference changes    → ✅ Check              │ │
+│   │ ② (click)="..." event        → ✅ Check              │ │
+│   │ ③ {{ data$ | async }}        → ✅ Check              │ │
+│   │ ④ this.cdr.markForCheck()    → ✅ Check              │ │
+│   │                                                       │ │
+│   │ ⚫ Any other CD cycle        → ❌ SKIP!               │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   BEST PRACTICE: Always use immutable patterns!             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**OnPush Detection Summary:**
+| Scenario | Default | OnPush |
+|----------|---------|--------|
+| Any CD cycle | ✅ Checked | ❌ Skipped |
+| @Input ref change | ✅ Checked | ✅ Checked |
+| Component event | ✅ Checked | ✅ Checked |
+| async pipe emit | ✅ Checked | ✅ Checked |
+
+> **Key Takeaway**: OnPush = performance optimization. But it requires IMMUTABLE data patterns - always create new references, never mutate!
+
 ---
 
 ## 3. ❓ Interview Questions

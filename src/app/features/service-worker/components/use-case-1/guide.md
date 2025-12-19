@@ -100,3 +100,43 @@ Don't call `activateUpdate()` automatically without user consent. It might reloa
     *   A: Configuration file that tells the Angular SW builder which files to cache and which strategies (performance vs freshness) to use.
 2.  **Q: Why do we need `document.location.reload()`?**
     *   A: Because the JavaScript for the old version is already loaded in memory. We need a hard refresh to fetch the new CSS/JS bundles from the updated cache.
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  SERVICE WORKER UPDATES: SwUpdate                           │
+│                                                             │
+│   UPDATE FLOW:                                              │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ 1. SW checks for updates (background)                 │ │
+│   │ 2. New SW downloads, enters "Waiting" state           │ │
+│   │ 3. SwUpdate emits VERSION_READY event                 │ │
+│   │ 4. App shows "New Version Available" toast            │ │
+│   │ 5. User clicks "Reload"                               │ │
+│   │ 6. activateUpdate() + document.location.reload()      │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   IMPLEMENTATION:                                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ if (this.updates.isEnabled) {                         │ │
+│   │   this.updates.versionUpdates.pipe(                   │ │
+│   │     filter((evt): evt is VersionReadyEvent =>         │ │
+│   │       evt.type === 'VERSION_READY')                   │ │
+│   │   ).subscribe(() => this.showPrompt = true);          │ │
+│   │ }                                                     │ │
+│   │                                                       │ │
+│   │ reloadApp() {                                         │ │
+│   │   this.updates.activateUpdate().then(() =>            │ │
+│   │     document.location.reload());                      │ │
+│   │ }                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ⚠️ Must test with production build (ng build + http-server)│
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: SwUpdate notifies you of new versions. Always get user consent before reloading! Doesn't work in dev mode.
+

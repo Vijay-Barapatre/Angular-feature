@@ -36,6 +36,86 @@ providers: [
 validators = inject(VALIDATORS);  // Validator[]
 ```
 
+### 📊 Data Flow Diagram
+
+```mermaid
+flowchart LR
+    subgraph Providers["📦 Providers (multi: true)"]
+        P1["AuthInterceptor"]
+        P2["LoggingInterceptor"]
+        P3["ErrorInterceptor"]
+    end
+    
+    subgraph Token["🎯 Token"]
+        HTTP["HTTP_INTERCEPTORS"]
+    end
+    
+    subgraph Result["📤 Injection Result"]
+        Array["[Auth, Logging, Error]"]
+    end
+    
+    P1 --> HTTP
+    P2 --> HTTP
+    P3 --> HTTP
+    HTTP --> Array
+    
+    style Token fill:#e1f5fe,stroke:#0288d1
+```
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  MULTI PROVIDERS (one token, many values)                   │
+│                                                             │
+│   WITHOUT multi: true (LAST WINS)                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ providers: [                                          │ │
+│   │   { provide: Logger, useClass: FileLogger },          │ │
+│   │   { provide: Logger, useClass: ConsoleLogger }        │ │
+│   │ ]                                                     │ │
+│   │                                                       │ │
+│   │ inject(Logger) → ConsoleLogger (overwrote FileLogger!)│ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   WITH multi: true (ALL COLLECTED)                          │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ providers: [                                          │ │
+│   │   { provide: HTTP_INTERCEPTORS,                       │ │
+│   │     useClass: AuthInterceptor, multi: true },   ──┐   │ │
+│   │                                                   │   │ │
+│   │   { provide: HTTP_INTERCEPTORS,                   │   │ │
+│   │     useClass: LoggingInterceptor, multi: true },──│   │ │
+│   │                                                   │   │ │
+│   │   { provide: HTTP_INTERCEPTORS,                   │   │ │
+│   │     useClass: ErrorInterceptor, multi: true }  ───│   │ │
+│   │ ]                                                 │   │ │
+│   │                                                   │   │ │
+│   │                                                   ▼   │ │
+│   │ inject(HTTP_INTERCEPTORS) →                           │ │
+│   │   [AuthInterceptor, LoggingInterceptor, ErrorInterceptor]│
+│   │                                                       │ │
+│   │ // ALL THREE! Returned as array                       │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   COMMON ANGULAR MULTI TOKENS:                              │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ HTTP_INTERCEPTORS  → Interceptor chain                │ │
+│   │ APP_INITIALIZER    → Startup tasks (wait for all)     │ │
+│   │ ROUTES             → Child routes in lazy modules     │ │
+│   │ NG_VALIDATORS      → Form validators                  │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Multi Provider Use Cases:**
+1. **Interceptor chains**: Each interceptor handles different concern
+2. **Plugin systems**: Features register handlers dynamically
+3. **Validators**: Multiple validation rules for forms
+4. **Initializers**: Multiple async startup tasks
+
+> **Key Takeaway**: `multi: true` collects ALL providers into an array instead of overwriting. Essential for plugin-like patterns!
+
 ---
 
 ## 3. ❓ Interview Questions

@@ -83,6 +83,42 @@ handleError(error: any) {
 
 ---
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  GLOBAL ERROR HANDLER: CATCH ALL UNHANDLED ERRORS           │
+│                                                             │
+│   SETUP:                                                    │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ @Injectable()                                         │ │
+│   │ export class GlobalErrorHandler implements ErrorHandler {│ │
+│   │   handleError(error: any): void {                      │ │
+│   │     // 1. Log to monitoring (Sentry/Azure)             │ │
+│   │     this.loggingService.logError(error);               │ │
+│   │     // 2. Show user-friendly message                   │ │
+│   │     this.notify.showError('Something went wrong');     │ │
+│   │   }                                                    │ │
+│   │ }                                                      │ │
+│   │                                                        │ │
+│   │ // Register in app.config.ts                           │ │
+│   │ { provide: ErrorHandler, useClass: GlobalErrorHandler }│ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   WHAT IT CATCHES:                                          │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ ✅ Unhandled exceptions in components                 │ │
+│   │ ✅ Template errors                                    │ │
+│   │ ✅ Lifecycle hook errors                              │ │
+│   │ ❌ HTTP errors caught by catchError (already handled) │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Provide your own ErrorHandler to log all unhandled errors. Only catches UNHANDLED errors!
+
+---
+
 ## 🏥 Hospital Emergency Room Analogy (Easy to Remember!)
 
 Think of Global Error Handler like a **Hospital Emergency Room**:

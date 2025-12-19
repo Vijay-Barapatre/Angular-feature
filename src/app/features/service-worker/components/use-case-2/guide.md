@@ -94,3 +94,37 @@ You must add this manually to `ngsw-config.json`.
 
 1.  **Google Fonts**: Cache them with `performance` strategy so they render instantly on next visit.
 2.  **Weather App**: Use `freshness` with a 30m `maxAge`. You want current temp, but cached is better than nothing if tunnel.
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  SERVICE WORKER CACHING STRATEGIES                          │
+│                                                             │
+│   PERFORMANCE (AssetGroups):                                │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ Request → Cache → Return INSTANTLY                    │ │
+│   │                    (Background: fetch + update cache) │ │
+│   │                                                       │ │
+│   │ Use for: Fonts, Images, CSS, JS bundles               │ │
+│   │ ngsw-config: { installMode: "prefetch" or "lazy" }    │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   FRESHNESS (DataGroups):                                   │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ Request → Network FIRST → Success? Return + cache     │ │
+│   │                         → Timeout/Fail? Return cache  │ │
+│   │                                                       │ │
+│   │ Use for: API calls, user data, live feeds             │ │
+│   │ ngsw-config: { strategy: "freshness", timeout: "10s" }│ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   prefetch = download ALL at start (core shell)            │
+│   lazy = download ONLY when requested (images)             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Performance = cache first (fast!). Freshness = network first (current data). Use prefetch for core shell, lazy for assets!
+

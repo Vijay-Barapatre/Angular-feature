@@ -70,6 +70,44 @@ export const adminMatchGuard: CanMatchFn = (
 3. **No redirect** - user doesn't know other routes exist
 4. **Functional guards** are simpler than class-based
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  canMatch: ROLE-BASED ROUTE SELECTION                       │
+│                                                             │
+│   User navigates to: /dashboard                             │
+│                                                             │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  ROUTE MATCHING (Top to Bottom)                       │ │
+│   │                                                       │ │
+│   │  ① { path: 'dashboard', canMatch: [isAdmin] }         │ │
+│   │     → Admin? YES → AdminDashboard 🔴 (MATCH!)         │ │
+│   │     → Admin? NO  → Skip, try next...                  │ │
+│   │                                                       │ │
+│   │  ② { path: 'dashboard', canMatch: [isPremium] }       │ │
+│   │     → Premium? YES → PremiumDashboard 🟡 (MATCH!)     │ │
+│   │     → Premium? NO  → Skip, try next...                │ │
+│   │                                                       │ │
+│   │  ③ { path: 'dashboard' }  // No guard = fallback      │ │
+│   │     → Always matches → UserDashboard 🟢               │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   KEY DIFFERENCE FROM canActivate:                          │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ canActivate: Route matches, THEN blocks/redirects     │ │
+│   │              User sees something happening 👀          │ │
+│   │                                                       │ │
+│   │ canMatch:    Route doesn't match at all if false      │ │
+│   │              User never knows route existed 🥷         │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: canMatch = "Does this route apply to you?" Different users get different components for the SAME URL, seamlessly!
+
+---
+
 ## ⚠️ Common Pitfalls
 
 1. **Forgetting the fallback route** - Users get 404

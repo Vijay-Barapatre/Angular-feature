@@ -56,3 +56,37 @@ You **cannot** just unplug your ethernet cable to test `localhost`. Using Chrome
 1.  **Field Service Apps**: Technicians working in basements without signal.
 2.  **Messaging Apps**: "Waiting for network..." banner at the top of the chat.
 3.  **Docs**: Reading documentation on a plane.
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  OFFLINE DETECTION                                          │
+│                                                             │
+│   DETECT NETWORK STATUS:                                    │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ // Initial check                                      │ │
+│   │ this.isOnline = navigator.onLine;                     │ │
+│   │                                                       │ │
+│   │ // Listen for changes                                 │ │
+│   │ const networkStatus$ = merge(                         │ │
+│   │   fromEvent(window, 'online').pipe(map(() => true)),  │ │
+│   │   fromEvent(window, 'offline').pipe(map(() => false)) │ │
+│   │ );                                                    │ │
+│   │                                                       │ │
+│   │ networkStatus$.subscribe(isOnline => {                │ │
+│   │   this.showOfflineBanner = !isOnline;                 │ │
+│   │ });                                                   │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ⚠️ navigator.onLine can be true even without internet!  │
+│   → Robust: ping a lightweight file periodically          │
+│                                                             │
+│   Advanced: Background Sync for offline form submissions  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Check navigator.onLine initially + subscribe to events. For real connectivity, ping a server!
+

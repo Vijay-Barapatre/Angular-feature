@@ -35,6 +35,89 @@ providers: [
 ]
 ```
 
+### 📊 Data Flow Diagram
+
+```mermaid
+flowchart LR
+    subgraph Deps["🔧 Dependencies"]
+        D1["HttpClient"]
+        D2["APP_CONFIG"]
+    end
+    
+    subgraph Factory["🏭 Factory Function"]
+        Logic["if (config.isProd) {...}"]
+    end
+    
+    subgraph Result["📦 Result"]
+        Service["DataService instance"]
+    end
+    
+    D1 --> Factory
+    D2 --> Factory
+    Factory --> Service
+    
+    style Factory fill:#fff3e0,stroke:#ff6f00
+```
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  useFactory PROVIDER                                        │
+│                                                             │
+│   ① DEFINE FACTORY PROVIDER                                 │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ providers: [                                          │ │
+│   │   {                                                   │ │
+│   │     provide: Logger,                                  │ │
+│   │     useFactory: (isProd: boolean) => {                │ │
+│   │       //                                              │ │
+│   │       // 🏭 Factory runs at INJECTION TIME            │ │
+│   │       //                                              │ │
+│   │       if (isProd) {                                   │ │
+│   │         return new ProductionLogger();  // 🔴         │ │
+│   │       } else {                                        │ │
+│   │         return new DebugLogger();       // 🟢         │ │
+│   │       }                                               │ │
+│   │     },                                                │ │
+│   │     deps: [IS_PRODUCTION]  // ← Factory dependencies  │ │
+│   │   }                                                   │ │
+│   │ ]                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ② AT INJECTION TIME                                       │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │                                                       │ │
+│   │  deps: [IS_PRODUCTION]                                │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  Angular injects: true                                │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  Factory((isProd = true)) => ProductionLogger         │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  inject(Logger) receives: ProductionLogger instance   │ │
+│   │                                                       │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   useFactory vs useValue:                                   │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ useValue:   📦 Static, same every time                │ │
+│   │ useFactory: 🏭 Dynamic, runs logic to decide          │ │
+│   │ useClass:   🏗️ Creates instance of specified class    │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**useFactory Use Cases:**
+1. **Environment-based**: Different loggers for dev/prod
+2. **Feature flags**: Enable/disable features dynamically
+3. **Complex initialization**: Services needing setup logic
+4. **Conditional dependencies**: Based on runtime config
+
+> **Key Takeaway**: `useFactory` lets you run code to DECIDE what instance to create. Use `deps` to inject other services into your factory!
+
 ---
 
 ## 3. ❓ Interview Questions

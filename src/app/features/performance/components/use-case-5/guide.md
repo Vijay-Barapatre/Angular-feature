@@ -24,3 +24,41 @@
 ```
 
 10,000 items → Only ~20 DOM nodes!
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  RUNTIME PERFORMANCE: AVOID TEMPLATE METHODS                │
+│                                                             │
+│   TEMPLATE METHODS (❌ BAD):                                │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ {{ getFullName() }}  // Called on EVERY CD cycle!     │ │
+│   │                                                       │ │
+│   │ 100 items × 20 CD cycles = 2000 function calls 🐢     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   PURE PIPES (✅ GOOD):                                     │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ {{ user | fullName }}  // Only when user changes!     │ │
+│   │                                                       │ │
+│   │ 100 items × 1 call each = 100 calls total 🚀          │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   VIRTUAL SCROLLING (for large lists):                      │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ <cdk-virtual-scroll-viewport itemSize="50">           │ │
+│   │   <div *cdkVirtualFor="let item of items">            │ │
+│   │     {{ item.name }}                                   │ │
+│   │   </div>                                              │ │
+│   │ </cdk-virtual-scroll-viewport>                        │ │
+│   │                                                       │ │
+│   │ 10,000 items → Only ~20 DOM nodes rendered!           │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Never use methods in templates! Use pure pipes (memoized). Use virtual scroll for large lists!
+

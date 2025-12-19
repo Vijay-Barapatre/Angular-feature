@@ -23,6 +23,35 @@ provideRouter(routes)
 
 ---
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  provideRouter: FUNCTIONAL ROUTING CONFIG                   │
+│                                                             │
+│   BASIC:                                                    │
+│   provideRouter(routes)                                     │
+│                                                             │
+│   WITH FEATURES:                                            │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ provideRouter(routes,                                 │ │
+│   │   withPreloading(PreloadAllModules),  // Preload lazy │ │
+│   │   withComponentInputBinding(),  // Params → @Input()! │ │
+│   │   withViewTransitions(),        // Page animations    │ │
+│   │   withHashLocation()            // Hash-based URLs    │ │
+│   │ )                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   withComponentInputBinding() MAGIC:                        │
+│   Route: { path: 'user/:id', component: UserComponent }    │
+│   Component: @Input() id!: string;  // Auto-bound! 🎉      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: withComponentInputBinding() auto-binds route params to @Input()! No more ActivatedRoute subscription!
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

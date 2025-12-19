@@ -82,3 +82,38 @@ this.swPush.notificationClicks.subscribe(({ action, notification }) => {
 1.  **Social Media**: "Someone liked your post."
 2.  **E-commerce**: "Your order has shipped!"
 3.  **Calendar**: "Meeting in 15 minutes."
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PUSH NOTIFICATIONS                                         │
+│                                                             │
+│   FLOW:                                                     │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ 1. App: swPush.requestSubscription(VAPID_KEY)         │ │
+│   │ 2. Browser: Asks user permission                      │ │
+│   │ 3. Push Service (Google/Apple): Returns subscription  │ │
+│   │ 4. App: POST subscription to your Backend             │ │
+│   │ 5. Later: Backend → Push Service → Browser → User     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   IMPLEMENTATION:                                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ // Subscribe                                          │ │
+│   │ swPush.requestSubscription({ serverPublicKey: VAPID })│ │
+│   │   .then(sub => api.save(sub))                         │ │
+│   │                                                       │ │
+│   │ // Handle clicks                                      │ │
+│   │ swPush.notificationClicks.subscribe(({ notification })│ │
+│   │   => window.open(notification.data.url));             │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   VAPID: Generate with `npx web-push generate-vapid-keys`  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Push notifications work even when app is closed! Use VAPID keys for security. Keep payload < 4kb!
+

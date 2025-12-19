@@ -86,6 +86,46 @@ getData(): Observable<Data> {
 
 ---
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  localStorage CACHING: PERSISTENT STORAGE                   │
+│                                                             │
+│   localStorage vs sessionStorage:                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ localStorage:   Survives refresh, restarts, tabs      │ │
+│   │ sessionStorage: Cleared when tab closes               │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   CACHING WITH TTL:                                         │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ setCache(key, data, ttlMinutes) {                     │ │
+│   │   const item = {                                      │ │
+│   │     data,                                             │ │
+│   │     expiry: Date.now() + ttlMinutes * 60 * 1000       │ │
+│   │   };                                                  │ │
+│   │   localStorage.setItem(key, JSON.stringify(item));    │ │
+│   │ }                                                     │ │
+│   │                                                       │ │
+│   │ getCache(key) {                                       │ │
+│   │   const item = localStorage.getItem(key);             │ │
+│   │   if (!item) return null;                             │ │
+│   │   const parsed = JSON.parse(item);                    │ │
+│   │   if (parsed.expiry < Date.now()) return null; // Expired│ │
+│   │   return parsed.data;                                 │ │
+│   │ }                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ⚠️ LIMITS: 5MB max, strings only (use JSON), sync only   │
+│   🔒 SECURITY: Never store tokens/passwords (XSS vulnerable)│
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: localStorage = persistent, sessionStorage = tab-only. Always add TTL and never store sensitive data!
+
+---
+
 ## 🥫 Pantry Shelf Analogy (Easy to Remember!)
 
 Think of localStorage like a **kitchen pantry**:

@@ -48,6 +48,87 @@ this.cdr.reattach();
 this.cdr.detectChanges();
 ```
 
+### 📊 Data Flow Diagram
+
+```mermaid
+flowchart TD
+    subgraph States["Component CD States"]
+        Attached["🔌 Attached"]
+        Detached["⛔ Detached"]
+    end
+    
+    Attached -->|"detach()"| Detached
+    Detached -->|"reattach()"| Attached
+    Detached -->|"detectChanges()"| Manual["Manual Update"]
+    
+    style Detached fill:#ffebee,stroke:#c62828
+    style Attached fill:#e8f5e9,stroke:#2e7d32
+```
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  DETACH / REATTACH PATTERN                                  │
+│                                                             │
+│   NORMAL STATE (Attached):                                  │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  🔌 Component participates in Change Detection        │ │
+│   │                                                       │ │
+│   │  Angular CD Cycle → Checks this component → Updates   │ │
+│   │                                                       │ │
+│   │  Every user event, timer, HTTP → component checked    │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                       │                                     │
+│      this.cdr.detach(); // "Unplug from CD"                 │
+│                       │                                     │
+│                       ▼                                     │
+│   DETACHED STATE:                                           │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  ⛔ Component COMPLETELY IGNORED by CD                │ │
+│   │                                                       │ │
+│   │  • User clicks?     → Component NOT checked           │ │
+│   │  • Timer fires?     → Component NOT checked           │ │
+│   │  • HTTP returns?    → Component NOT checked           │ │
+│   │                                                       │ │
+│   │  View is FROZEN - won't update automatically!         │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                       │                                     │
+│      Two ways to update:                                    │
+│                       │                                     │
+│         ┌─────────────┴─────────────┐                       │
+│         ▼                           ▼                       │
+│   ┌──────────────┐          ┌──────────────┐                │
+│   │detectChanges │          │  reattach()  │                │
+│   │   ()         │          │              │                │
+│   │              │          │ + Resume     │                │
+│   │ Manual one-  │          │   automatic  │                │
+│   │ time update  │          │   CD         │                │
+│   └──────────────┘          └──────────────┘                │
+│                                                             │
+│   USE CASE: Real-time Dashboard                             │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ ngOnInit() {                                          │ │
+│   │   this.cdr.detach();  // Stop automatic updates       │ │
+│   │                                                       │ │
+│   │   setInterval(() => {                                 │ │
+│   │     this.fetchData();                                 │ │
+│   │     this.cdr.detectChanges();  // Update every 5s     │ │
+│   │   }, 5000);                                           │ │
+│   │ }                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Detach Pattern Decision:**
+| Scenario | Strategy |
+|----------|----------|
+| Real-time data (show latest) | Detach + periodic detectChanges |
+| Heavy computation running | Detach during, reattach after |
+| Rarely updating component | Detach + detectChanges on demand |
+
+> **Key Takeaway**: `detach()` gives you FULL control - but with great power comes great responsibility. Component won't update until YOU tell it to!
+
 ---
 
 ## 3. ❓ Interview Questions

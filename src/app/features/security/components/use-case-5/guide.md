@@ -119,6 +119,48 @@ if (file.size > maxSize) {
 
 ---
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  INPUT VALIDATION: MULTI-LAYER DEFENSE                      │
+│                                                             │
+│   LAYERS:                                                   │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ Client-side: [Validators.required, Validators.email]  │ │
+│   │ → UX feedback, NOT security                           │ │
+│   │                                                       │ │
+│   │ Server-side: Parameterized queries, validation        │ │
+│   │ → REAL security (never trust client!)                 │ │
+│   │                                                       │ │
+│   │ Database: Constraints, triggers                       │ │
+│   │ → Data integrity                                      │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   CUSTOM VALIDATORS:                                        │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ // Sync Validator                                     │ │
+│   │ function noSpecialChars(control): ValidationErrors {  │ │
+│   │   return /[<>"'&]/.test(control.value)                │ │
+│   │     ? { specialChars: true } : null;                  │ │
+│   │ }                                                     │ │
+│   │                                                       │ │
+│   │ // Async Validator (check server)                     │ │
+│   │ function uniqueUsername(userService) {                │ │
+│   │   return (control) => userService.check(control.value)│ │
+│   │     .pipe(map(exists => exists ? { taken: true } : null));│
+│   │ }                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ⚠️ NEVER: query = `SELECT * FROM users WHERE name='${input}'`│
+│   ✅ ALWAYS: query = `SELECT * FROM users WHERE name = ?`  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Client-side = UX, Server-side = Security. Never trust client input. Always use parameterized queries!
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

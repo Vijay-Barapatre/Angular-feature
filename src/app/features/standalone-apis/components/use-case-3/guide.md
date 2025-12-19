@@ -28,6 +28,39 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
 ---
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  provideHttpClient: FUNCTIONAL HTTP CONFIG                  │
+│                                                             │
+│   FUNCTIONAL INTERCEPTOR (NO CLASS!):                       │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ export const authInterceptor: HttpInterceptorFn =     │ │
+│   │   (req, next) => {                                    │ │
+│   │     const token = getToken();                         │ │
+│   │     if (token) {                                      │ │
+│   │       req = req.clone({                               │ │
+│   │         setHeaders: { Authorization: `Bearer ${token}` }│
+│   │       });                                             │ │
+│   │     }                                                 │ │
+│   │     return next(req);                                 │ │
+│   │   };                                                  │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   REGISTRATION:                                             │
+│   provideHttpClient(                                        │
+│     withInterceptors([authInterceptor, loggingInterceptor]),│
+│     withFetch(),               // Use fetch API            │
+│     withXsrfConfiguration()    // XSRF protection          │
+│   )                                                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Functional interceptors = simple functions! No @Injectable or class boilerplate. Use withInterceptors() to register!
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

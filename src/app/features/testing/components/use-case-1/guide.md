@@ -131,6 +131,50 @@ const btn = fixture.debugElement.query(By.css('[data-testid="submit"]'));
 
 ---
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  COMPONENT TESTING: TestBed + Fixture                       │
+│                                                             │
+│   SETUP:                                                    │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ beforeEach(async () => {                              │ │
+│   │   await TestBed.configureTestingModule({              │ │
+│   │     imports: [MyComponent]  // Standalone              │ │
+│   │   }).compileComponents();                             │ │
+│   │                                                       │ │
+│   │   fixture = TestBed.createComponent(MyComponent);     │ │
+│   │   component = fixture.componentInstance;              │ │
+│   │   fixture.detectChanges();  // Initial binding        │ │
+│   │ });                                                   │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   TESTING PATTERN:                                          │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ 1. Change component state:                            │ │
+│   │    component.count = 5;                               │ │
+│   │                                                       │ │
+│   │ 2. Trigger change detection:                          │ │
+│   │    fixture.detectChanges();  // ⚠️ CRITICAL!          │ │
+│   │                                                       │ │
+│   │ 3. Query DOM:                                         │ │
+│   │    const el = fixture.debugElement.query(             │ │
+│   │      By.css('[data-testid="count"]')  // Recommended  │ │
+│   │    );                                                 │ │
+│   │                                                       │ │
+│   │ 4. Assert:                                            │ │
+│   │    expect(el.nativeElement.textContent).toBe('5');    │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ⚠️ No detectChanges() = DOM doesn't update!              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: TestBed configures test module. Fixture controls component. ALWAYS call `detectChanges()` after state changes!
+
+---
+
 ## 🎪 Puppet Show Analogy (Easy to Remember!)
 
 Think of component testing like a **puppet show**:
