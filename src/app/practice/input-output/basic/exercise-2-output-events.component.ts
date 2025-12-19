@@ -70,6 +70,7 @@ export class StarRatingComponent {
      * Use EventEmitter<number> to emit the selected rating
      */
     // TODO: @Output() ratingChange = new EventEmitter<number>();
+    @Output() ratingChange = new EventEmitter<number>();
 
     rating = 0;
     maxRating = 5;
@@ -91,6 +92,8 @@ export class StarRatingComponent {
         // HINT:
         // this.rating = value;
         // this.ratingChange.emit(value);
+        this.rating = value;
+        this.ratingChange.emit(value);
     }
 }
 
@@ -122,7 +125,7 @@ export class StarRatingComponent {
                 <div class="rating-demo">
                     <h4>Rate this product:</h4>
                     <!-- TODO: Handle (ratingChange) event here -->
-                    <app-star-rating></app-star-rating>
+                    <app-star-rating (ratingChange)="onRatingChange($event)"></app-star-rating>
                 </div>
 
                 <div class="result">

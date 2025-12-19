@@ -16,7 +16,7 @@
  * 4. Input changes reflect immediately
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -40,6 +40,7 @@ interface User {
     selector: 'app-user-card',
     standalone: true,
     imports: [CommonModule],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <div class="user-card" [class]="user?.role || 'guest'">
             <div class="avatar">
@@ -77,7 +78,9 @@ export class UserCardComponent {
      * 
      * HINT: Add @Input() before the property declaration below
      */
-    user: User | undefined;  // TODO: Add @Input() decorator here
+    @Input() user: User | undefined;  // TODO: Add @Input() decorator here
+
+    // constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
     /**
      * TODO: Implement getInitials method
@@ -92,8 +95,20 @@ export class UserCardComponent {
         // TODO: Write your logic here
         // HINT: Split name by space, take first letter of each part
 
-        return '?'; // Replace with your implementation
+        return this.user?.name.split(' ').map(name => name.charAt(0).toUpperCase()).join('') || '?'; // Replace with your implementation
     }
+
+    // ngOnChanges(changes: SimpleChanges): void {
+    //     console.log('UserCardComponent ngOnChanges:', changes);
+    //     if (changes['user']) {
+    //         console.log('UserCardComponent user changed:', this.user);
+    //         this.getInitials();
+    //         //changedetect 
+    //         this.changeDetectorRef.detectChanges();
+    //     }
+    // }
+
+
 }
 
 // ========================================
@@ -133,7 +148,7 @@ export class UserCardComponent {
                 <div class="result">
                     <h4>Result:</h4>
                     <!-- TODO: Pass selectedUser to the UserCardComponent -->
-                    <app-user-card></app-user-card>
+                    <app-user-card [user]="selectedUser"></app-user-card>
                 </div>
             </div>
         </div>
@@ -165,6 +180,8 @@ export class Exercise1SimpleInputComponent {
     }
 
     selectUser(): void {
-        this.selectedUser = this.users.find(u => u.id === this.selectedUserId);
+        this.selectedUser = this.users.find(u => u.id == this.selectedUserId);
+        // Use spread operator to create a NEW object (important for immutability)
+        // this.selectedUser = found ? { ...found } : undefined;
     }
 }

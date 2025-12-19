@@ -48,7 +48,7 @@ export class CounterComponent {
      * TODO: Add @Input for count value
      * This will receive the current value from parent
      */
-    // TODO: @Input() count = 0;
+    @Input() count: number = 0;
 
     /**
      * TODO: Add @Output for count changes
@@ -56,7 +56,7 @@ export class CounterComponent {
      * IMPORTANT: For two-way binding to work, the output name must be
      * the input name + "Change" (e.g., count → countChange)
      */
-    // TODO: @Output() countChange = new EventEmitter<number>();
+    @Output() countChange = new EventEmitter<number>();
 
     /**
      * TODO: Add @Input for min value (optional)
@@ -68,7 +68,7 @@ export class CounterComponent {
      */
     // TODO: @Input() max = 100;
 
-    count = 0;
+
     min = 0;
     max = 100;
 
@@ -81,10 +81,10 @@ export class CounterComponent {
      */
     increment(): void {
         // TODO: Write your logic here
-        // if (this.count < this.max) {
-        //     this.count++;
-        //     this.countChange.emit(this.count);
-        // }
+        if (this.count < this.max) {
+            this.count++;
+            this.countChange.emit(this.count);
+        }
     }
 
     /**
@@ -96,6 +96,10 @@ export class CounterComponent {
      */
     decrement(): void {
         // TODO: Write your logic here
+        if (this.count > this.min) {
+            this.count--;
+            this.countChange.emit(this.count);
+        }
     }
 }
 
@@ -136,7 +140,7 @@ export class CounterComponent {
                 <div class="counter-demo">
                     <h4>Quantity:</h4>
                     <!-- TODO: Use two-way binding [(count)]="quantity" -->
-                    <app-counter></app-counter>
+                    <app-counter [(count)]="quantity"></app-counter>
                 </div>
 
                 <div class="parent-controls">
