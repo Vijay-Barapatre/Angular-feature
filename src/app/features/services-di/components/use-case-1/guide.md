@@ -6,6 +6,8 @@
 
 ## 1. 🔍 What is Dependency Injection?
 
+![Angular Dependency Injection Flow](dependency_injection_flow.png)
+
 A design pattern where classes receive dependencies from external sources rather than creating them.
 
 ```typescript

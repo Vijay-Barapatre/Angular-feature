@@ -61,7 +61,25 @@ flowchart TB
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+---
+
+## 2. 🛡️ The Problem & Solution
+
+### The Problem: "The Interface Erasure" 👻
+Angular DI uses class names as tokens.
+*   **Issue**: Interfaces (`AppConfig`) and primitives (`string`) disappear at runtime (TypeScript erasure).
+*   **Result**: You can't inject an interface because there's no runtime token to look up.
+*   **Workaround**: People used magic strings `'APP_CONFIG'`, which is typo-prone and not type-safe.
+
+### The Solution: "InjectionToken" 🎫
+`InjectionToken` creates a unique, runtime-safe identifier.
+*   **Concept**: It's a wrapper that preserves the type information (`<AppConfig>`).
+*   **Result**: You get a unique token that works at runtime AND gives you type safety.
+*   **Benefit**: You can inject *anything* - objects, functions, strings - with full type support.
+
+---
+
+## 3. 🚀 Step-by-Step Implementation Guide
 
 ### Step 1: Define the Configuration Interface
 

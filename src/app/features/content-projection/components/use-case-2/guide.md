@@ -47,6 +47,8 @@
 </app-dialog>
 ```
 
+![Multi-Slot Content Projection Infographic](multi-slot-projection-infographic.png)
+
 ### 📦 Data Flow Summary (Visual Box Diagram)
 
 ```

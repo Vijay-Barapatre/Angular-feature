@@ -66,7 +66,25 @@ flowchart TB
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+---
+
+## 2. 🛡️ The Problem & Solution
+
+### The Problem: "The Static Straitjacket" 👔
+Standard `useClass` providers are static.
+*   **Issue**: You can't change *how* the service is created based on runtime conditions.
+*   **Scenario**: You want `DevLogger` in development and `ProdLogger` in production.
+*   **Limitation**: `useClass` forces you to pick ONE class at compile time (mostly).
+
+### The Solution: "Factory Functions" 🏭
+`useFactory` gives you a function to run logic *before* creation.
+*   **Concept**: You write a function that returns the service instance.
+*   **Power**: You can use `if/else`, switch statements, or read config files inside this function.
+*   **Result**: Dynamic, context-aware dependency injection.
+
+---
+
+## 3. 🚀 Step-by-Step Implementation Guide
 
 ### Step 1: Define the Service Interface & Implementations
 

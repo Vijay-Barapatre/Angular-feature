@@ -49,6 +49,9 @@ flowchart TB
     style HostMod fill:#e1bee7,stroke:#7b1fa2
 ```
 
+### 🖼️ Visual Guide
+![Resolution Modifiers Diagram](./resolution_modifiers_diagram.png)
+
 ### Default vs. Modified Resolution
 
 | Scenario | Without Modifier | With Modifier |
@@ -60,7 +63,28 @@ flowchart TB
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+## 2. 🛡️ The Problem & Solution
+
+### The Problem: "The Uncontrolled Search" 🕵️‍♂️
+By default, Angular's Dependency Injection is **aggressive**. It searches:
+1.  **Locally** (Component)
+2.  **Parent** (Parent Component)
+3.  **Grandparent**... all the way to **Root**.
+
+**Why is this a problem?**
+*   **Accidental Sharing**: You might accidentally get a parent's service instance when you wanted a fresh one for yourself.
+*   **Infinite Search**: Angular wastes time searching up the tree when you *know* the dependency should be local.
+*   **Crashes**: If a service is optional (like a Logger), Angular crashes by default if it's missing.
+
+### The Solution: "Controlled Resolution" 🎮
+Resolution Modifiers give you **control** over this search process.
+*   **Stop!** (`@Self`, `@Host`): "Don't look any further."
+*   **Skip!** (`@SkipSelf`): "Don't look here."
+*   **Relax!** (`@Optional`): "It's okay if you don't find it."
+
+---
+
+## 3. 🚀 Step-by-Step Implementation Guide
 
 ### @Optional() - Graceful Fallback
 
@@ -286,6 +310,42 @@ sequenceDiagram
     end
 ```
 
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  RESOLUTION MODIFIERS SUMMARY                               │
+│                                                             │
+│   ① @Optional() 🛡️                                          │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  Search: 📍 Local ➔ 👨‍💼 Parent ➔ 🌍 Root              │ │
+│   │  Found:  ✅ Return Instance                           │ │
+│   │  Miss:   ⛔ Return NULL (No Error)                    │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ② @Self() 📍                                              │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  Search: 📍 Local ONLY                                │ │
+│   │  Found:  ✅ Return Instance                           │ │
+│   │  Miss:   ❌ THROW ERROR                               │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ③ @SkipSelf() ⏭️                                         │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  Search: 👨‍💼 Parent ➔ 🌍 Root (Skip Local)            │ │
+│   │  Found:  ✅ Return Instance                           │ │
+│   │  Miss:   ❌ THROW ERROR                               │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ④ @Host() 🏠                                              │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │  Search: 📍 Local ➔ 🏠 Host Element Boundary          │ │
+│   │  Found:  ✅ Return Instance                           │ │
+│   │  Miss:   ❌ THROW ERROR                               │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## 3. 🐛 Common Pitfalls & Debugging
@@ -413,6 +473,23 @@ flowchart TB
     style Root fill:#e8f5e9,stroke:#388e3c
     style FormHost fill:#e3f2fd,stroke:#1976d2
 ```
+
+### Architectural Benefits 🏗️
+
+1.  **Encapsulation (`@Self`)**:
+    *   **Concept**: Keeps a component self-contained.
+    *   **Why**: Prevents "leaking" dependencies from parents. Ensures the component works in isolation with its *own* state.
+    *   **Example**: A `TabComponent` that needs its own `TabStateService`, not one shared with other tabs.
+
+2.  **Safety (`@Host`)**:
+    *   **Concept**: Limits the scope to the immediate context.
+    *   **Why**: Prevents a directive from accidentally grabbing a service from a far-away parent, which could lead to unpredictable bugs.
+    *   **Example**: A `TooltipDirective` grabbing configuration only from the button it's attached to.
+
+3.  **Flexibility (`@Optional`)**:
+    *   **Concept**: Allows "Pluggable" dependencies.
+    *   **Why**: Makes your component reusable in different contexts (with or without the service).
+    *   **Example**: A `Logger` that is only active if the app provides it.
 
 ### When to Use Each
 

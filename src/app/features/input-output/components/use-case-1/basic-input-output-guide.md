@@ -6,6 +6,8 @@
 
 ## 1. 🔍 How It Works (The Concept)
 
+![Angular Input Output Flow](data_binding_flow.png)
+
 ### The Mechanism
 This is the **foundation** of Angular component architecture. It relies on a strict **Unidirectional Data Flow**:
 1.  **Data Flows DOWN ⬇️**: The Parent passes data to the Child using **Properties** (`@Input`).

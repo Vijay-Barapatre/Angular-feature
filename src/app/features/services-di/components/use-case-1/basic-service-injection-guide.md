@@ -53,7 +53,25 @@ flowchart TB
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+---
+
+## 2. 🛡️ The Problem & Solution
+
+### The Problem: "Prop Drilling Hell" 📉
+Without Dependency Injection, sharing state between distant components is painful.
+*   **Scenario**: A deep child component needs data from the root.
+*   **Without DI**: You must pass data through **every single layer** via `@Input()` and `@Output()`, even if intermediate components don't use it.
+*   **Result**: Tightly coupled components, brittle code, and "Prop Drilling".
+
+### The Solution: "Teleportation" ⚡
+Dependency Injection acts like a teleportation device.
+*   **Concept**: You register a service in a central place (Injector).
+*   **Result**: Any component, anywhere in the tree, can simply "ask" for it (Constructor Injection).
+*   **Benefit**: Zero coupling between intermediate components. Data jumps straight to where it's needed.
+
+---
+
+## 3. 🚀 Step-by-Step Implementation Guide
 
 ### Step 1: Create the Injectable Service
 

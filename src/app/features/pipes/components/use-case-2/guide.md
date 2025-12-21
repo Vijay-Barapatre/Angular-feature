@@ -200,3 +200,156 @@ mindmap
       Time ago
       File size
 ```
+
+---
+
+## 3. 🌟 Real-World Example: Smart Data Table (Filter + Sort + Format)
+
+This example combines **three patterns** into one view:
+1.  **Filtering**: Searching by text.
+2.  **Sorting**: Ordering by price.
+3.  **Formatting**: Converting status IDs to badges.
+
+### 📦 The Transformation Flow
+
+This image illustrates how the **Original Data** travels through **3 Pipes** to become the **Final View**.
+
+```mermaid
+graph LR
+    subgraph Data Source
+        Raw[Reference: Raw Data Array]
+        style Raw fill:#f9f,stroke:#333,stroke-width:2px
+    end
+
+    subgraph Pipe Transformation Chain
+        step1("<b>Search Pipe</b><br/><code>items.filter(i => i.name.includes(term))</code>")
+        step2("<b>Sort Pipe</b><br/><code>[...items].sort((a,b) => a.price - b.price)</code>")
+        step3("<b>Status Pipe</b><br/><code>{'instock':'✅', 'low':'⚠️'}[val]</code>")
+        
+        Raw -->|"Array"| step1
+        step1 -->|"Filter: 'phone'"| step2
+        step2 -->|"Sort: Price ASC"| step3
+        step3 -->|"Format: 1 → 'Active'"| View
+    end
+
+    subgraph Template View
+        View["<b>Final Display</b><br/><code>products | search:term | sort:'price' | status</code>"]
+        style View fill:#bbf,stroke:#333,stroke-width:2px
+    end
+
+    style step1 fill:#dcfce7,stroke:#333
+    style step2 fill:#dcfce7,stroke:#333
+    style step3 fill:#dcfce7,stroke:#333
+```
+
+### 💻 The Code Implementation
+
+Here is the complete code to achieve the flow above.
+
+#### 1. The Template (HTML)
+Notice the **pipe chaining** syntax (`|`). The order matters!
+
+```html
+<!-- usage-example.component.html -->
+
+<div class="controls">
+  <input [(ngModel)]="searchText" placeholder="Search products...">
+  <button (click)="toggleSort()">Sort Price {{ isAsc ? '⬆️' : '⬇️' }}</button>
+</div>
+
+<div class="product-list">
+  @for (product of products | search:searchText | sort:'price':isAsc; track product.id) {
+    <div class="card">
+      <h3>{{ product.name }}</h3>
+      
+      <!-- Usage 1: Built-in Currency Pipe -->
+      <p class="price">{{ product.price | currency }}</p>
+      
+      <!-- Usage 2: Custom Status Formatter Pipe -->
+      <span class="badge" [class]="product.status">
+        {{ product.status | statusBadge }}
+      </span>
+    </div>
+  } @empty {
+    <p>No products found!</p>
+  }
+</div>
+```
+
+#### 2. The TypeScript (Pipes & Component)
+
+```typescript
+// custom-pipes.ts (All pipes in one file for practice)
+import { Pipe, PipeTransform, Component } from '@angular/core';
+
+// ----------------------------------------------------------------
+// 1. SEARCH PIPE (Filtering)
+// ----------------------------------------------------------------
+@Pipe({ name: 'search', standalone: true })
+export class SearchPipe implements PipeTransform {
+  transform(items: any[], term: string): any[] {
+    if (!items || !term) return items;
+    // Simple case-insensitive search
+    return items.filter(item => 
+      item.name.toLowerCase().includes(term.toLowerCase())
+    );
+  }
+}
+
+// ----------------------------------------------------------------
+// 2. SORT PIPE (Ordering)
+// ----------------------------------------------------------------
+@Pipe({ name: 'sort', standalone: true })
+export class SortPipe implements PipeTransform {
+  transform(items: any[], field: string, isAsc: boolean = true): any[] {
+    if (!items) return [];
+    // Create a copy to sort (don't mutate original!)
+    return [...items].sort((a, b) => {
+      const valA = a[field];
+      const valB = b[field];
+      return isAsc ? (valA - valB) : (valB - valA);
+    });
+  }
+}
+
+// ----------------------------------------------------------------
+// 3. STATUS BADGE PIPE (Formatting)
+// ----------------------------------------------------------------
+@Pipe({ name: 'statusBadge', standalone: true })
+export class StatusBadgePipe implements PipeTransform {
+  transform(status: string): string {
+    // Dictionary mapping for O(1) lookup
+    const statusMap: Record<string, string> = {
+      'instock': 'In Stock ✅',
+      'lowstock': 'Low Stock ⚠️',
+      'outofstock': 'Sold Out ❌'
+    };
+    return statusMap[status] || status;
+  }
+}
+
+// ----------------------------------------------------------------
+// COMPONENT
+// ----------------------------------------------------------------
+@Component({
+  selector: 'app-smart-table',
+  standalone: true,
+  imports: [SearchPipe, SortPipe, StatusBadgePipe], // Import pipes here
+  templateUrl: './usage-example.component.html'
+})
+export class SmartTableComponent {
+  searchText = '';
+  isAsc = true;
+  
+  products = [
+    { id: 1, name: 'Laptop', price: 999, status: 'instock' },
+    { id: 2, name: 'Phone', price: 599, status: 'lowstock' },
+    { id: 3, name: 'Headphones', price: 199, status: 'outofstock' }
+  ];
+
+  toggleSort() {
+    this.isAsc = !this.isAsc;
+  }
+}
+```
+

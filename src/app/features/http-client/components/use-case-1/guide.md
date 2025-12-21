@@ -21,6 +21,8 @@
 
 ### 📊 Data Flow Diagram
 
+![HTTP Observable Flow](http_observable_flow.png)
+
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#667eea'}}}%%
 flowchart LR

@@ -61,7 +61,25 @@ flowchart TB
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+---
+
+## 2. 🛡️ The Problem & Solution
+
+### The Problem: "The Shared State Trap" 🕸️
+By default, services are Singletons. This is great for Auth, but terrible for widgets.
+*   **Scenario**: You have a `CounterService`.
+*   **Issue**: If you use it in two different widgets, clicking "+" in one updates BOTH.
+*   **Result**: Unintended side effects and "spooky action at a distance".
+
+### The Solution: "Component Scoping" 📦
+Angular allows you to create a **new instance** for a specific component tree.
+*   **Concept**: Add the service to the component's `providers: []` array.
+*   **Result**: Angular creates a fresh instance just for that component and its children.
+*   **Benefit**: Complete isolation. Widget A doesn't affect Widget B.
+
+---
+
+## 3. 🚀 Step-by-Step Implementation Guide
 
 ### Step 1: Create a Service with Instance Tracking
 

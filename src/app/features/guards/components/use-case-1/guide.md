@@ -12,6 +12,8 @@
 
 ### 📊 Guard Flow
 
+![Route Guard Flow](guards_flow.png)
+
 ```mermaid
 graph TD
     User([User]) -->|Clicks Link| Router

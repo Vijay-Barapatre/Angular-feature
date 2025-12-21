@@ -14,6 +14,8 @@ Pipes transform values for display in templates.
 {{ name | uppercase }}
 ```
 
+![Angular Pipes Architecture](angular-pipes-architecture.png)
+
 ---
 
 ## 2. 🚀 Common Built-in Pipes

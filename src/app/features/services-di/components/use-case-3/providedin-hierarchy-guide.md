@@ -52,6 +52,11 @@ flowchart TB
     style C1 fill:#ffe0b2,stroke:#f57c00,stroke-width:2px
 ```
 
+### 🖼️ Visual Guide
+![providedIn Hierarchy Diagram](./providedin_hierarchy_diagram.png)
+
+### Default vs. Optimized Behavior
+
 ### Default vs. Optimized Behavior
 
 | Aspect | No providedIn | providedIn: 'root' |
@@ -63,7 +68,25 @@ flowchart TB
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+---
+
+## 2. 🛡️ The Problem & Solution
+
+### The Problem: "The Bloated Bundle" 📦
+In the old days, we added services to `app.module.ts`.
+*   **Issue**: Even if a service wasn't used, it was included in the main bundle.
+*   **Result**: Slower startup times and larger bundle sizes.
+*   **Confusion**: It was hard to know *where* a service was provided just by looking at it.
+
+### The Solution: "Tree-Shakable Providers" 🌳
+Angular introduced `providedIn` to invert the dependency.
+*   **Concept**: The service tells Angular where it belongs (`'root'`, `'any'`, `'platform'`).
+*   **Benefit**: If the service isn't imported, the build tool removes it (Tree Shaking).
+*   **Clarity**: You see exactly where the service lives right in its decorator.
+
+---
+
+## 3. 🚀 Step-by-Step Implementation Guide
 
 ### Step 1: providedIn: 'root' (Most Common)
 
@@ -192,6 +215,57 @@ sequenceDiagram
     RI-->>C: ❌ No
     C->>PI: Do you have PlatformService?
     PI-->>C: ✅ Yes! (providedIn: 'platform')
+```
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  providedIn RESOLUTION FLOW                                 │
+│                                                             │
+│   ① SERVICE DEFINITION                                      │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ @Injectable({                                         │ │
+│   │   providedIn: 'root' | 'any' | 'platform'             │ │
+│   │ })                                                    │ │
+│   │ export class MyService { ... }                        │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ② INJECTION REQUEST                                       │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ Component asks for: MyService                         │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  Angular Search Strategy:                             │ │
+│   │                                                       │ │
+│   │  1. 📱 Component Injector? ➔ ❌ No                    │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  2. 📦 Module Injector?    ➔ ❓ Check providedIn      │ │
+│   │        │                                              │ │
+│   │        ├── ['any'] ──➔ ✅ Found in Lazy Module        │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  3. 🅰️ Root Injector?      ➔ ❓ Check providedIn      │ │
+│   │        │                                              │ │
+│   │        ├── ['root'] ─➔ ✅ Found (Singleton)           │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  4. 🌐 Platform Injector?  ➔ ❓ Check providedIn      │ │
+│   │        │                                              │ │
+│   │        └── ['platform'] ➔ ✅ Found (Shared App)       │ │
+│   │                                                       │ │
+│   │  RESULT: Service Instance OR NullInjectorError        │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ③ TREE SHAKING (Build Time)                               │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ If Service is NOT imported/injected anywhere...       │ │
+│   │        │                                              │ │
+│   │        ▼                                              │ │
+│   │  🗑️ REMOVED from final bundle (0 KB)                  │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
