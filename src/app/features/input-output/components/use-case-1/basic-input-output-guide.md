@@ -4,6 +4,21 @@
 
 ---
 
+## ❓ What Problem Does It Solve?
+
+Single-page applications are built from hundreds of components. Without a standard communication pattern:
+
+1.  **Tight Coupling**: Components would need to reach inside each other to read/write data, making them impossible to test or reuse.
+2.  **Unpredictable State**: If anyone can change data anywhere, debugging becomes a nightmare ("Who changed this value?!").
+3.  **Spaghetti Code**: Relationships between components become a tangled mess of dependencies.
+
+**The Solution**: Angular's strict **Unidirectional Data Flow** (Data Down, Events Up). This ensures:
+*   **Predictability**: You always know where data comes from (Parent) and where events go (Parent).
+*   **Reusability**: The Child component doesn't care *who* uses it, as long as they provide the right Inputs.
+*   **Debuggability**: Data changes are easy to track.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ![Angular Input Output Flow](data_binding_flow.png)

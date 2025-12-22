@@ -4,6 +4,19 @@ This guide provides a deep dive into **Use Case 3**, focusing on **OnPush Change
 
 ---
 
+## ❓ What Problem Does It Solve?
+
+In large Angular applications, performance can degrade as the number of components grows.
+
+1.  **The Performance Bottleneck**: By default, Angular checks **every single component** whenever *anything* happens (a click, a timer, an API call). This is called "dirty checking," and in a massive app, it burns CPU cycles unnecessarily.
+2.  **The State Chaos**: If you mutate objects directly (e.g., `user.name = 'Bob'`), it's hard to tell *when* and *why* the data changed, leading to subtle bugs where the UI doesn't update or updates unpredictably.
+
+**The Solution**: **Immutability combined with OnPush Change Detection**.
+*   **OnPush** tells Angular: "Don't check me unless my input *reference* changes."
+*   **Immutability** ensures that when data *does* change, the reference changes too, effectively signaling Angular to wake up. This reduces the workload from O(N) to O(1) for many components.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Core Mechanism: Reference vs. Value
@@ -12,7 +25,24 @@ Angular's default behavior is "paranoid"—it checks every component whenever an
 *   **Default Behavior**: "Did the data inside the object change? I don't know, so I'll re-render."
 *   **Optimized Behavior (OnPush)**: "Did the memory address of the object change? No? Then I'm sleeping." 😴
 
+> [!NOTE]
+> **Quick Refresher: References in JavaScript**
+> ```javascript
+> // MUTATION (Same Reference)
+> const objA = { name: 'Alice' };
+> const objB = objA;
+> objB.name = 'Bob'; 
+> console.log(objA === objB); // true (OnPush sees NO change)
+> 
+> // IMMUTABILITY (New Reference)
+> const objC = { name: 'Alice' };
+> const objD = { ...objC, name: 'Bob' };
+> console.log(objC === objD); // false (OnPush sees CHANGE)
+> ```
+
 ### Visualizing the Difference
+
+![Complex Objects & Immutability Infographic](./complex_objects_immutability_infographic.png)
 
 ```mermaid
 graph TD
@@ -122,7 +152,8 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'app-child',
   // 🛡️ CRITICAL: Enable OnPush Strategy
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // This tells Angular: "Only check me if my Inputs change REFERENCE"
+  changeDetection: ChangeDetectionStrategy.OnPush, 
   template: `
     <div class="user-card">
       {{ user.name }}
@@ -133,6 +164,13 @@ export class ChildComponent {
   @Input() user: any;
 }
 ```
+
+> [!IMPORTANT]
+> **Highlight: ChangeDetectionStrategy.OnPush**
+> By setting `changeDetection: ChangeDetectionStrategy.OnPush`, you are explicitly telling Angular to **opt-out** of the default dirty checking mechanism. The component will now *only* re-render if:
+> 1. The **memory reference** of an `@Input()` property changes.
+> 2. An event handler inside the component creates an event (e.g., button click).
+> 3. An `AsyncPipe` in the template emits a new value.
 
 ### Implementation Flow Diagram
 

@@ -105,6 +105,18 @@ export const INPUT_OUTPUT_ROUTES: Routes = [
     },
 
     /**
+     * USE CASE 7: Input Setters (Validation & Side Effects)
+     * Demonstrates:
+     * - Using TypeScript setters for @Input interception
+     * - Validation and Sanitization logic within the child
+     * - Derived state updates
+     */
+    {
+        path: 'use-case-7',
+        loadComponent: () => import('./components/use-case-7/parent.component').then(m => m.UseCase7ParentComponent)
+    },
+
+    /**
      * LEARNER EXERCISE
      * Interactive template for hands-on practice
      * Contains TODO comments and hints

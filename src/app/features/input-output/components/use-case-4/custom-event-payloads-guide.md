@@ -4,6 +4,17 @@
 
 ---
 
+## ❓ What Problem Does It Solve?
+
+When a child component needs to communicate complexities back to a parent, simple events fall short.
+
+1.  **The Context Problem**: A simple `(click)` event tells you *that* something happened, but not *what* (Which item? How many? What action?).
+2.  **The Type Safety Problem**: If you emit anonymous objects (e.g., `{ id: 1, val: 'abc' }`) typed as `any`, you lose TypeScript's protection. Renaming a property in the child wont warn you about broken code in the parent, leading to runtime crashes.
+
+**The Solution**: **Custom Events with Typed Payloads**. By defining an Interface (e.g., `CartEvent`) and using `EventEmitter<CartEvent>`, you enforce a strict "Contract" between Parent and Child. This ensures you always have the full context and compile-time safety.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Mechanism

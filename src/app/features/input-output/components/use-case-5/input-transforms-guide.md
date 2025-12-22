@@ -4,6 +4,17 @@
 
 ---
 
+## ❓ What Problem Does It Solve?
+
+In web development, HTML attributes are **always strings**. This creates a mismatch when your Angular component expects strongly typed inputs.
+
+1.  **The Mismatch**: If a parent passes `<app-child disabled>`, Angular sees the string `""` (empty string). But your component logic likely expects a boolean `true`, not a string. `""` is falsy in some checks and truthy in others, leading to confused bugs.
+2.  **The Boilerplate**: Traditionally, you had to write Getters/Setters or `ngOnChanges` code in *every* component just to parse `"123"` into `123` or `"true"` into `true`.
+
+**The Solution**: **Input Transforms**. Angular now lets you define a `transform` function directly in the `@Input` decorator. It automatically converts data (coerces types) *before* it enters your component, keeping your code clean and your inputs type-safe.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Mechanism

@@ -61,6 +61,31 @@ flowchart LR
 
 ---
 
+## ❓ What Problem Does It Solve?
+
+In Angular, directives often need to be configurable. Without `@Input()`, a directive is static and rigid—it always does the exact same thing.
+
+*   **The Problem**: Code duplication. If you want a "Red Background" directive and a "Blue Background" directive, you'd have to write two separate classes. 🚫
+*   **The Solution**: Use `@Input()` to pass the color as a parameter. Now one single directive can handle ANY color. ✅
+
+## 🌍 Real-World Use Case
+
+1.  **Role-Based Access Control (RBAC)**:
+    *   *Scenario*: A directive `*appHasRole` that shows/hides elements based on user permissions.
+    *   *Usage*: `<div *appHasRole="['ADMIN', 'EDITOR']">Edit Button</div>`.
+    *   *Benefit*: One directive handles logic for all roles throughout the app.
+
+2.  **Analytics Tracking**:
+    *   *Scenario*: A directive `appTrackClick` that sends data to Google Analytics when an element is clicked.
+    *   *Usage*: `<button appTrackClick="signup_button">Sign Up</button>`.
+    *   *Benefit*: Configuring the event name directly in the HTML keeps tracking logic decoupled from component logic.
+
+3.  **Dynamic Theming**:
+    *   *Scenario*: Applying complex style config objects based on user preferences.
+    *   *Usage*: `<div [appTheme]="userThemeConfig">...</div>`.
+
+---
+
 ## 2. 🚀 Step-by-Step Implementation Guide
 
 ### Step 1: Basic @Input (Same Name as Selector)
@@ -376,6 +401,26 @@ ngOnChanges(changes: SimpleChanges): void {
 > `[appPadding]="'large'"` → party mode! 🎉
 
 ---
+
+## 🚦 When to Use vs. Not Use
+
+| Feature | Use When... | Avoid When... |
+| :--- | :--- | :--- |
+| **Directive @Input** | You need to configure the *behavior* or *appearance* of the host element. | You are passing data down a deep hierarchy (use Services/Signals instead). |
+| **ngOnChanges** | Logic depends on multiple inputs or you need to compare previous vs. current values. | You have a single, independent input (use a **Setter** for cleaner code). |
+| **Object Input** | You have 3+ related configuration properties (e.g., a style config). | You only have 1 or 2 simple inputs (use separate `@Input`s for better type checking). |
+
+## 🏗️ Architecture & Performance
+
+### Architecture
+*   **Composition**: Directives with Inputs favor "Composition over Inheritance". You can attach multiple small, configurable directives to a single element (`<div appTooltip appHighlight appDraggable>`) to confuse complex behaviors.
+*   **Smart vs Dumb**: These are typically "Dumb" (Pure) directives. They receive input, perform a DOM manipulation, and exit. They shouldn't usually call API services directly.
+
+### Performance
+*   **Change Detection**: `ngOnChanges` runs on *every* change detection cycle if the parent binding updates.
+    *   *Optimization*: Use `if (changes['propName'])` to limit logic execution.
+    *   *Optimization*: Check if `currentValue !== previousValue` before doing expensive DOM work.
+*   **Setter Pattern**: Using a setter `@Input() set config(v)` can be slightly more performant for simple inputs as it avoids the overhead of generating the `SimpleChanges` object.
 
 ## 7. ❓ Interview & Concept Questions
 

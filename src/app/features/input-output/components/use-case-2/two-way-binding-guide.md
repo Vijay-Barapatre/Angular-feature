@@ -4,6 +4,17 @@
 
 ---
 
+## ❓ What Problem Does It Solve?
+
+In interactive UI components (like form inputs, toggle switches, or sliders), the data often needs to be shared and modified by **both** the Parent and the Child.
+
+1.  **The Challenge**: Using standard one-way binding (`[value]`) allows the parent to set the value, but if the user types in the child input, the parent doesn't automatically know.
+2.  **The Boilerplate**: You *can* do this manually by binding `[value]` AND `(valueChange)`, but writing that pair for every single input field is tedious and verbose.
+
+**The Solution**: Angular's **Two-Way Binding** syntax `[(value)]`. It solves the boilerplate problem by combining both directions into one simple syntax, keeping the Parent and Child states perfectly synchronized with minimal code.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Mechanism
