@@ -124,6 +124,19 @@ This logs violations without blocking, perfect for testing.
 
 ---
 
+## 🚧 Gated Community Analogy (Easy to Remember!)
+
+![CSP Gated Community](security-csp-gated-community.png)
+
+Think of CSP like a **gated community**:
+
+| Concept | Analogy | Meaning |
+|---------|---------|---------|
+| **No CSP** | 🏠 **Open Door** | Strangers (malicious scripts) walk right in |
+| **CSP Header** | 📋 **Guest List** | Only listed names (domains) are allowed |
+| **'self'** | 👤 **Resident** | Your own code is always allowed |
+| **'nonce'** | 🎫 **Singe-use Pass** | Special pass for one specific script |
+
 ## 🧠 Mind Map
 
 ```mermaid

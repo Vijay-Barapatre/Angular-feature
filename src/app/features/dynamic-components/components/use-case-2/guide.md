@@ -96,6 +96,8 @@ If you do `ref.instance.name = 'Bob'`, `ngOnChanges` will **NOT** fire. usage of
 
 ## 🎰 Vending Machine Analogy (Easy to Remember!)
 
+![Dynamic IO Vending Machine](dynamic-io-vending-machine.png)
+
 Think of dynamic inputs/outputs like **programming a vending machine**:
 
 | Concept | Vending Analogy | Memory Trick |

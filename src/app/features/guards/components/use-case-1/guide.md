@@ -4,6 +4,8 @@
 
 ---
 
+![Angular Guards Lifecycle](guards-combined-lifecycle.png)
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Old vs New

@@ -1,6 +1,8 @@
 # Use Case 5: canLoad Guard
 
-## 🎯 What is canLoad?
+![Advanced Guards Architecture](guards-advanced-architecture.png)
+
+## 1. 🔍 How It Works
 
 `canLoad` prevents a lazy-loaded module from being **downloaded** at all. If it returns false, the module code is never fetched from the server.
 

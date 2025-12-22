@@ -4,6 +4,8 @@
 
 ---
 
+![Pure vs Impure Pipes Comparison](pipes-use-case-3.png)
+
 ## 1. 🔍 Pure vs Impure
 
 | Aspect | Pure (default) | Impure |

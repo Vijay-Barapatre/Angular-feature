@@ -16,6 +16,20 @@
 
 ---
 
+## 🚰 Water Filter Analogy (Easy to Remember!)
+
+![Input Validation Water Filter](security-input-validation.png)
+
+Think of validation like a **multi-stage water filter**:
+
+| Concept | Analogy | Purpose |
+|---------|---------|---------|
+| **Client Validation** | 🕸️ **Mesh Filter** | Catches large debris (User errors) |
+| **Server Validation** | 🌑 **Carbon Filter** | Removes invisible toxins (Malicious data) |
+| **Parameterized Query** | 💡 **UV Light** | Kills remaining bacteria (SQL Injection) |
+
+---
+
 ## 2. 🚀 Validation Patterns
 
 ### Angular Validators

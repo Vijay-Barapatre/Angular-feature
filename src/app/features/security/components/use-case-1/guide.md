@@ -143,6 +143,8 @@ isValidUrl(url: string): boolean {
 
 ## 🛂 Border Security Analogy (Easy to Remember!)
 
+![XSS Prevention Airport Security](security-xss-prevention.png)
+
 Think of XSS prevention like **airport border security**:
 
 | Concept | Security Analogy | Memory Trick |

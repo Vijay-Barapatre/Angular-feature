@@ -142,7 +142,9 @@ Think of canMatch like a **chameleon changing colors**:
 > { path: 'dashboard', component: UserDash }                          // 🟢 Green
 > ```
 >
-> **How it works:**
+>![Advanced Guards Architecture](guards-advanced-architecture.png)
+
+## 1. 🔍 How It Works:**
 > ```
 > Admin visits /dashboard → Sees AdminDash 🔴
 > Premium visits /dashboard → Sees PremiumDash 🟡

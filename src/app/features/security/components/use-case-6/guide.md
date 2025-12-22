@@ -40,6 +40,23 @@
 - [ ] Keep Angular and dependencies updated
 - [ ] Review third-party libraries
 
+- [ ] Review third-party libraries
+
+---
+
+## 👨‍✈️ Pilot's Pre-Flight Analogy (Easy to Remember!)
+
+![Security Checklist Pilot Analogy](security-checklist-tablet.png)
+
+Think of a security review like a **pilot's pre-flight checklist**:
+
+| Checklist Item | Pilot Analogy | Why it matters |
+|----------------|---------------|----------------|
+| **XSS Sanitization** | 🧳 **Luggage Scan** | Prevents dangerous cargo (scripts) |
+| **CSRF Tokens** | 🤝 **Identity Check** | Verifies authorized personnel |
+| **CSP Headers** | 📋 **Flight Plan** | Restricts unauthorized routes/sources |
+| **HttpOnly Cookies** | 🔒 **Cockpit Lock** | Prevents passenger access to controls |
+
 ---
 
 ## 2. ❓ Interview Questions

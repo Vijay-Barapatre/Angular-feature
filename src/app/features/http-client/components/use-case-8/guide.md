@@ -18,6 +18,8 @@
 
 ## 🚚 Moving Truck Analogy (Easy to Remember!)
 
+![File Upload Truck Analogy](file-operations-truck.png)
+
 Think of file upload/download like **moving furniture with a truck**:
 
 | Concept | Moving Analogy | Memory Trick |

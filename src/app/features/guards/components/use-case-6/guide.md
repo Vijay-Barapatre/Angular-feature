@@ -1,6 +1,8 @@
 # Use Case 6: canActivateChild Guard
 
-## 🎯 What is canActivateChild?
+![Advanced Guards Architecture](guards-advanced-architecture.png)
+
+## 1. 🔍 How It Works
 
 `canActivateChild` protects **ALL child routes** of a parent route with a single guard. Instead of adding `canActivate` to each child, you add one guard to the parent.
 

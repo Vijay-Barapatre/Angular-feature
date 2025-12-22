@@ -13,6 +13,18 @@ To do this, we need to:
 2.  **Attach** it to Angular's Change Detection (`ApplicationRef`).
 3.  **Append** it to the DOM (`document.body`).
 
+## 📽️ Hologram Projector Analogy (Easy to Remember!)
+
+![Dynamic Modal Hologram](dynamic-modal-hologram-projector.png)
+
+Think of a global modal service like a **Hologram Projector**:
+
+| Concept | Projector Analogy | Memory Trick |
+|---------|-------------------|--------------|
+| **Service** | 🎛️ **Control Pad**: The remote to trigger the projection | **"The Trigger"** |
+| **`attachView()`** | ⚡ **Power Source**: Connecting the hologram to the power grid (Change Detection) | **"Power Up"** |
+| **`appendChild()`** | 🌐 **Projection**: Beaming the light into the middle of the room (Body) | **"Project"** |
+
 ### Mermaid Diagram: Service Flow
 
 ```mermaid

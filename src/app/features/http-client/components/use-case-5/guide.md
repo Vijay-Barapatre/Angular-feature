@@ -8,14 +8,20 @@
 
 `lastValueFrom()` converts Observable to Promise (replaces deprecated `toPromise()`).
 
-### When to Use Promises
+### 🆚 Observable vs Promise: The Showdown
 
-| Use Observable | Use Promise |
-|---------------|-------------|
-| Multiple emissions | Single response |
-| Need operators | Simple request |
-| Cancellation needed | async/await preference |
-| Streams (WebSocket) | REST API calls |
+| Feature | 🌊 Observable (Stream) | 🤝 Promise (Handshake) |
+|:--------|:-----------------------|:-----------------------|
+| **Metaphor** | **Netflix Subscription** (New movies arrive anytime) | **DVD Purchase** (You get one movie, once) |
+| **Values** | Multiple (Over time) | Single (Future value) |
+| **Timing** | Lazy (Starts on `.subscribe()`) | Eager (Starts immediately) |
+| **Cancel?** | ✅ Yes (`unsubscribe`) | ❌ No (Cannot cancel) |
+| **Operators** | ✅ Powerful (`map`, `retry`, `debounce`) | ⚠️ Basic (`then`/`catch`) |
+| **Best For** | Real-time feeds, Events, Auto-search | One-time HTTP GET/POST |
+
+> [!TIP]
+> **Why use Promises for HTTP?**
+> Most HTTP requests are "One-Shot" (Request -> Response -> Done). You don't *need* a stream for a simple `GET`. Using `await lastValueFrom()` makes the code look linear and cleaner! 🧹
 
 ---
 
@@ -63,6 +69,8 @@ Think of Promises vs Observables like **ordering coffee**:
 ---
 
 ## 2. 🚀 Implementation
+
+![Promise-based Requests](http-promise-request-flow.png)
 
 ### Basic Pattern
 

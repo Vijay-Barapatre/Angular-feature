@@ -138,6 +138,8 @@ const users = await this.http.get('/api/users').toPromise();
 
 ## 🏎️ Race Track Analogy (Easy to Remember!)
 
+![Promise Patterns Race](promise-patterns-race.png)
+
 Think of Promise patterns like **different types of races**:
 
 | Method | Race Analogy | Memory Trick |

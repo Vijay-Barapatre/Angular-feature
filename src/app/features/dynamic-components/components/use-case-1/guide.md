@@ -129,6 +129,8 @@ When you call `vcr.clear()` or `vcr.remove(index)`, Angular automatically destro
 
 ## 🤖 LEGO Robot Factory Analogy (Easy to Remember!)
 
+![Dynamic Component LEGO Factory](dynamic-component-lego-factory.png)
+
 Think of dynamic components like a **LEGO robot factory**:
 
 | Concept | Robot Factory Analogy | Memory Trick |

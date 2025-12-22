@@ -136,6 +136,8 @@ provideHttpClient(
 
 ## 🤝 Secret Handshake Analogy (Easy to Remember!)
 
+![CSRF Protection Secret Handshake](security-csrf-handshake.png)
+
 Think of CSRF protection like a **secret handshake**:
 
 | Concept | Handshake Analogy | Memory Trick |

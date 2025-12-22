@@ -97,6 +97,8 @@ exhaustMap: 🚫 Only "a" runs, rest ignored
 
 ## 2. 🚀 Implementation Details
 
+![RxJS Operators Flow](rxjs-operators-flow.png)
+
 ### Scenario 1: Type-ahead Search with switchMap
 
 **Problem**: User types quickly, causing multiple API calls. We need to:

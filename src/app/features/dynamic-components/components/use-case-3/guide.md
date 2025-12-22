@@ -106,6 +106,8 @@ try {
 
 ## 📦 Package Delivery Analogy (Easy to Remember!)
 
+![Dynamic Lazy Package Delivery](dynamic-lazy-package-delivery.png)
+
 Think of lazy loading like **on-demand package delivery**:
 
 | Concept | Delivery Analogy | Memory Trick |

@@ -36,6 +36,8 @@ flowchart LR
 
 ## 📚 Library Analogy (Easy to Remember!)
 
+![HTTP Caching Library Analogy](http_caching_library.png)
+
 Think of HTTP Caching like **visiting a library**:
 
 | Concept | Library Analogy | Memory Trick |

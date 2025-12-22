@@ -150,6 +150,20 @@ this.authService.refreshToken().pipe(
 
 ---
 
+## 🏦 Vault vs. Wallet Analogy (Easy to Remember!)
+
+![Auth Security Storage](security-auth-storage.png)
+
+Think of secure storage like a **bank vault vs. a wallet**:
+
+| Concept | Analogy | Security Level |
+|---------|---------|----------------|
+| **localStorage** | 👖 **Back Pocket/Wallet** | ❌ Easy to pickpocket (XSS access) |
+| **HttpOnly Cookie** | 🏦 **Bank Vault** | ✅ Locked steel door (No JS access) |
+| **Memory** | 🤲 **Hands** | ✅ Safe but lost if you drop it (refresh) |
+
+---
+
 ## 🧠 Mind Map
 
 ```mermaid

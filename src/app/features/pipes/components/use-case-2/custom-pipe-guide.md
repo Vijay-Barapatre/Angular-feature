@@ -4,6 +4,8 @@
 
 ---
 
+![Custom Pipe Implementation](pipes-use-case-2.png)
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Mechanism
