@@ -4,6 +4,9 @@
 
 ---
 
+![HostBinding Flow](./host-binding-flow.png)
+
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Core Mechanism

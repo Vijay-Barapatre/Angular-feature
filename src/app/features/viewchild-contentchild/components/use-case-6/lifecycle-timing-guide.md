@@ -2,6 +2,8 @@
 
 > **Goal**: Understand **when** `@ViewChild` and `@ContentChild` become available and how to avoid common `undefined` errors.
 
+![Lifecycle Timing Flow](./lifecycle-timing-flow.png)
+
 ---
 
 ## 1. 🔍 How It Works (The Concept)

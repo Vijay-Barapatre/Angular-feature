@@ -11,6 +11,9 @@ Route parameters are placeholders in your URL definition (e.g., `/user/:id`). Th
 
 ### Mermaid Diagram: Reading Parameters
 
+![Route Parameters Flow](./route-parameters-flow.png)
+
+
 ```mermaid
 graph LR
     A[URL: /user/42] -->|Router Matches| B(Route Definition: /user/:id)

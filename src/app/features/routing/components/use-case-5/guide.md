@@ -2,6 +2,8 @@
 
 This guide shows how to navigate using TypeScript logic instead of HTML templates.
 
+![Programmatic Navigation Flow](./programmatic-navigation-flow.png)
+
 ## 🔍 How It Works (The Concept)
 
 While `routerLink` is declarative (HTML), `Router.navigate()` is imperative (TypeScript).

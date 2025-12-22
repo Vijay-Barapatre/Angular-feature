@@ -4,6 +4,8 @@
 
 ---
 
+![Dynamic Forms Flow](template-forms-use-case-5.png)
+
 ## 1. 🔍 How It Works
 
 ### The Challenge

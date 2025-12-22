@@ -2,6 +2,8 @@
 
 > **Goal**: Understand the difference between **View** and **Content**, and learn how to access projected components with `@ContentChild` and `@ContentChildren`.
 
+![ContentChild Projection Flow](./contentchild-projection-flow.png)
+
 ---
 
 ## 1. 🔍 How It Works (The Concept)

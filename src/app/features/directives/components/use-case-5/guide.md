@@ -4,6 +4,9 @@
 
 ---
 
+![Structural Directive Flow](./structural-directive-flow.png)
+
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Core Mechanism

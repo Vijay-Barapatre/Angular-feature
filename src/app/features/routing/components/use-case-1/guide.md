@@ -14,6 +14,9 @@ In a traditional multi-page application (MPA), clicking a link causes the browse
 
 ### Mermaid Diagram: SPA vs MPA Navigation
 
+![SPA vs MPA Flow](./spa-vs-mpa-flow.png)
+
+
 ```mermaid
 sequenceDiagram
     participant User

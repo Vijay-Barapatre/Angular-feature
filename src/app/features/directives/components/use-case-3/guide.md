@@ -4,6 +4,9 @@
 
 ---
 
+![HostListener Flow](./host-listener-flow.png)
+
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Core Mechanism

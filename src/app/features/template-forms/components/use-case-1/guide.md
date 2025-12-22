@@ -4,6 +4,8 @@
 
 ---
 
+![Template Forms Flow](template-forms-use-case-1.png)
+
 ## 1. 🔍 How It Works
 
 ### The Mechanics

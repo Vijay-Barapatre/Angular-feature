@@ -2,6 +2,8 @@
 
 > **Goal**: Learn how to use `@ViewChild` with Template Reference Variables (`#ref`) to get direct access to native DOM elements.
 
+![ViewChild Template Reference Flow](./viewchild-template-ref-flow.png)
+
 ---
 
 ## 1. 🔍 How It Works (The Concept)

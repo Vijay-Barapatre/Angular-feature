@@ -4,6 +4,9 @@
 
 ---
 
+![Directive Input Flow](./directive-input-flow.png)
+
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### Core Mechanism
@@ -30,34 +33,34 @@ CONFIGURABLE DIRECTIVE (With @Input):
 → Different colors, one directive! 🎉
 ```
 
-### 📊 Data Flow with @Input
+### 📊 Data Flow with @Input & ngOnChanges
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#667eea', 'primaryTextColor': '#fff', 'primaryBorderColor': '#764ba2', 'lineColor': '#4ade80', 'secondaryColor': '#f8f9fa'}}}%%
-flowchart LR
-    subgraph Component["📦 Parent Component"]
-        A[selectedColor = 'red']
+sequenceDiagram
+    participant P as 📦 Parent Component
+    participant T as 📄 Template (HTML)
+    participant D as 🎯 BgColorDirective
+
+    Note over P: selectedColor = 'red'
+    P->>T: Data Binding [appBgColor]='selectedColor'
+    T->>D: 1. Set @Input() appBgColor = 'red'
+    
+    rect rgb(240, 240, 240)
+        Note right of D: ⚡ LIFECYCLE HOOK TRIGGERED
+        D->>D: 2. ngOnChanges(changes)
+        Note right of D: if (changes['appBgColor']) { ... }
     end
-    
-    subgraph Template["📄 Template"]
-        B["[appBgColor]='selectedColor'"]
-    end
-    
-    subgraph Directive["🎯 BgColorDirective"]
-        C["@Input() appBgColor"]
-        D[ngOnChanges]
-        E[Apply Style]
-    end
-    
-    A -->|"Data Binding"| B
-    B -->|"Input Binding"| C
-    C -->|"Value Changed"| D
-    D -->|"Renderer2"| E
-    
-    style Component fill:#e0e7ff,stroke:#667eea
-    style Template fill:#f0fdf4,stroke:#4ade80
-    style Directive fill:#fef3c7,stroke:#f59e0b
+
+    D->>D: 3. this.renderer.setStyle(...)
+    Note over D: background-color: red applied!
 ```
+
+> [!TIP]
+> **Important Code Flow**:
+> 1.  **Parent** updates the property bound to the directive.
+> 2.  **Angular** detects the change and updates the `@Input()` property on the Directive instance.
+> 3.  **`ngOnChanges`** is automatically called. This is the **most important** place to react to data changes.
+> 4.  **Renderer2** is used inside `ngOnChanges` to safely update the DOM.
 
 ---
 
