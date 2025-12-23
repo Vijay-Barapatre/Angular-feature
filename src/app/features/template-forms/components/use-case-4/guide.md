@@ -4,7 +4,40 @@
 
 ---
 
-## 1. 🔍 How It Works
+## 🖼️ Visual Flow
+
+![Custom Validator Flow](custom-validator-flow.png)
+
+---
+
+## 🆕 1. What Problem Does It Solve?
+
+Standard HTML5 validators (`required`, `minlength`, `pattern`) are limited. They can't do:
+1.  **Cross-field checks**: "Does Password match Confirm Password?"
+2.  **External checks**: "Is this username already taken on the server?" (Async)
+3.  **Complex Logic**: "Is this a valid credit card using the Luhn Algorithm?"
+
+**Custom Validators** allow you to write a JavaScript function (or Class) that returns validation errors, giving you infinite flexibility.
+
+---
+
+## 🆕 2. Real-World Scenarios
+
+### 🔑 Scenario A: Password Confirmation
+*   **Requirement**: Two fields must match exactly.
+*   **Implementation**: A directive that looks at its parent form, finds the sibling "password" control, and compares values.
+
+### 🚫 Scenario B: Ban Lists (Blacklisting)
+*   **Requirement**: Users cannot choose "admin", "root", or "superuser" as usernames.
+*   **Implementation**: A validator that checks the input against a hardcoded list or regex.
+
+### 📅 Scenario C: Date Range
+*   **Requirement**: "End Date" must be after "Start Date".
+*   **Implementation**: A validator on the group or the end-date input that compares timestamps.
+
+---
+
+## 3. 🔍 How It Works (Original Section)
 
 ### The Mechanism
 In Template Driven Forms, validation is done via **Directives**.
@@ -17,19 +50,33 @@ To create a custom validator, you must:
 
 ```mermaid
 graph TD
-    Directive[CustomDirective]
-    Token[NG_VALIDATORS Token]
-    Engine[Angular Form Engine]
+    Dir["CustomDirective"]
+    Tok["NG_VALIDATORS Token"]
+    Eng["Angular Form Engine"]
     
-    Directive -->|Provides itself via| Token
-    Token -->|Injected into| Engine
+    Dir -->|"Provides itself via"| Tok
+    Tok -->|"Injected into"| Eng
     
-    Engine -->|Calls validate()| Directive
+    Eng -->|"Calls validate()"| Dir
 ```
 
 ---
 
-## 2. 🚀 Step-by-Step Implementation
+## 🆕 Deep Dive: The "Magic" Classes
+
+### A. `NG_VALIDATORS` (The Token)
+*   **Role**: Angular has a "multi-provider" token called `NG_VALIDATORS`.
+*   **Mechanism**: When a form starts, it asks DI: *"Give me everything registered under NG_VALIDATORS"*. It then runs ALL of them.
+*   **Implementation**: Your custom directive MUST provide itself to this token, or Angular won't ignore it.
+
+### B. `Validator` (The Interface)
+*   **Role**: Enforces the shape of your class.
+*   **Method**: `validate(control: AbstractControl): ValidationErrors | null`.
+*   **Return**: `null` means "Valid". An object `{ errorName: true }` means "Invalid".
+
+---
+
+## 4. 🚀 Step-by-Step Implementation
 
 ### Step 1: The Directive
 The key is the `providers` array. This tells Angular "I am a validator".
@@ -64,6 +111,34 @@ Just add the selector to your input!
 ```html
 <input name="confirm" [(ngModel)]="val" appCustomVal>
 ```
+
+---
+
+## 🆕 Interview & Scenario Questions
+
+### 🛑 Scenario 1: The "Multi: True" Trap
+**Q: I created a validator, but now 'required' stopped working. Why?**
+> **A:** You probably forgot `multi: true` in your provider. Without it, you *replaced* the entire default validator set with your single custom one. `multi: true` adds yours to the list.
+
+### 🔄 Scenario 2: Validator vs Accessor
+**Q: What's the difference between a ControlValueAccessor and a Validator?**
+> **A:**
+> *   **CVA**: Writes data FROM model TO view (and vice versa). Handles "How to display it".
+> *   **Validator**: Checks data correctness. Handles "Is it valid?".
+
+### ❓ Scenario 3: Parameterized Validators
+**Q: How do I pass an argument to my validator (like `min="5"`)?**
+> **A:** Use `@Input()` inside your directive! `<input appForbiddenName="admin">`. Your directive class will read `this.forbiddenName` inside the `validate()` function.
+
+---
+
+## 🆕 Summary Cheat Sheet
+
+| Concept | Role | Code |
+| :--- | :--- | :--- |
+| **`NG_VALIDATORS`** | The collection of all validators. | `provide: NG_VALIDATORS` |
+| **`validate()`** | The function Angular calls. | `return null` (Pass) / `{err:true}` (Fail) |
+| **`AbstractControl`** | The parameter passed to validate. | Gives access to `value`, `parent`, etc. |
 
 ---
 
@@ -106,18 +181,18 @@ Just add the selector to your input!
 
 ---
 
-## 3. 🧠 Mind Map: Quick Visual Reference
+## 5. 🧠 Mind Map: Quick Visual Reference
 
 ```mermaid
 mindmap
   root((Custom Validator))
     Requirements
-      @Directive
-      implements Validator
+      ["@Directive"]
+      ["implements Validator"]
     Registration
-      providers: NG_VALIDATORS
-      multi: true
+      ["providers: NG_VALIDATORS"]
+      ["multi: true"]
     Logic
-      Returns null if Valid
-      Returns Object if Invalid
+      ["Returns null if Valid"]
+      ["Returns Object if Invalid"]
 ```

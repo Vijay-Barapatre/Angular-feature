@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { AsyncSubject, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-async-subject-demo',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-async-subject-demo',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="container">
       <h2>4. AsyncSubject (The Finalist)</h2>
       <p class="description">
@@ -30,7 +30,7 @@ import { AsyncSubject, Subscription } from 'rxjs';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .container { padding: 20px; max-width: 600px; }
     .description { background: #ffebee; padding: 10px; border-radius: 4px; border-left: 4px solid #f44336; }
     .controls { display: flex; gap: 10px; margin: 20px 0; }
@@ -44,48 +44,48 @@ import { AsyncSubject, Subscription } from 'rxjs';
   `]
 })
 export class AsyncSubjectDemoComponent implements OnDestroy {
-    private subject = new AsyncSubject<number>();
-    private counter = 1;
-    completed = false;
+  private subject = new AsyncSubject<number>();
+  counter = 1;
+  completed = false;
 
-    subA: Subscription | null = null;
-    subB: Subscription | null = null;
+  subA: Subscription | null = null;
+  subB: Subscription | null = null;
 
-    logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
+  logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
 
-    emitValue() {
-        const val = this.counter++;
-        this.addLog(`📢 AsyncSubject emits: ${val} (Not sent to subscribers yet)`, 'type-emit');
-        this.subject.next(val);
-    }
+  emitValue() {
+    const val = this.counter++;
+    this.addLog(`📢 AsyncSubject emits: ${val} (Not sent to subscribers yet)`, 'type-emit');
+    this.subject.next(val);
+  }
 
-    complete() {
-        this.addLog('✅ AsyncSubject completed!', 'type-emit');
-        this.completed = true;
-        this.subject.complete();
-    }
+  complete() {
+    this.addLog('✅ AsyncSubject completed!', 'type-emit');
+    this.completed = true;
+    this.subject.complete();
+  }
 
-    subscribeA() {
-        this.addLog('👤 Subscriber A joins', 'type-sub');
-        this.subA = this.subject.subscribe(val => {
-            this.addLog(`👤 A received: ${val}`, 'type-val');
-        });
-    }
+  subscribeA() {
+    this.addLog('👤 Subscriber A joins', 'type-sub');
+    this.subA = this.subject.subscribe(val => {
+      this.addLog(`👤 A received: ${val}`, 'type-val');
+    });
+  }
 
-    subscribeB() {
-        this.addLog('👤 Subscriber B joins', 'type-sub');
-        this.subB = this.subject.subscribe(val => {
-            this.addLog(`👤 B received: ${val}`, 'type-val');
-        });
-    }
+  subscribeB() {
+    this.addLog('👤 Subscriber B joins', 'type-sub');
+    this.subB = this.subject.subscribe(val => {
+      this.addLog(`👤 B received: ${val}`, 'type-val');
+    });
+  }
 
-    addLog(message: string, type: 'type-emit' | 'type-sub' | 'type-val') {
-        const time = new Date().toLocaleTimeString();
-        this.logs.unshift({ time, message, type });
-    }
+  addLog(message: string, type: 'type-emit' | 'type-sub' | 'type-val') {
+    const time = new Date().toLocaleTimeString();
+    this.logs.unshift({ time, message, type });
+  }
 
-    ngOnDestroy() {
-        this.subA?.unsubscribe();
-        this.subB?.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.subA?.unsubscribe();
+    this.subB?.unsubscribe();
+  }
 }
