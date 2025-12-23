@@ -4,6 +4,8 @@
 
 ---
 
+![Multiple IO Flow](./multiple-io-flow.png)
+
 ## ❓ What Problem Does It Solve?
 
 Real-world features (like a profile editor) rarely involve just one piece of data. They involve **multiple, related inputs** that must work in harmony.

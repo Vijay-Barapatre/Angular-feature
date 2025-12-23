@@ -4,6 +4,8 @@
 
 ---
 
+![Input Transforms Flow](./input-transforms-flow.png)
+
 ## ❓ What Problem Does It Solve?
 
 In web development, HTML attributes are **always strings**. This creates a mismatch when your Angular component expects strongly typed inputs.

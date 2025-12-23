@@ -2,6 +2,10 @@
 
 This guide explains the "Input Setter" pattern in Angular, a powerful technique for intercepting, validating, and reacting to data changes passed from a parent component.
 
+---
+
+![Input Setters Flow](./input-setters-flow.png)
+
 ## ❓ What Problem Does It Solve?
 
 When building reusable components, you often face these challenges:
