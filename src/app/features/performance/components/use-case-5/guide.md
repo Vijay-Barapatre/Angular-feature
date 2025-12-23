@@ -4,6 +4,8 @@
 
 ---
 
+![Runtime Pipes Flow](./runtime-pipes-flow.png)
+
 ## Pure Pipes vs Methods
 
 | Aspect | Method | Pure Pipe |

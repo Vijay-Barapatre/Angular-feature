@@ -4,6 +4,8 @@
 
 ---
 
+![Bundle Optimization Flow](./bundle-optimization-flow.png)
+
 ## Key Techniques
 
 1. **Tree Shaking** - Only used code bundled

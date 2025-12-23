@@ -4,6 +4,8 @@
 
 ---
 
+![Lazy Loading Flow](./lazy-loading-flow.png)
+
 ## Methods
 
 | Method | Code | Impact |

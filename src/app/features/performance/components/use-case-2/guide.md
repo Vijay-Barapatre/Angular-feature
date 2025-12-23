@@ -4,6 +4,8 @@
 
 ---
 
+![TrackBy Flow](./trackby-flow.png)
+
 ## Syntax
 
 ```typescript

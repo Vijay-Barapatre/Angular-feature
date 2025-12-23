@@ -4,6 +4,8 @@
 
 ---
 
+![Profiling Flow](./profiling-flow.png)
+
 ## Essential Tools
 
 1. **Angular DevTools** - CD profiler, component tree

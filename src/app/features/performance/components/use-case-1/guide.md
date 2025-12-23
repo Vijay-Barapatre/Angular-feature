@@ -4,6 +4,8 @@
 
 ---
 
+![OnPush Flow](./onpush-flow.png)
+
 ## Default vs OnPush
 
 | Aspect | Default | OnPush |

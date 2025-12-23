@@ -24,6 +24,10 @@ export const routes: Routes = [
      * Displays the landing page with feature categories
      */
     {
+        path: 'rxjs-subjects',
+        loadChildren: () => import('./features/rxjs-subjects/rxjs-subjects.routes').then(m => m.RXJS_SUBJECTS_ROUTES)
+    },
+    {
         path: '',
         loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
     },

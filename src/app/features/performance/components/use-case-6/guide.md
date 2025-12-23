@@ -4,6 +4,8 @@
 
 ---
 
+![Memory Leak Flow](./memory-leak-flow.png)
+
 ## Best Patterns
 
 1. **async pipe** - Zero boilerplate
