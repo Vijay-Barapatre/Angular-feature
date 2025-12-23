@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-behavior-subject-demo',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-behavior-subject-demo',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="container">
       <h2>2. BehaviorSubject (The State Holder)</h2>
       <p class="description">
@@ -29,7 +29,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .container { padding: 20px; max-width: 600px; }
     .description { background: #e8f5e9; padding: 10px; border-radius: 4px; border-left: 4px solid #4caf50; }
     .controls { display: flex; gap: 10px; margin: 20px 0; }
@@ -43,46 +43,46 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   `]
 })
 export class BehaviorSubjectDemoComponent implements OnDestroy {
-    // Initial value is 0
-    private subject = new BehaviorSubject<number>(0);
-    private counter = 1;
+  // Initial value is 0
+  private subject = new BehaviorSubject<number>(0);
+  public counter = 1;
 
-    subA: Subscription | null = null;
-    subB: Subscription | null = null;
+  subA: Subscription | null = null;
+  subB: Subscription | null = null;
 
-    logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
+  logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
 
-    constructor() {
-        this.addLog('🏁 BehaviorSubject created with initial value: 0', 'type-emit');
-    }
+  constructor() {
+    this.addLog('🏁 BehaviorSubject created with initial value: 0', 'type-emit');
+  }
 
-    emitValue() {
-        const val = this.counter++;
-        this.addLog(`📢 BehaviorSubject emits: ${val}`, 'type-emit');
-        this.subject.next(val);
-    }
+  emitValue() {
+    const val = this.counter++;
+    this.addLog(`📢 BehaviorSubject emits: ${val}`, 'type-emit');
+    this.subject.next(val);
+  }
 
-    subscribeA() {
-        this.addLog('👤 Subscriber A joins', 'type-sub');
-        this.subA = this.subject.subscribe(val => {
-            this.addLog(`👤 A received: ${val}`, 'type-val');
-        });
-    }
+  subscribeA() {
+    this.addLog('👤 Subscriber A joins', 'type-sub');
+    this.subA = this.subject.subscribe(val => {
+      this.addLog(`👤 A received: ${val}`, 'type-val');
+    });
+  }
 
-    subscribeB() {
-        this.addLog('👤 Subscriber B joins (Late)', 'type-sub');
-        this.subB = this.subject.subscribe(val => {
-            this.addLog(`👤 B received: ${val}`, 'type-val');
-        });
-    }
+  subscribeB() {
+    this.addLog('👤 Subscriber B joins (Late)', 'type-sub');
+    this.subB = this.subject.subscribe(val => {
+      this.addLog(`👤 B received: ${val}`, 'type-val');
+    });
+  }
 
-    addLog(message: string, type: 'type-emit' | 'type-sub' | 'type-val') {
-        const time = new Date().toLocaleTimeString();
-        this.logs.unshift({ time, message, type });
-    }
+  addLog(message: string, type: 'type-emit' | 'type-sub' | 'type-val') {
+    const time = new Date().toLocaleTimeString();
+    this.logs.unshift({ time, message, type });
+  }
 
-    ngOnDestroy() {
-        this.subA?.unsubscribe();
-        this.subB?.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.subA?.unsubscribe();
+    this.subB?.unsubscribe();
+  }
 }

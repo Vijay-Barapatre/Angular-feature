@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ReplaySubject, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-replay-subject-demo',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-replay-subject-demo',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="container">
       <h2>3. ReplaySubject (The Recorder)</h2>
       <p class="description">
@@ -29,7 +29,7 @@ import { ReplaySubject, Subscription } from 'rxjs';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .container { padding: 20px; max-width: 600px; }
     .description { background: #fff3e0; padding: 10px; border-radius: 4px; border-left: 4px solid #ff9800; }
     .controls { display: flex; gap: 10px; margin: 20px 0; }
@@ -43,46 +43,46 @@ import { ReplaySubject, Subscription } from 'rxjs';
   `]
 })
 export class ReplaySubjectDemoComponent implements OnDestroy {
-    // Buffer size 3
-    private subject = new ReplaySubject<number>(3);
-    private counter = 1;
+  // Buffer size 3
+  private subject = new ReplaySubject<number>(3);
+  public counter = 1;
 
-    subA: Subscription | null = null;
-    subB: Subscription | null = null;
+  subA: Subscription | null = null;
+  subB: Subscription | null = null;
 
-    logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
+  logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
 
-    constructor() {
-        this.addLog('🏁 ReplaySubject created with buffer size: 3', 'type-emit');
-    }
+  constructor() {
+    this.addLog('🏁 ReplaySubject created with buffer size: 3', 'type-emit');
+  }
 
-    emitValue() {
-        const val = this.counter++;
-        this.addLog(`📢 ReplaySubject emits: ${val}`, 'type-emit');
-        this.subject.next(val);
-    }
+  emitValue() {
+    const val = this.counter++;
+    this.addLog(`📢 ReplaySubject emits: ${val}`, 'type-emit');
+    this.subject.next(val);
+  }
 
-    subscribeA() {
-        this.addLog('👤 Subscriber A joins', 'type-sub');
-        this.subA = this.subject.subscribe(val => {
-            this.addLog(`👤 A received: ${val}`, 'type-val');
-        });
-    }
+  subscribeA() {
+    this.addLog('👤 Subscriber A joins', 'type-sub');
+    this.subA = this.subject.subscribe(val => {
+      this.addLog(`👤 A received: ${val}`, 'type-val');
+    });
+  }
 
-    subscribeB() {
-        this.addLog('👤 Subscriber B joins (Late)', 'type-sub');
-        this.subB = this.subject.subscribe(val => {
-            this.addLog(`👤 B received: ${val}`, 'type-val');
-        });
-    }
+  subscribeB() {
+    this.addLog('👤 Subscriber B joins (Late)', 'type-sub');
+    this.subB = this.subject.subscribe(val => {
+      this.addLog(`👤 B received: ${val}`, 'type-val');
+    });
+  }
 
-    addLog(message: string, type: 'type-emit' | 'type-sub' | 'type-val') {
-        const time = new Date().toLocaleTimeString();
-        this.logs.unshift({ time, message, type });
-    }
+  addLog(message: string, type: 'type-emit' | 'type-sub' | 'type-val') {
+    const time = new Date().toLocaleTimeString();
+    this.logs.unshift({ time, message, type });
+  }
 
-    ngOnDestroy() {
-        this.subA?.unsubscribe();
-        this.subB?.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.subA?.unsubscribe();
+    this.subB?.unsubscribe();
+  }
 }

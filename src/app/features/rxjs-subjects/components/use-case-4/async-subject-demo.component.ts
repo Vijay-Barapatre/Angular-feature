@@ -15,7 +15,7 @@ import { AsyncSubject, Subscription } from 'rxjs';
       </p>
 
       <div class="controls">
-        <button [disabled]="completed" (click)="emitValue()">📢 Emit Next Value ({{ counter }})</button>
+        <button [disabled]="completed" (click)="emitValue()">📢 Emit Next Value ({{ seqNumber }})</button>
         <button [disabled]="completed" (click)="complete()">✅ Complete</button>
         <button [disabled]="subA" (click)="subscribeA()">👤 Subscribe A</button>
         <button [disabled]="subB" (click)="subscribeB()">👤 Subscribe B</button>
@@ -45,7 +45,7 @@ import { AsyncSubject, Subscription } from 'rxjs';
 })
 export class AsyncSubjectDemoComponent implements OnDestroy {
   private subject = new AsyncSubject<number>();
-  counter = 1;
+  public seqNumber = 1;
   completed = false;
 
   subA: Subscription | null = null;
@@ -54,7 +54,7 @@ export class AsyncSubjectDemoComponent implements OnDestroy {
   logs: { time: string, message: string, type: 'type-emit' | 'type-sub' | 'type-val' }[] = [];
 
   emitValue() {
-    const val = this.counter++;
+    const val = this.seqNumber++;
     this.addLog(`📢 AsyncSubject emits: ${val} (Not sent to subscribers yet)`, 'type-emit');
     this.subject.next(val);
   }
