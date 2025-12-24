@@ -5,10 +5,10 @@ import { FormsModule, NgForm } from '@angular/forms'; // 1. Import FormsModule
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-basic-form',
-    standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink], // 2. Add to imports
-    template: `
+  selector: 'app-basic-form',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink], // 2. Add to imports
+  template: `
     <div class="form-container">
       <h1>🚀 Use Case 1: The Basics</h1>
       <p class="desc">A simple login form demonstrating <code>[(ngModel)]</code> and <code>ngForm</code>.</p>
@@ -25,6 +25,7 @@ import { RouterLink } from '@angular/router';
             name="username" 
             [(ngModel)]="model.username"
             placeholder="Enter username"
+            required
           >
         </div>
 
@@ -54,7 +55,7 @@ import { RouterLink } from '@angular/router';
       <a routerLink="/template-forms" class="back-link">← Back to Overview</a>
     </div>
   `,
-    styles: [`
+  styles: [`
     .form-container {
       max-width: 500px;
       margin: 30px auto;
@@ -114,19 +115,19 @@ import { RouterLink } from '@angular/router';
   `]
 })
 export class BasicFormComponent {
-    // Initial model state
-    model = {
-        username: '',
-        password: ''
-    };
+  // Initial model state
+  model = {
+    username: '',
+    password: ''
+  };
 
-    onSubmit(form: NgForm) {
-        if (form.valid) {
-            console.log('Form Submitted!', form.value);
-            alert(`Login Successful for: ${this.model.username}`);
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      console.log('Form Submitted!', form.value);
+      alert(`Login Successful for: ${this.model.username}`);
 
-            // Optional: Reset form
-            // form.reset();
-        }
+      // Optional: Reset form
+      // form.reset();
     }
+  }
 }

@@ -5,19 +5,34 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-validation',
-    standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
-    template: `
+  selector: 'app-validation',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterLink],
+  template: `
     <div class="form-container">
       <h1>✅ Use Case 2: Validation</h1>
       <p class="desc">Registration form with built-in validators and visual feedback.</p>
 
+      <!-- 
+        EXPLANATION OF #regForm="ngForm":
+        1. #regForm: Creates a generic template variable (normally refers to the HTML <form> element).
+        2. ="ngForm": This is the 'exportAs' syntax. It tells Angular:
+           "Don't give me the raw HTML Element. Give me the instance of the NgForm directive instead."
+        
+        Why? The raw HTMLFormElement is 'dumb'. The NgForm directive is 'smart'—it contains 
+        API properties like .valid, .value, .reset(), etc.
+      -->
       <form #regForm="ngForm" (ngSubmit)="onSubmit(regForm)">
         
         <!-- Full Name: Required, MinLength -->
         <div class="form-group">
           <label>Full Name</label>
+          <!-- 
+            EXPLANATION OF #nameCtrl="ngModel":
+            1. #nameCtrl: Creates a template variable for this specific input.
+            2. ="ngModel": Tells Angular to give us the NgModel directive instance 
+               (which has .valid, .touched, .errors) instead of the raw HTMLInputElement.
+          -->
           <input 
             type="text" 
             name="fullName"
@@ -81,7 +96,7 @@ import { RouterLink } from '@angular/router';
       <a routerLink="/template-forms" class="back-link">← Back to Overview</a>
     </div>
   `,
-    styles: [`
+  styles: [`
     .form-container {
       max-width: 500px;
       margin: 30px auto;
@@ -153,18 +168,18 @@ import { RouterLink } from '@angular/router';
   `]
 })
 export class ValidationComponent {
-    user = {
-        name: '',
-        email: '',
-        role: ''
-    };
+  user = {
+    name: '',
+    email: '',
+    role: ''
+  };
 
-    onSubmit(form: NgForm) {
-        if (form.valid) {
-            alert('Registration Successful!\n' + JSON.stringify(this.user, null, 2));
-        } else {
-            // Force validation tick (usually handled automatically by button disable)
-            form.control.markAllAsTouched();
-        }
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      alert('Registration Successful!\n' + JSON.stringify(this.user, null, 2));
+    } else {
+      // Force validation tick (usually handled automatically by button disable)
+      form.control.markAllAsTouched();
     }
+  }
 }
