@@ -35,6 +35,12 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     <a routerLink="basic/exercise-4" routerLinkActive="active">
                         Exercise 4: Custom Validators
                     </a>
+                    <a routerLink="basic/exercise-5" routerLinkActive="active">
+                        Exercise 5: Typed Forms
+                    </a>
+                    <a routerLink="basic/exercise-6" routerLinkActive="active">
+                        Exercise 6: Signals Interop
+                    </a>
                 </div>
                 <div class="nav-section">
                     <h3>🟥 Complex Scenarios</h3>

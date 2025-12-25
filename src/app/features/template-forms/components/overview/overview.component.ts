@@ -52,6 +52,30 @@ import { RouterLink } from '@angular/router';
           <p><strong>Complex Lists</strong></p>
           <p>Managing arrays, real-time calculations, and dynamic index-based naming.</p>
         </div>
+
+        <!-- Use Case 6: Async Validators -->
+        <div class="card" routerLink="use-case-6">
+          <div class="icon">⏳</div>
+          <h2>Use Case 6: Async Validators</h2>
+          <p><strong>API Validation</strong></p>
+          <p>Check username availability with async validator directives.</p>
+        </div>
+
+        <!-- Use Case 7: Value Changes -->
+        <div class="card" routerLink="use-case-7">
+          <div class="icon">📡</div>
+          <h2>Use Case 7: Form Observables</h2>
+          <p><strong>Reactive Streams</strong></p>
+          <p>Subscribe to valueChanges and statusChanges with RxJS.</p>
+        </div>
+
+        <!-- Use Case 8: Signals Integration -->
+        <div class="card" routerLink="use-case-8">
+          <div class="icon">🚦</div>
+          <h2>Use Case 8: Signals Integration</h2>
+          <p><strong>Modern Angular</strong></p>
+          <p>Bridge template forms with Angular Signals for reactive UI.</p>
+        </div>
       </div>
     </div>
   `,

@@ -4,6 +4,37 @@
 
 ---
 
+---
+
+## 🏛️ What Problem Does It Solve?
+
+### The "Dependent Fields" Problem
+*   **The Problem**: "Password" and "Confirm Password" are valid individually (both have text), but invalid *together* (they don't match). Field-level validators (`required`, `minlength`) can't see the other field.
+*   **The Solution**: Cross-field validation runs on the parent `FormGroup`, which has access to *both* children.
+
+### The "Logical Constraints" Problem
+*   **The Problem**: "Start Date" cannot be after "End Date". The validity of "Start Date" depends entirely on what the user typed in "End Date".
+*   **The Solution**: A group validator compares the two values and marks the *logic* as invalid, rather than a specific input.
+
+---
+
+## 🔬 Deep Dive: Important Classes & Directives
+
+### A. The Classes (TypeScript Side)
+1.  **`FormGroup` Options**:
+    *   The second argument of `new FormGroup` isn't just validators. It's an options object: `{ validators: [], asyncValidators: [], updateOn: 'blur' }`.
+    *   *History*: In older Angular versions, validators were the 2nd argument directly. Now checking `AbstractControlOptions` is preferred.
+
+2.  **`AbstractControl.errors`**:
+    *   This property exists on Groups too! `this.form.errors` contains the result of your cross-field validator.
+
+### B. The Directives (HTML Side)
+1.  **`form.hasError('key')`**:
+    *   A helper method that checks `this.errors['key']`.
+    *   *Usage*: `@if (form.hasError('mismatch'))`. It's cleaner than `form.errors?.['mismatch']`.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Core Mechanism
@@ -185,6 +216,10 @@ this.form = new FormGroup({
 1. **Password Confirmation**: New password vs confirm password.
 2. **Date Range**: Check-in must be before check-out.
 3. **Quantity Limits**: Min quantity ≤ max quantity.
+4. **📞 Contact Preference**: If "Phone" is selected as preferred, the Phone Number field becomes required.
+5. **💱 Currency Exchange**: `Buy Price` must be lower than `Sell Price`.
+6. **📅 Event Scheduling**: "Event End Time" must be strictly greater than "Event Start Time".
+7. **👪 Household Income**: If "Married" is selected, "spousal income" field must be valid (or conditionally required).
 
 ---
 
@@ -297,6 +332,60 @@ function contactRequired(group): ValidationErrors | null {
     return (email || phone) ? null : { noContact: true };
 }
 ```
+
+### Q5: How do you access the `FormGroup` inside the validator function?
+**A:** The function receives `control: AbstractControl`. You cast it: `const group = control as FormGroup;` (though it's not strictly necessary to access `.get()`).
+
+### Q6: Can you manipulate controls inside a validator (e.g., disable them)?
+**A:** **Avoid it.** Validators should be pure functions that return status. Side effects (like disabling fields) can cause infinite loops or change detection errors.
+
+### Q7: If I update "Password", does "Confirm Password" validation run?
+**A:** No, by default, changing a child only validates *that* child and its parents. It does NOT automatically re-validate siblings. Data flows UP.
+However, since our validator is on the **Parent Group**, updating *any* child updates the parent, which triggers the Group Validator. So YES, it works!
+
+### Q8: How to manually trigger cross-field validation?
+**A:** `form.updateValueAndValidity()`.
+
+### Q9: (Scenario) "Start Date" is valid, "End Date" is valid, but the Range is invalid. Which control shows the red border?
+**A:** By default, neither (if they only check their own errors). You must CSS-style the *container* based on `form.invalid`, OR manually set errors on the child controls (not recommended), OR use a helper `isInvalid` covering the group error.
+
+### Q10: How to ensure `passwordMatch` only shows error when `confirmPassword` is dirty?
+**A:** In the template: `@if (form.hasError('mismatch') && form.get('confirmPassword')?.dirty)`.
+
+### Q11: Can shared validators be Async?
+**A:** Yes, `new FormGroup({ ... }, { asyncValidators: [myAsyncOne] })`.
+
+### Q12: What if I have 3 password fields (Old, New, Confirm)?
+**A:** The logic is the same. `group.get('new') === group.get('confirm')`. "Old" might need a separate async validator to check against DB.
+
+### Q13: How to handle circular dependencies in validation?
+**A:** Reactive Forms avoids this because data flows one way (Child -> Parent). But if you subscribe to `valueChanges` and call `setValue` inside, you might cause a loop. Use `{ emitEvent: false }`.
+
+### Q14: How do you test a cross-field validator in isolation?
+**A:**
+```typescript
+const group = new FormGroup({ a: new FormControl(1), b: new FormControl(2) });
+const result = myValidator(group);
+expect(result).not.toBeNull();
+```
+
+### Q15: Why use `AbstractControl` type for the validator argument?
+**A:** Because validators can be applied to `FormControl`, `FormGroup`, or `FormArray`. `AbstractControl` is the base class for all of them.
+
+### Q16: Can I attach a cross-field validator after initialization?
+**A:** Yes, `form.setValidators([newValidator]); form.updateValueAndValidity();`.
+
+### Q17: What is the `parent` property of a control?
+**A:** It points to the `FormGroup` (or Array) containing the control. You *could* access siblings via `control.parent.get('sibling')`, but it's cleaner to put the validator on the parent.
+
+### Q18: Difference between `validator` and `validators` in FormGroup config?
+**A:** Angular 7 deprecated the direct 2nd argument. In modern Angular, use the options object `{ validators: [] }` to avoid confusion with `asyncValidators`.
+
+### Q19: How to clear a cross-field error?
+**A:** You can't "clear" it directly if the validator keeps returning it. You must change the inputs (values) effectively. Or remove the validator.
+
+### Q20: (Scenario) Dynamic form where "Confirm Password" field is sometimes removed.
+**A:** Your validator must check if the control exists (`group.get('confirm')`) before accessing `.value`. `group.get()` returns null if missing.
 
 ---
 

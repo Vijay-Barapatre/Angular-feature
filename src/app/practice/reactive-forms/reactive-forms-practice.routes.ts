@@ -57,6 +57,16 @@ export const REACTIVE_FORMS_PRACTICE_ROUTES: Routes = [
                 loadComponent: () => import('./complex/scenario-5-nested.component')
                     .then(m => m.Scenario5NestedComponent)
             },
+            {
+                path: 'basic/exercise-5',
+                loadComponent: () => import('./basic/exercise-5-typed-forms.component')
+                    .then(m => m.Exercise5TypedFormsComponent)
+            },
+            {
+                path: 'basic/exercise-6',
+                loadComponent: () => import('./basic/exercise-6-signals-interop.component')
+                    .then(m => m.Exercise6SignalsInteropComponent)
+            },
             { path: '', redirectTo: 'basic/exercise-1', pathMatch: 'full' }
         ]
     }

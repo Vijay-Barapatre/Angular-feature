@@ -117,5 +117,23 @@ export const REACTIVE_FORMS_ROUTES: Routes = [
     {
         path: 'use-case-8',
         loadComponent: () => import('./components/use-case-8/value-changes.component').then(m => m.ValueChangesComponent)
+    },
+
+    /**
+     * USE CASE 9: Strongly Typed Forms (Angular 14+)
+     * Using strict typing, NonNullableFormBuilder, and FormRecord.
+     */
+    {
+        path: 'use-case-9',
+        loadComponent: () => import('./components/use-case-9/typed-forms.component').then(m => m.TypedFormsComponent)
+    },
+
+    /**
+     * USE CASE 10: Reactive Forms + Signals (Interop)
+     * Bridging RxJS form streams to Angular Signals.
+     */
+    {
+        path: 'use-case-10',
+        loadComponent: () => import('./components/use-case-10/signals-interop.component').then(m => m.SignalsInteropComponent)
     }
 ];

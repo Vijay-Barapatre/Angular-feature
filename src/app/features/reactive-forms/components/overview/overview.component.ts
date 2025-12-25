@@ -292,6 +292,20 @@ export class ReactiveFormsOverviewComponent {
             description: 'React to form changes using RxJS Observables.',
             path: 'use-case-8',
             icon: '📡'
+        },
+        {
+            id: 9,
+            title: 'Strongly Typed Forms',
+            description: 'Angular 14+ Strict Typing, NonNullableFormBuilder, and FormRecord.',
+            path: 'use-case-9',
+            icon: '🛡️'
+        },
+        {
+            id: 10,
+            title: 'Forms + Signals',
+            description: 'Bridging RxJS form streams to Signals for derived state (toSignal).',
+            path: 'use-case-10',
+            icon: '🚦'
         }
     ];
 }

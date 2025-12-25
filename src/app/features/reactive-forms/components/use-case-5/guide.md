@@ -4,6 +4,38 @@
 
 ---
 
+---
+
+## 🏛️ What Problem Does It Solve?
+
+### The "Specific Business Rule" Problem
+*   **The Problem**: Built-in validators (`required`, `email`) are generic. Your app has specific rules: "Username cannot contain 'admin'", or "StartDate must be a Tuesday".
+*   **The Solution**: Custom Validators allow you to write *any* JavaScript logic to validate a field.
+*   **The Benefit**: You encapsulate business logic in reusable functions, keeping your component clean.
+
+### The "Server-Side Check" Problem
+*   **The Problem**: You can't know if "user123" is taken without checking the database.
+*   **The Solution**: Async Validators (`AsyncValidatorFn`) allow you to make HTTP calls. Angular waits for the result before making the form valid.
+
+---
+
+## 🔬 Deep Dive: Important Classes & Directives
+
+### A. The Types (TypeScript Side)
+1.  **`ValidationErrors`**:
+    *   The return type of a validator. Use a simple object key to indicate failure.
+    *   *Standard*: `{ myErrorKey: true }` or `{ myErrorKey: { expected: 'x', actual: 'y' } }`.
+
+2.  **`AsyncValidatorFn`**:
+    *   Signature: `(control: AbstractControl) => Observable<ValidationErrors | null>`.
+    *   *Key difference*: Must finish (complete) the Observable. Usually use `.pipe(first())` or `.pipe(take(1))` if your source doesn't complete automatically (like an HTTP call usually does).
+
+### B. The Directives (HTML Side)
+1.  **`[class.pending]`**:
+    *   Use this to show a spinner when `control.status === 'PENDING'`.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Core Mechanism
@@ -216,6 +248,10 @@ function debouncedCheck(): AsyncValidatorFn {
 1. **Username Availability**: Async check if username is taken.
 2. **Credit Card Luhn**: Sync validator for card number checksum.
 3. **Password Strength**: Multiple sync checks (uppercase, number, special char).
+4. **🤬 Profanity Filter**: Reject specific words from a list in comments or bios.
+5. **📍 Zip Code Match**: Async check if Zip Code matches the selected State/City (verifying address).
+6. **🎟️ Coupon Code**: Async check to verify if a promo code is valid and active on the backend.
+7. **🆔 Unique ID**: Checking if an Employee ID or SKU already exists in the inventory system.
 
 ---
 
@@ -342,6 +378,63 @@ emailExistsValidator(): AsyncValidatorFn {
         .pipe(map(exists => exists ? { emailExists: true } : null));
 }
 ```
+
+### Q6: What is a "Factory Validator"?
+**A:** A function that returns a validator function. It allows you to pass parameters (like `minAge(18)`), creating a closure.
+
+### Q7: Why must an Async Validator return an Observable that completes?
+**A:** Angular subscribes to the validator. If it never completes, the form status hangs in `PENDING` forever. HTTP Observables complete automatically, but custom subjects might need `.pipe(first())`.
+
+### Q8: Can a validator access other controls?
+**A:** Yes, if the validator is attached to the **FormGroup** (parent), it can access `group.get('otherControl')`. If attached to a FormControl, it can check `control.parent` (but this is brittle).
+
+### Q9: How do you manually set an error on a control?
+**A:** `control.setErrors({ myError: true })`.
+
+### Q10: How do you clear a specific error manually?
+**A:** `control.setErrors(null)` clears ALL errors. To clear just one, you must merge:
+```typescript
+const errors = { ...control.errors };
+delete errors['myError'];
+control.setErrors(Object.keys(errors).length ? errors : null);
+```
+
+### Q11: (Scenario) Async validator runs too often.
+**A:** Use `timer` or `debounceTime` inside the validator to delay the HTTP call.
+
+### Q12: What happens if both Sync and Async validators fail?
+**A:** Sync runs first. If it fails, the Async validator is **cancelled/skipped** for performance. The control is invalid immediately.
+
+### Q13: Can you reuse a validator across different projects?
+**A:** Yes! Validators are just pure functions. Put them in a `shared/validators` folder.
+
+### Q14: How do you unit test a custom validator?
+**A:** Call the function with a mock control object:
+```typescript
+const result = myValidator(new FormControl('invalid'));
+expect(result).toEqual({ error: true });
+```
+
+### Q15: Why might `control.parent` be null inside a validator?
+**A:** If the control is created standalone (`new FormControl(...)`) and not yet added to a FormGroup when the validator first runs.
+
+### Q16: How do you combine multiple Async Validators?
+**A:** Pass them as an array. They run in parallel (forkJoin style) by default.
+
+### Q17: What does `Validators.compose()` do?
+**A:** Merges multiple validtors into one function. Angular does this internally when you pass an array.
+
+### Q18: (Scenario) How to validate that a list (FormArray) has unique values?
+**A:** Custom Validator on the FormArray. Loop through controls, check for duplicates using a Set.
+
+### Q19: Explain `ValidationErrors` type relationship with `any`.
+**A:** It acts like `Record<string, any>`. The value is usually `true` or an object, but technically can be anything truthy.
+
+### Q20: How do you show a "User not found" error that comes from the backend AFTER submit?
+**A:** In the `subscribe` error block, manually call `form.get('user').setErrors({ notFound: true })`.
+
+### Q21: Can you use Dependency Injection in a custom validator function?
+**A:** Not directly (it's a plain function). You must pass the service AS AN ARGUMENT to the factory function (e.g., `createMyValidator(myService)`), or use a class-based structure, or an Async Validator class.
 
 ---
 

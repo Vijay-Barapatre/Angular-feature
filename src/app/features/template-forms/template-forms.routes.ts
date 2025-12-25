@@ -25,5 +25,17 @@ export const TEMPLATE_FORMS_ROUTES: Routes = [
     {
         path: 'use-case-5',
         loadComponent: () => import('./components/use-case-5/dynamic-form.component').then(m => m.DynamicFormComponent)
+    },
+    {
+        path: 'use-case-6',
+        loadComponent: () => import('./components/use-case-6/async-validator.component').then(m => m.AsyncValidatorComponent)
+    },
+    {
+        path: 'use-case-7',
+        loadComponent: () => import('./components/use-case-7/value-changes.component').then(m => m.ValueChangesComponent)
+    },
+    {
+        path: 'use-case-8',
+        loadComponent: () => import('./components/use-case-8/signals-integration.component').then(m => m.SignalsIntegrationComponent)
     }
 ];

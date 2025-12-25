@@ -4,6 +4,51 @@
 
 ---
 
+---
+
+## 🏛️ What Problem Does It Solve?
+
+### The "Messy Template" Problem
+In traditional Template-Driven forms (`ngModel`), all your logic lives in the HTML.
+*   **The Struggle**: As forms get bigger (20+ fields), your HTML becomes huge and hard to read.
+*   **The Issue**: If you need to check if "Field A" matches "Field B" (like password confirmation), you have to write complex template logic.
+*   **The Pain**: Testing requires spinning up a browser (E2E), which is slow.
+
+### The Reactive Solution
+Reactive Forms move the "brain" of the form from the HTML to your TypeScript class.
+*   **Logic in Code**: You create the form structure in TS (`new FormGroup(...)`).
+*   **Testability**: You can test the form's logic (validations, value changes) in simple unit tests without any HTML.
+*   **Predictability**: Data flows synchronously. You always know the state of the form instantly.
+
+---
+
+## 🔬 Deep Dive: Important Classes & Directives
+
+### A. The Classes (TypeScript Side)
+1.  **`FormControl`** (The Atom):
+    *   Tracks the value and validity of a **single** input field.
+    *   *Analogy*: A single cell in a spreadsheet.
+    *   *Usage*: `email = new FormControl('default')`.
+
+2.  **`FormGroup`** (The Container):
+    *   Tracks the value and validity of a **collection** of controls.
+    *   *Analogy*: A single row in a spreadsheet containing multiple cells.
+    *   *Key Behavior*: If ONE control inside is invalid, the WHOLE group is invalid.
+
+3.  **`ReactiveFormsModule`** (The Enabler):
+    *   The Angular module that unlocks these features. Without importing this, none of the code above works.
+
+### B. The Directives (HTML Side)
+1.  **`[formGroup]`**: 
+    *   Binds a complete `FormGroup` instance to a parent DOM element (usually `<form>`).
+    *   *Effect*: Connects your TS logic to the View.
+
+2.  **`formControlName`**:
+    *   Syncs a specific DOM input with a specific `FormControl` inside the parent group.
+    *   *Rule*: The name MUST match the key in your TypeScript `FormGroup` definition exactly.
+
+---
+
 ## 1. 🔍 How It Works (The Concept)
 
 ### The Core Mechanism
@@ -266,6 +311,10 @@ export class ProfileFormComponent {
 1. **User Registration Form**: First name, last name, email, password. Need programmatic control for password matching.
 2. **Settings Page**: Form values loaded from API, then saved on submit. `setValue` populates the form.
 3. **Multi-Step Wizard**: Split a large form into pages. Each page is a `FormGroup`. Combine at the end.
+4. **🔴 Live Search Filter**: Listening to `valueChanges` on a search box, applying `debounceTime(300)`, and triggering an API search without a submit button.
+5. **📝 Dynamic Surveys**: Using `FormArray` to let users "Add Question" dynamically. The form acts as a JSON builder.
+6. **🛒 Shopping Cart Items**: Editing quantities in a list (Table Row Editing). Each row is a `FormGroup` inside a `FormArray`.
+7. **🔐 Auto-Saving Forms**: Listening to `statusChanges` or `valueChanges` to auto-save drafts to LocalStorage every few seconds.
 
 ---
 
@@ -347,6 +396,80 @@ ngOnInit() {
     });
 }
 ```
+
+### Q7: How do you listen to changes on a specific field?
+**A:** subscribe to `control.valueChanges`:
+```typescript
+this.form.get('email')?.valueChanges.subscribe(val => console.log(val));
+```
+
+### Q8: What is `FormBuilder` and why use it?
+**A:** It's a syntactic sugar service. Instead of `new FormGroup({ a: new FormControl() })`, you write `fb.group({ a: [] })`. It reduces boilerplate.
+
+### Q9: What are Typed Forms (Angular 14+)?
+**A:** Before v14, forms were `any`. Now, `FormGroup<{ email: FormControl<string|null> }>` ensures type safety. If you try to patch a number into a string field, TS throws an error.
+
+### Q10: How does `updateOn: 'blur'` help performance?
+**A:** By default, validation runs on every keystroke (`'change'`). Setting `updateOn: 'blur'` delays validation until the user leaves the field, reducing CPU/Memory usage for expensive validators.
+
+### Q11: How do you handle "Password" and "Confirm Password" validation?
+**A:** Use a **Cross-Field Validator** on the `FormGroup`, not the controls. The validator checks `group.get('pass').value === group.get('confirm').value`.
+
+### Q12: Explain `ControlValueAccessor` (CVA).
+**A:** It's an interface that allows you to turn a custom component (e.g., `<my-slider>`) into a form control that works with `formControlName`. It bridges the DOM to the Angular Form API.
+
+### Q13: What happens if you use `[disabled]="true"` in the template with Reactive Forms?
+**A:** **It gives a warning.** In Reactive Forms, you should change status programmatically: `control.disable()` or `control.enable()`. Template binding for disabled state is discouraged.
+
+### Q14: How do you reset a form but keep one field's value?
+**A:** Pass the value to the reset method:
+```typescript
+this.form.reset({ email: 'keep@me.com' }); // Others go null
+```
+
+### Q15: Difference between `dirty` and `touched`?
+**A:** 
+*   **Dirty**: Value changed.
+*   **Touched**: Focus entered and left (blurred).
+
+### Q16: How do you add dynamic fields?
+**A:** Use `FormArray`. It allows you to `push()` or `removeAt()` controls dynamically.
+
+### Q17: Can you use `Validators.required` and HTML `required` attribute together?
+**A:** Yes, but in Reactive Forms, the HTML `required` is just for accessibility/CSS. The logic comes from `Validators.required` in TS.
+
+### Q18: What is an Async Validator?
+**A:** A validator that returns a Promise or Observable (e.g., checking if a username exists on the server). It stays `PENDING` until the HTTP call finishes.
+
+### Q19: How do you access the parent FormGroup from a child component?
+**A:** Inject `ControlContainer` in the child component's constructor. This allows the child to find the `formGroup` directive provided by the parent.
+
+### Q20: (Scenario) User edits a form but navigates away. How to prevent it?
+**A:** Use a **CanDeactivate Guard**. Check `if (this.form.dirty)`. If true, show a confirmation dialog ("Unsaved changes...").
+
+### Q21: (Scenario) How to debounce search input to save API calls?
+**A:**
+```typescript
+this.searchControl.valueChanges.pipe(
+  debounceTime(300),
+  distinctUntilChanged(),
+  switchMap(term => this.api.search(term))
+).subscribe();
+```
+
+### Q22: (Scenario) How to validate that a start date is before an end date?
+**A:** Custom Validator on the FormGroup.
+`const start = group.get('start').value; const end = group.get('end').value;`
+If `start > end`, return `{ dateInvalid: true }`.
+
+### Q23: (Scenario) How to auto-save a draft form?
+**A:** Subscribe to `form.valueChanges` inside `ngOnInit`. Use `debounceTime(1000)` and call your storage service.
+
+### Q24: (Scenario) A field is hidden with `*ngIf`. Is it still in the form.value?
+**A:** **No.** `*ngIf` removes the element AND the `formControlName` directive, effectively detaching it. If you want to keep the value but hide it, use `[hidden]` or CSS `display: none`.
+
+### Q25: (Scenario) How do you handle file uploads in Reactive Forms?
+**A:** Reactive Forms handle text/numbers well, but not `File` objects natively. You typically create a change listener `(change)="onFileSelect($event)"` and manually `patchValue` the file object into a FormControl (or handle it separately).
 
 ---
 

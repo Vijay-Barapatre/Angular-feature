@@ -110,7 +110,41 @@ trackById(index, item) {
 
 ---
 
-## 3. 🧠 Mind Map: Quick Visual Reference
+## 3. Deep Dive: Loop & TrackBy Mechanics
+
+### A. How the Loop Works (`*ngFor`)
+When you write `*ngFor="let item of items"`, Angular acts like a stamp machine.
+1.  **Template Instantiation**: It takes the HTML inside the `<div>` and creates a **new instance** of that template for *every single item* in the array.
+2.  **Local Scope**: The variable `item` is local to that specific instance. Row 1 has its own `item`, Row 2 has a different `item`.
+
+### B. The "Focus Loss" Problem (Why you need `trackBy`)
+Imagine you are typing in Row 3.
+1.  You call `addItem()`.
+2.  The array changes from `[A, B, C]` to `[A, B, C, D]`.
+3.  **Without TrackBy**: Angular looks at the array reference. It might think "The whole list changed!". It destroys the DOM elements for A, B, C and recreates them.
+    *   Result: **Focus is lost** because the input you were typing in was just destroyed and replaced by a clone.
+
+### C. How `trackBy` Fixes It
+`trackBy` tells Angular how to identify items uniquely.
+
+```typescript
+trackById(index: number, item: OrderItem) {
+  return item.id; // "If this ID matches, it's the SAME row. Don't touch the DOM."
+}
+```
+
+**The Reconciliation Logic:**
+1.  **Old List (IDs)**: `[1, 2, 3]`
+2.  **New List (IDs)**: `[1, 2, 3, 4]`
+3.  **Angular Logic**:
+    *   "ID 1 is still here." → Keep DOM.
+    *   "ID 2 is still here." → Keep DOM.
+    *   "ID 3 is still here." → **Keep DOM (Focus preserved!)**.
+    *   "ID 4 is new." → Create NEW DOM only for #4.
+
+---
+
+## 4. 🧠 Mind Map: Quick Visual Reference
 
 ```mermaid
 mindmap
