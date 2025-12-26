@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Entity Adapter transforms your arrays into a **dictionary/map** structure. Finding, updating, or deleting an item is now O(1) instead of O(n)!
 
+![NgRx Entity Infographic](./ngrx-entity-infographic.png)
+
 ---
 
 ## 1. 🔍 How It Works

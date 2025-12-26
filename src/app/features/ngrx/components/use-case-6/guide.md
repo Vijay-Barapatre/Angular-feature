@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: NgRx success depends on following patterns consistently. These aren't just style preferences - they prevent real bugs and make debugging possible.
 
+![NgRx Router Store Infographic](./ngrx-router-store-infographic.png)
+
 ---
 
 ## 1. 🔍 Core Patterns

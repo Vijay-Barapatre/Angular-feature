@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Selectors are like **computed properties** for your store. They're memoized (cached), composable, and keep your components decoupled from state structure.
 
+![NgRx Selectors Infographic](./ngrx-selectors-infographic.png)
+
 ---
 
 ## 1. 🔍 How Memoization Works

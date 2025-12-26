@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Redux DevTools is like having a **flight recorder** for your application. Every action, every state change, completely traceable and replayable.
 
+![NgRx DevTools Infographic](./ngrx-devtools-infographic.png)
+
 ---
 
 ## 1. 🔍 What DevTools Provides
