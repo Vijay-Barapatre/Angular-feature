@@ -195,3 +195,92 @@ mindmap
       Comparing values
       Complex reactions
 ```
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Basic Questions
+
+**Q3: When does ngOnChanges fire?**
+> A: Before ngOnInit on first change, then whenever any @Input changes.
+
+**Q4: Does ngOnChanges fire for all inputs or just changed ones?**
+> A: SimpleChanges only contains entries for inputs that actually changed.
+
+**Q5: What's the structure of SimpleChange object?**
+> A: `{ previousValue, currentValue, firstChange, isFirstChange() }`.
+
+---
+
+### Reference vs Mutation Questions
+
+**Q6: Why doesn't ngOnChanges fire for object property mutations?**
+> A: Angular uses reference equality check - same reference = no change detected.
+
+**Q7: How do you trigger ngOnChanges for nested object changes?**
+> A: Create new object reference: `this.user = { ...this.user, name: 'New' }`.
+
+**Q8: Does ngOnChanges fire for array push/pop?**
+> A: No - use `this.arr = [...this.arr, newItem]` for new reference.
+
+---
+
+### Timing Questions
+
+**Q9: Does ngOnChanges run before or after ngOnInit?**
+> A: Before - first change detected before initialization.
+
+**Q10: How many times does ngOnChanges fire on component creation?**
+> A: Once for initial input values (if any inputs provided).
+
+**Q11: Can ngOnChanges fire multiple times in one change detection?**
+> A: No - batched into one call with all changes.
+
+---
+
+### firstChange Questions
+
+**Q12: What is `firstChange` used for?**
+> A: Distinguishes initial value from subsequent updates - useful to skip initial load.
+
+**Q13: When is firstChange true?**
+> A: When it's the very first value for that input (before ngOnInit).
+
+---
+
+### Comparison Questions
+
+**Q14: ngOnChanges vs Input setter?**
+> A: ngOnChanges for multiple inputs or comparing old/new; setter for single input transformation.
+
+**Q15: When to use ngOnChanges vs ngDoCheck?**
+> A: ngOnChanges for input changes; ngDoCheck for custom change detection (expensive).
+
+---
+
+### Scenario Questions
+
+**Q16: React to productId change and fetch data.**
+> A: Check `changes['productId']` and `!firstChange`, then fetch.
+
+**Q17: Compare old and new values to decide action.**
+> A: Use `previousValue` and `currentValue` from SimpleChange:
+> ```typescript
+> if (changes['status'].previousValue === 'pending' && 
+  changes['status'].currentValue === 'done') { notify(); }
+> ```
+
+**Q18: Handle multiple input changes with dependencies.**
+> A: Check all needed inputs in ngOnChanges, combine logic.
+
+---
+
+### Best Practice Questions
+
+**Q19: Should you check firstChange in ngOnChanges?**
+> A: Yes, often - avoid duplicate initial fetch (ngOnInit handles that).
+
+**Q20: How to avoid ngOnChanges performance issues?**
+> A: Use immutable data patterns, check `firstChange`, only react to specific inputs.
+

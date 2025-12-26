@@ -493,7 +493,63 @@ Think of @HostBinding like a **painter's brush**:
 
 ---
 
-## 🧠 Mind Map
+## ❓ Additional Interview Questions (12+)
+
+### Return Type Questions
+
+**Q9: What should class bindings return?**
+> A: Boolean - true adds class, false removes it.
+
+**Q10: What should style bindings return?**
+> A: String with CSS value: `'10px'`, `'red'`, `'1rem'`, etc.
+
+**Q11: What should attribute bindings return to remove the attribute?**
+> A: `null` - any string value (even 'false') keeps the attribute.
+
+---
+
+### Timing Questions
+
+**Q12: When are @HostBinding getters called?**
+> A: Every change detection cycle - keep them lightweight.
+
+**Q13: Do @HostBinding getters run before or after ngOnInit?**
+> A: Before - bindings evaluated early in component lifecycle.
+
+---
+
+### Comparison Questions
+
+**Q14: @HostBinding vs Renderer2 setStyle - when to use which?**
+> A: @HostBinding for declarative bindings; Renderer2 for imperative, conditional styling.
+
+**Q15: @HostBinding vs @Input @Output?**
+> A: @HostBinding affects the host element's DOM; @Input/@Output are for component API.
+
+---
+
+### Multi-Binding Questions
+
+**Q16: Can you have multiple @HostBinding on the same property?**
+> A: No - last one wins. Use computed getter or combine logic.
+
+**Q17: How do you bind multiple classes at once?**
+> A: Use `@HostBinding('class')` returning space-separated string, or multiple `class.X` bindings.
+
+---
+
+### Scenario Questions
+
+**Q18: Create theme directive that adds dark-mode or light-mode class.**
+> A: `@Input() theme; @HostBinding('class.dark-mode') get dark() { return theme === 'dark'; }`
+
+**Q19: Directive that adds data-testid attribute.**
+> A: `@HostBinding('attr.data-testid') testId = 'component-id';`
+
+**Q20: How to disable button and show loading spinner concurrently?**
+> A: Multiple bindings - `attr.disabled`, `class.loading`, `style.cursor` all based on same state.
+
+
 
 ```mermaid
 mindmap
