@@ -130,3 +130,82 @@ Define your form and hook up the data.
 | **`NgForm`** | Automatically attaches to `<form>`. Tracks overall validity. | Import `FormsModule`. |
 | **`NgModel`** | Attaches to inputs. Tracks individual field state. | Requires `name` attribute. |
 | **`#ref="ngForm"`** | Exports the form instance to a variable. | Used to disable buttons or show error messages. |
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Basic Conceptual Questions
+
+**Q5: What is FormsModule and why is it required?**
+> A: FormsModule provides the directives (NgForm, NgModel) that enable template-driven forms. Without importing it, Angular won't recognize `ngModel` or track form state.
+
+**Q6: What's the difference between `[ngModel]` and `[(ngModel)]`?**
+> A: `[ngModel]` is one-way binding (model → view only). `[(ngModel)]` is two-way binding (model ↔ view).
+
+**Q7: What does NgForm create under the hood?**
+> A: NgForm creates a top-level `FormGroup` instance that aggregates all child `NgModel` controls.
+
+**Q8: What CSS classes does Angular add to form controls?**
+> A: Angular adds: `ng-valid/ng-invalid`, `ng-pristine/ng-dirty`, `ng-touched/ng-untouched`.
+
+---
+
+### Validation Questions
+
+**Q9: How do you add validation in template-driven forms?**
+> A: Use HTML5 attributes directly: `required`, `minlength`, `maxlength`, `pattern`, `email`.
+
+**Q10: How do you show validation errors?**
+> A: Export the control with `#email="ngModel"` and check `email.invalid && email.touched`.
+
+**Q11: How do you create a custom validator?**
+> A: Create a directive that implements `Validator` interface and provides `NG_VALIDATORS`.
+
+**Q12: What's the difference between `invalid` and `touched`?**
+> A: `invalid` means validation failed; `touched` means the user has focused and left the field.
+
+---
+
+### Form State Questions
+
+**Q13: How do you reset a form?**
+> A: Call `form.reset()` or `form.resetForm()` on the NgForm reference.
+
+**Q14: How do you set initial values?**
+> A: Bind the component property that `[(ngModel)]` is connected to.
+
+**Q15: How do you check if form has unsaved changes?**
+> A: Check `form.dirty` - it's true if any control value has changed.
+
+**Q16: How do you disable the submit button?**
+> A: `[disabled]="form.invalid"` or `[disabled]="!form.valid"`.
+
+---
+
+### Advanced Questions
+
+**Q17: Can you use template-driven forms with signals?**
+> A: Yes, but signals require manual integration. `[(ngModel)]` works with writable signals using `signal()` and `.set()`.
+
+**Q18: What is `ngModelChange` event?**
+> A: An event emitted when the model value changes - the second half of banana-in-a-box syntax.
+
+**Q19: How do you access form values programmatically?**
+> A: Use `form.value` object which contains all control values keyed by name.
+
+**Q20: What's `standalone` in NgModel?**
+> A: `[ngModel]="value" [ngModelOptions]="{standalone: true}"` creates a control outside NgForm.
+
+**Q21: How do you validate matching passwords?**
+> A: Create a custom validator directive that compares two fields in the form.
+
+**Q22: When is ngAfterViewInit needed with forms?**
+> A: When you need to access the NgForm reference, as it's a ViewChild.
+
+**Q23: How do you handle async validation?**
+> A: Create a directive implementing `AsyncValidator` with `NG_ASYNC_VALIDATORS`.
+
+**Q24: What's the difference between NgForm and FormGroup?**
+> A: NgForm is a directive that creates a FormGroup. FormGroup is the underlying model class.
+

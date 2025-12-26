@@ -193,3 +193,260 @@ mindmap
       Parent owns content
       Child provides slot
 ```
+
+---
+
+## 🎯 What Problem Does This Solve?
+
+### The Problem: Rigid Component Templates
+
+**Without Content Projection (BAD):**
+```typescript
+// Every variation needs a new component or complex @Inputs!
+@Component({...})
+export class CardComponent {
+    @Input() title!: string;
+    @Input() body!: string;
+    @Input() showFooter = false;
+    @Input() footerText!: string;
+    @Input() icon!: string;
+    // More and more inputs...
+    // How do you pass complex HTML? Buttons? Images?
+}
+```
+
+**Problems:**
+1. **Inflexible**: Can't pass complex HTML, only strings
+2. **Input explosion**: Each customization needs new @Input
+3. **Tight coupling**: Child controls all rendering
+4. **No composition**: Can't nest components inside
+
+### How Content Projection Solves This
+
+**With ng-content (GOOD):**
+```html
+<!-- Parent decides WHAT content -->
+<app-card>
+    <h2 card-header>
+        <img src="icon.png" /> Custom Title with Image!
+    </h2>
+    <div>
+        <p>Complex body with <strong>any HTML</strong></p>
+        <app-nested-component></app-nested-component>
+    </div>
+    <button card-footer (click)="save()">Save</button>
+</app-card>
+```
+
+| Problem | Content Projection Solution |
+|---------|---------------------------|
+| Inflexible | **Fully flexible**: Any HTML, components, bindings |
+| Input explosion | **Zero inputs**: Content IS the input |
+| Tight coupling | **Loose coupling**: Parent controls content |
+| No composition | **Full composition**: Nest anything |
+
+---
+
+## 📚 Key Concepts Explained
+
+### 1. Basic Slot
+
+```html
+<!-- Child template -->
+<div class="wrapper">
+    <ng-content></ng-content>
+</div>
+
+<!-- Parent usage -->
+<app-wrapper>
+    <p>This content goes into the slot!</p>
+</app-wrapper>
+```
+
+---
+
+### 2. Multi-Slot with Selectors
+
+```html
+<!-- Child with named slots -->
+<header><ng-content select="[header]"></ng-content></header>
+<main><ng-content></ng-content></main>
+<footer><ng-content select="[footer]"></ng-content></footer>
+
+<!-- Parent providing content -->
+<app-layout>
+    <div header>Header content</div>
+    <p>Body goes to default slot</p>
+    <button footer>Footer button</button>
+</app-layout>
+```
+
+---
+
+### 3. Selector Types
+
+| Selector | Example | Matches |
+|----------|---------|---------|
+| Attribute | `select="[header]"` | `<div header>` |
+| Element | `select="app-header"` | `<app-header>` |
+| CSS Class | `select=".header"` | `<div class="header">` |
+| Multiple | `select="[a],[b]"` | Either attribute |
+
+---
+
+## 🌍 Real-World Use Cases
+
+### 1. Modal/Dialog Component
+```html
+<app-modal>
+    <h2 modal-title>Confirm Delete</h2>
+    <p>Are you sure you want to delete this item?</p>
+    <button modal-actions (click)="delete()">Delete</button>
+    <button modal-actions (click)="cancel()">Cancel</button>
+</app-modal>
+```
+
+### 2. Tab Component
+```html
+<app-tabs>
+    <app-tab title="Profile">Profile content...</app-tab>
+    <app-tab title="Settings">Settings content...</app-tab>
+    <app-tab title="Notifications">Notifications...</app-tab>
+</app-tabs>
+```
+
+### 3. Card Component Library
+```html
+<app-card>
+    <img card-image src="product.jpg" />
+    <h3 card-title>Product Name</h3>
+    <p card-description>Product description here...</p>
+    <span card-price>$99.99</span>
+    <button card-action>Add to Cart</button>
+</app-card>
+```
+
+### 4. Layout Wrapper
+```html
+<app-page-layout>
+    <app-sidebar sidebar>Navigation links...</app-sidebar>
+    <div content>Main page content...</div>
+    <footer page-footer>© 2024</footer>
+</app-page-layout>
+```
+
+---
+
+## ❓ Complete Interview Questions (25+)
+
+### Basic Conceptual Questions
+
+**Q3: What is content projection?**
+> A: A way for parent components to pass template content into child component slots using `<ng-content>`.
+
+**Q4: Who owns projected content - parent or child?**
+> A: **Parent!** The parent maintains bindings, lifecycle, and control over projected content.
+
+**Q5: What's the difference between @Input and ng-content?**
+> A: @Input passes data values; ng-content passes template content (HTML, components).
+
+**Q6: Can projected content include components?**
+> A: Yes! You can project any Angular content including components, directives, and bindings.
+
+---
+
+### Selector Questions
+
+**Q7: What selector types can ng-content use?**
+> A: Attribute `[attr]`, element `app-*`, CSS class `.class`, or combinations.
+
+**Q8: What happens to unmatched content?**
+> A: It goes to the default `<ng-content>` slot (one without select attribute).
+
+**Q9: Can you have multiple default slots?**
+> A: No! Only one `<ng-content>` without selector. Additional ones won't render.
+
+**Q10: How do you select by component type?**
+> A: Use the element selector: `<ng-content select="app-header">`.
+
+---
+
+### Timing & Lifecycle Questions
+
+**Q11: When is projected content available?**
+> A: After `ngAfterContentInit` lifecycle hook.
+
+**Q12: Can you access projected content in ngOnInit?**
+> A: No! Use `ngAfterContentInit` or `ngAfterContentChecked`.
+
+**Q13: How do you query projected content?**
+> A: Use `@ContentChild` or `@ContentChildren` decorators.
+
+---
+
+### Scenario Questions
+
+**Q14: Create a card with header/body/footer slots.**
+> A:
+> ```html
+> <ng-content select="[card-header]"></ng-content>
+> <ng-content></ng-content>
+> <ng-content select="[card-footer]"></ng-content>
+> ```
+
+**Q15: How do you provide default content?**
+> A: Content between ng-content tags (won't show if content provided):
+> ```html
+> <ng-content select="[header]">Default Header</ng-content>
+> ```
+> Note: This doesn't actually work in Angular - use ngIf with fallback instead.
+
+**Q16: Project content conditionally based on type?**
+> A: Use different selectors for different content types.
+
+**Q17: Pass data from child to projected content?**
+> A: Use `ngTemplateOutlet` with context, not basic `<ng-content>`.
+
+---
+
+### Advanced Questions
+
+**Q18: What's the difference between ng-content and ngTemplateOutlet?**
+> A:
+> - ng-content: Static projection, no context passing
+> - ngTemplateOutlet: Dynamic templates with context
+
+**Q19: Can projected content be re-projected?**
+> A: Yes, but the content still belongs to the original parent.
+
+**Q20: How does change detection work with projected content?**
+> A: Content is checked with the parent's change detection, not the child's.
+
+**Q21: What is @ContentChild?**
+> A: Decorator to query single projected element:
+> ```typescript
+> @ContentChild('header') headerElement!: ElementRef;
+> ```
+
+**Q22: What is @ContentChildren?**
+> A: Decorator to query multiple projected elements as QueryList.
+
+---
+
+### Best Practice Questions
+
+**Q23: When to use ng-content vs @Input?**
+> A: ng-content for template/HTML content; @Input for data values.
+
+**Q24: How do you document slot requirements?**
+> A: Use JSDoc comments and clear selector names.
+
+**Q25: Can projected content have its own styles?**
+> A: Yes, styles from parent apply. Child can use ::ng-deep (deprecated) or global styles.
+
+**Q26: What's ngProjectAs for?**
+> A: Allows content to match a different selector:
+> ```html
+> <ng-container ngProjectAs="[header]">...</ng-container>
+> ```
+
