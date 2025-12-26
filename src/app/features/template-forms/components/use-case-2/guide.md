@@ -269,3 +269,83 @@ control.errors?.['errorName']
 │   ng-valid, ng-invalid, ng-touched, ng-dirty, ng-pristine  │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Validation State Questions
+
+**Q5: What's the difference between pristine and dirty?**
+> A: `pristine` - value never changed; `dirty` - value has been modified.
+
+**Q6: When is a control considered touched?**
+> A: When the user has focused and then blurred (left) the field.
+
+**Q7: How do you programmatically mark a control as touched?**
+> A: `control.markAsTouched()` or `form.markAllAsTouched()`.
+
+**Q8: What's pending status?**
+> A: `pending` means async validators are running and haven't completed.
+
+---
+
+### Validator Questions
+
+**Q9: List built-in template validators.**
+> A: `required`, `minlength`, `maxlength`, `pattern`, `email`, `min`, `max`.
+
+**Q10: How do you access minlength error details?**
+> A: `errors?.['minlength'].requiredLength` and `.actualLength`.
+
+**Q11: Can you have multiple errors at once?**
+> A: Yes, `errors` object can have multiple keys (all failing validators).
+
+**Q12: How do you create custom template validators?**
+> A: Create directive implementing `Validator` with `NG_VALIDATORS` provider.
+
+---
+
+### Error Handling Questions
+
+**Q13: Why use touched check before showing errors?**
+> A: To avoid showing errors before user has interacted with the field.
+
+**Q14: How do you show all errors at once?**
+> A: Iterate over `Object.keys(control.errors)` or check each one.
+
+**Q15: How do you reset validation state?**
+> A: `form.resetForm()` or `control.reset()`.
+
+**Q16: How do you force validation to run?**
+> A: `control.updateValueAndValidity()`.
+
+---
+
+### CSS Styling Questions
+
+**Q17: What CSS classes does Angular add for validation?**
+> A: `ng-valid/ng-invalid`, `ng-pristine/ng-dirty`, `ng-touched/ng-untouched`.
+
+**Q18: How do you style invalid touched fields?**
+> A: `input.ng-invalid.ng-touched { border-color: red; }`.
+
+**Q19: How do you add custom classes on validation?**
+> A: Use `[class.error]="control.invalid && control.touched"`.
+
+---
+
+### Advanced Questions
+
+**Q20: How do async validators work in template forms?**
+> A: Create directive with `AsyncValidator` and `NG_ASYNC_VALIDATORS`.
+
+**Q21: How do you validate matching passwords?**
+> A: Custom directive comparing two fields, applied to form group.
+
+**Q22: What's updateOn option?**
+> A: `[ngModelOptions]="{updateOn: 'blur'}"` - validate on blur, not every keystroke.
+
+**Q23: How do you show server-side errors?**
+> A: Set errors manually: `control.setErrors({serverError: 'Email taken'})`.
+

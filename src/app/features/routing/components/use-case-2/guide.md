@@ -183,3 +183,93 @@ Think of route parameters like **mailbox addresses**:
     *   A: Alphanumeric characters (e.g., `:id`, `:username`).
 2.  **Q: What happens if I use snapshot and navigate to the same route with different ID?**
     *   A: The data won't update because the component isn't destroyed/recreated. The snapshot remains stale. Be "Reactive"!
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Basic Questions
+
+**Q3: What's the syntax for defining a route parameter?**
+> A: Use colon prefix: `{ path: 'user/:id', component: UserComponent }`.
+
+**Q4: How do you pass dynamic values to routerLink?**
+> A: Array syntax: `[routerLink]="['/user', userId]"`.
+
+**Q5: What type are route parameters?**
+> A: Always strings! Use `Number()` or `+` to convert.
+
+**Q6: What's the difference between paramMap and params?**
+> A: `paramMap` is Map-based (use `.get()`); `params` is object (deprecated).
+
+---
+
+### Snapshot vs Observable Questions
+
+**Q7: When to use snapshot?**
+> A: When component is destroyed/recreated on navigation (not reused).
+
+**Q8: When to use paramMap Observable?**
+> A: When same component is reused with different params (e.g., /user/1 → /user/2).
+
+**Q9: How do you subscribe to param changes?**
+> A: `route.paramMap.subscribe(params => params.get('id'))`.
+
+**Q10: What's the danger of snapshot?**
+> A: Stale data if component is reused - value won't update.
+
+---
+
+### Multiple Parameters Questions
+
+**Q11: How do you define multiple parameters?**
+> A: `{ path: 'user/:id/post/:postId', component: ... }`.
+
+**Q12: How do you read multiple parameters?**
+> A: `params.get('id')` and `params.get('postId')`.
+
+**Q13: Can parameters be optional?**
+> A: No, required params must be in URL. Use query params for optional.
+
+---
+
+### Navigation Questions
+
+**Q14: How do you navigate programmatically with params?**
+> A: `router.navigate(['/user', 42])` or `router.navigateByUrl('/user/42')`.
+
+**Q15: How do you use relative navigation with params?**
+> A: `router.navigate(['..', 'other'])` from current route.
+
+**Q16: How do you preserve query params when navigating?**
+> A: `router.navigate(['/user', 42], { queryParamsHandling: 'preserve' })`.
+
+---
+
+### Scenario Questions
+
+**Q17: Product detail page with product/:slug.**
+> A: Define route, use paramMap to fetch product by slug.
+
+**Q18: Previous/Next navigation on same component.**
+> A: Use paramMap Observable to react to ID changes.
+
+**Q19: Parse integer ID from string param.**
+> A: `const id = +params.get('id')` or `Number(params.get('id'))`.
+
+**Q20: Handle null/undefined parameter.**
+> A: Check with optional chaining: `params.get('id') ?? 'default'`.
+
+---
+
+### Advanced Questions
+
+**Q21: What's matrix parameters?**
+> A: Secondary params in URL: `/user/42;details=true`. Access via `paramMap`.
+
+**Q22: How does component reuse work?**
+> A: Angular reuses component if only params change. Set `onSameUrlNavigation` for control.
+
+**Q23: How do you force component reload on param change?**
+> A: Use Observable subscription or custom RouteReuseStrategy.
+

@@ -151,3 +151,96 @@ mindmap
       On failure
       Retry option
 ```
+
+---
+
+## ❓ Complete Interview Questions (20+)
+
+### Block Questions
+
+**Q1: What's the difference between @placeholder and @loading?**
+> A: @placeholder shows before loading starts; @loading shows during active loading.
+
+**Q2: When is @error block shown?**
+> A: When the chunk fails to load (network error, 404, etc.).
+
+**Q3: Are all blocks required?**
+> A: No, only @defer is required. Others are optional.
+
+**Q4: What's the default if no @placeholder is provided?**
+> A: Nothing shows until content loads.
+
+---
+
+### Timing Questions
+
+**Q5: What does `minimum` parameter do?**
+> A: Ensures the block shows for at least that duration (prevents flicker).
+
+**Q6: What does `after` parameter do?**
+> A: Delays showing the block until after specified time (skips fast loads).
+
+**Q7: Can you combine `after` and `minimum`?**
+> A: Yes: `@loading (after 100ms; minimum 500ms)`.
+
+**Q8: Why use `after 100ms`?**
+> A: Prevents brief spinner flash for fast loads.
+
+---
+
+### UX Questions
+
+**Q9: How do you prevent loading spinner flicker?**
+> A: Use `@loading (minimum 500ms)` to show for at least 500ms.
+
+**Q10: How do you handle retry on error?**
+> A: Add a button in @error block that triggers reload.
+
+**Q11: What makes a good placeholder?**
+> A: Skeleton UI matching content shape, not just spinners.
+
+**Q12: When to use placeholder vs loading?**
+> A: Placeholder for waiting; loading for active fetch indicator.
+
+---
+
+### Scenario Questions
+
+**Q13: Show skeleton loader before load, spinner during load.**
+> A:
+> ```html
+> @defer {  } 
+> @placeholder { <skeleton/> } 
+> @loading { <spinner/> }
+> ```
+
+**Q14: Show spinner only if loading takes more than 200ms.**
+> A: `@loading (after 200ms) { <spinner/> }`
+
+**Q15: Show error with retry button.**
+> A:
+> ```html
+> @error { 
+>   <button (click)="reload()">Retry</button> 
+> }
+> ```
+
+**Q16: Keep placeholder for at least 1 second.**
+> A: `@placeholder (minimum 1s) { ... }`
+
+---
+
+### Advanced Questions
+
+**Q17: Can @placeholder contain interactive elements?**
+> A: Yes, it's regular Angular template content.
+
+**Q18: Does @loading have access to load progress?**
+> A: No, it's just a state indicator. Use custom loading for progress.
+
+**Q19: What happens on slow network?**
+> A: @loading shows until complete or error occurs.
+
+**Q20: Can you nest @defer inside @error for retry?**
+> A: No, but you can trigger component reload via method.
+

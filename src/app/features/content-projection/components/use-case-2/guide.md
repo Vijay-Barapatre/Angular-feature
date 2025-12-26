@@ -180,3 +180,98 @@ mindmap
       Organized content
       Flexible layout
 ```
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Selector Questions
+
+**Q3: What are the different selector types for ng-content?**
+> A: Attribute `[attr]`, element `app-component`, CSS class `.class`, and combinations.
+
+**Q4: Can you use multiple selectors on one ng-content?**
+> A: Yes, comma-separated: `select="[header], .title"` matches either.
+
+**Q5: What's the priority when content matches multiple slots?**
+> A: First matching ng-content in DOM order wins. Content only projects once.
+
+**Q6: How do you project by component type?**
+> A: Use element selector: `<ng-content select="app-header">`.
+
+---
+
+### Catch-All Questions
+
+**Q7: What is the catch-all slot?**
+> A: `<ng-content>` without a selector - receives all unmatched content.
+
+**Q8: What happens to unmatched content without a catch-all?**
+> A: It's discarded - never rendered.
+
+**Q9: Where should the catch-all slot be placed?**
+> A: Last in the template - after all specific selectors.
+
+---
+
+### Practical Questions
+
+**Q10: Create a card with header, body, and footer slots.**
+> A:
+> ```html
+> <ng-content select="[card-header]"></ng-content>
+> <ng-content></ng-content>
+> <ng-content select="[card-footer]"></ng-content>
+> ```
+
+**Q11: How does the parent provide content for a specific slot?**
+> A: Add matching attribute/class/element: `<div card-header>Header</div>`.
+
+**Q12: Can projected content include other components?**
+> A: Yes - any Angular content (components, directives, bindings).
+
+---
+
+### Advanced Questions
+
+**Q13: What's ngProjectAs for?**
+> A: Allows content to match a different selector than its actual type:
+> ```html
+> <ng-container ngProjectAs="[header]">...</ng-container>
+> ```
+
+**Q14: Can you conditionally show ng-content slots?**
+> A: No, ng-content is static. Use ngTemplateOutlet for conditional projection.
+
+**Q15: How do you check if content was projected to a slot?**
+> A: Use @ContentChild/Celildren to query, or CSS :empty selector.
+
+**Q16: Can projected content be re-ordered?**
+> A: No, ng-content projects in order matched. Use ngTemplateOutlet for reordering.
+
+---
+
+### Scenario Questions
+
+**Q17: Modal with custom title, body, and action buttons.**
+> A: Three slots: `[modal-title]`, default body, `[modal-actions]`.
+
+**Q18: Tab component where each tab has different content.**
+> A: Use `select="app-tab"` or `[tab]` to match tab content.
+
+**Q19: Layout with sidebar and main content areas.**
+> A: `select="[sidebar]"` and default slot for main content.
+
+**Q20: Card with optional image slot.**
+> A: Add `<ng-content select="[card-image]">` - empty if no image provided.
+
+---
+
+### Best Practice Questions
+
+**Q21: What naming convention for slot attributes?**
+> A: Use descriptive names: `[card-header]` not `[h]`. Use component prefix if needed.
+
+**Q22: How do you document required slots?**
+> A: JSDoc comments on component class or separate documentation.
+
