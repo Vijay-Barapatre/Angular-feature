@@ -148,3 +148,89 @@ mindmap
       Conditional content
       Wrapper elements
 ```
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Basic Questions
+
+**Q3: What is the syntax for ngProjectAs?**
+> A: `ngProjectAs="selector"` where selector matches the ng-content select.
+
+**Q4: Why does ng-container need ngProjectAs?**
+> A: ng-container has no DOM element, so can't have attributes for selector matching.
+
+**Q5: Does ngProjectAs change the actual DOM structure?**
+> A: No, it only affects how content projection matching works.
+
+---
+
+### Selector Matching Questions
+
+**Q6: Can ngProjectAs match element selectors?**
+> A: Yes: `ngProjectAs="app-header"` matches `select="app-header"`.
+
+**Q7: Can ngProjectAs match class selectors?**
+> A: Yes: `ngProjectAs=".header"` matches `select=".header"`.
+
+**Q8: What if ngProjectAs doesn't match any slot?**
+> A: Content goes to catch-all slot (no selector) or is discarded.
+
+---
+
+### Use Case Questions
+
+**Q9: Project conditional content to a specific slot.**
+> A:
+> ```html
+> <ng-container ngProjectAs="[header]">
+>   @if (showHeader) { <h1>Title</h1> }
+> </ng-container>
+> ```
+
+**Q10: Project multiple elements as one slot match.**
+> A: Wrap in ng-container with ngProjectAs - all children project together.
+
+**Q11: Project ng-template content to a slot.**
+> A: Render template with ngTemplateOutlet inside ng-container with ngProjectAs.
+
+---
+
+### Scenario Questions
+
+**Q12: Card with optional conditional header.**
+> A: Use ng-container with ngProjectAs="[card-header]" wrapping @if block.
+
+**Q13: Tab content that's conditionally shown.**
+> A: Wrap conditionally rendered content in ng-container with ngProjectAs.
+
+**Q14: Form fields projected into form layout slots.**
+> A: Each field wrapped in ng-container with appropriate ngProjectAs.
+
+---
+
+### Advanced Questions
+
+**Q15: Can ngProjectAs be dynamic (use binding)?**
+> A: No, ngProjectAs value must be static string at compile time.
+
+**Q16: Does ngProjectAs work with structural directives?**
+> A: Use ng-container: `<ng-container ngProjectAs="[x]">` wrapping *ngFor, etc.
+
+**Q17: Order of priority: ngProjectAs or actual element?**
+> A: ngProjectAs overrides natural selector matching completely.
+
+**Q18: Can you use ngProjectAs on components?**
+> A: Yes, but it overrides how the component is matched for projection.
+
+---
+
+### Comparison Questions
+
+**Q19: ngProjectAs vs ngTemplateOutlet?**
+> A: ngProjectAs is for static projection; ngTemplateOutlet for dynamic rendering.
+
+**Q20: When to use ngProjectAs vs adding attribute directly?**
+> A: Use ngProjectAs when you can't add attribute (ng-container) or need to override.
+

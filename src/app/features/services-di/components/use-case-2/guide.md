@@ -236,3 +236,96 @@ mindmap
       No collision
       Tree shakable
 ```
+
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Basic Questions
+
+**Q3: What types of values can InjectionToken inject?**
+> A: Strings, numbers, objects, arrays, functions - any non-class value.
+
+**Q4: What does the string parameter in InjectionToken constructor do?**
+> A: It's a description for debugging - appears in error messages.
+
+**Q5: Are two tokens with the same description the same token?**
+> A: No! Each `new InjectionToken()` creates a unique reference.
+
+---
+
+### Provider Types Questions
+
+**Q6: What's the difference between useValue and useFactory?**
+> A: 
+> - `useValue`: Static value provided immediately
+> - `useFactory`: Function that creates value lazily
+
+**Q7: When should you use useFactory?**
+> A: When value depends on other services or needs to be computed.
+
+**Q8: What's useExisting for?**
+> A: Alias one token to another - useful for backwards compatibility.
+
+---
+
+### Default Value Questions
+
+**Q9: How do you provide a default value for a token?**
+> A: Use factory in InjectionToken constructor:
+> ```typescript
+> new InjectionToken('', { providedIn: 'root', factory: () => defaultValue })
+> ```
+
+**Q10: What happens if token isn't provided and has no default?**
+> A: Angular throws NullInjectorError at runtime.
+
+**Q11: How do you make a token optional?**
+> A: Use `inject(TOKEN, { optional: true })` - returns null if not found.
+
+---
+
+### Scenario Questions
+
+**Q12: Inject different API URLs for dev/prod.**
+> A: Use environment variable in provider: `{ provide: API_URL, useValue: environment.apiUrl }`.
+
+**Q13: Inject a configuration object.**
+> A: 
+> ```typescript
+> const CONFIG = new InjectionToken<AppConfig>('config');
+> { provide: CONFIG, useValue: { theme: 'dark' } }
+> ```
+
+**Q14: Create token with factory that depends on another service.**
+> A:
+> ```typescript
+> { provide: API_URL, useFactory: (env: EnvService) => env.getUrl(), deps: [EnvService] }
+> ```
+
+---
+
+### Best Practice Questions
+
+**Q15: Why avoid string tokens?**
+> A: Strings can accidentally collide. InjectionToken is unique object reference.
+
+**Q16: Where should tokens be exported?**
+> A: In a shared file (e.g., `tokens.ts`) imported by providers and consumers.
+
+**Q17: How do you test with injection tokens?**
+> A: Provide test value in TestBed: `{ provide: API_URL, useValue: 'http://test' }`.
+
+---
+
+### Advanced Questions
+
+**Q18: What's multi: true provider option?**
+> A: Collects multiple values for same token into an array.
+
+**Q19: Can tokens be tree-shaken?**
+> A: Yes, if using `providedIn: 'root'` with factory - unused tokens are removed.
+
+**Q20: How do you type complex token values?**
+> A: Use generic: `InjectionToken<{ theme: string; locale: string }>('config')`.
+
