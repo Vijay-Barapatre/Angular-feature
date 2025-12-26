@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Effects automatically run side effects when their tracked signals change!
 
+![Effects Infographic](./signals-effects-infographic.png)
+
 ---
 
 ## 1. 🔍 What is effect()?

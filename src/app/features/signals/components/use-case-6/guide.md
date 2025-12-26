@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: These functions let you bridge between RxJS and Signals!
 
+![RxJS Interop Infographic](./signals-rxjs-interop-infographic.png)
+
 ---
 
 ## 1. 🔍 Converting Between RxJS and Signals

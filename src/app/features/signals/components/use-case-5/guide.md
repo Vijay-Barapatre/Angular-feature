@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Signal outputs (Angular 17+) provide a cleaner syntax for component outputs!
 
+![Signal Model Infographic](./signals-model-infographic.png)
+
 ---
 
 ## 1. 🔍 What are Signal Outputs?

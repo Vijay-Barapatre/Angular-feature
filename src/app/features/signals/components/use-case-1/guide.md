@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Signals are reactive primitives that notify consumers when their value changes - no subscriptions needed!
 
+![Signals Basic Infographic](./signals-basic-infographic.png)
+
 ---
 
 ## 1. 🔍 What are Signals?

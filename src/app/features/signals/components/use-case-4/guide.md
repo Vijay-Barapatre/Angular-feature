@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Signal inputs (Angular 17+) combine @Input() with signals for reactive input binding!
 
+![Signal Inputs Infographic](./signals-inputs-infographic.png)
+
 ---
 
 ## 1. 🔍 What are Signal Inputs?

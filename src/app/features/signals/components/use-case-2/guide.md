@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Computed signals automatically derive values from other signals - like reactive formulas!
 
+![Computed Signals Infographic](./signals-computed-infographic.png)
+
 ---
 
 ## 1. 🔍 What are Computed Signals?
