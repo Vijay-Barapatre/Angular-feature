@@ -353,3 +353,119 @@ export class SmartTableComponent {
 }
 ```
 
+---
+
+## ❓ Additional Interview Questions (20+)
+
+### Basic Questions
+
+**Q3: What's the first parameter of transform() method?**
+> A: The value to transform - what's piped in from the left side (|).
+
+**Q4: Can pipes accept multiple arguments?**
+> A: Yes - all parameters after the first are arguments: `{{ val | truncate:100:'...' }}`.
+
+**Q5: How do you test a custom pipe?**
+> A: Instantiate directly and call transform():
+> ```typescript
+> const pipe = new TruncatePipe();
+> expect(pipe.transform('test', 5)).toBe('te...');
+> ```
+
+---
+
+### Pure vs Impure Questions
+
+**Q6: What's a pure pipe?**
+> A: Default - only re-executes when input reference changes. More performant.
+
+**Q7: When should you use impure pipes?**
+> A: For detecting changes inside objects/arrays (set `pure: false`).
+
+**Q8: What's the performance cost of impure pipes?**
+> A: Run on every change detection cycle - can cause performance issues.
+
+---
+
+### Chaining Questions
+
+**Q9: Can you chain multiple pipes?**
+> A: Yes: `{{ date | date:'short' | uppercase }}`.
+
+**Q10: What's the execution order for chained pipes?**
+> A: Left to right - first pipe output becomes second pipe input.
+
+---
+
+### Scenario Questions
+
+**Q11: Create a pipe that formats numbers with commas.**
+> A:
+> ```typescript
+> @Pipe({ name: 'numberFormat' })
+> export class NumberFormatPipe {
+>   transform(num: number) {
+>     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+>   }
+> }
+> ```
+
+**Q12: Create a pipe that highlights search terms.**
+> A:
+> ```typescript
+> @Pipe({ name: 'highlight' })
+> export class HighlightPipe {
+>   transform(text: string, term: string) {
+>     return text.replace(new RegExp(term, 'gi'), 
+>       `<mark>$&</mark>`);
+>   }
+> }
+> ```
+
+**Q13: Create a safe HTML pipe.**
+> A: Use DomSanitizer:
+> ```typescript
+> @Pipe({ name: 'safe' })
+> export class SafePipe {
+>   constructor(private sanitizer: DomSanitizer) {}
+>   transform(html: string) {
+>     return this.sanitizer.bypassSecurityTrustHtml(html);
+>   }
+> }
+> ```
+
+---
+
+### Dependency Injection Questions
+
+**Q14: Can pipes inject services?**
+> A: Yes - via constructor injection:
+> ```typescript
+> constructor(private http: HttpClient) {}
+> ```
+
+**Q15: When should you inject services in pipes?**
+> A: For async operations or accessing shared data (but prefer pure functions).
+
+---
+
+### Best Practice Questions
+
+**Q16: Should pipes mutate input values?**
+> A: No - always return new values. Pipes should be pure functions.
+
+**Q17: When to use pipe vs component method?**
+> A: Pipes for reusable transformations; methods for complex logic.
+
+**Q18: How to make pipes standalone?**
+> A: Add `standalone: true` to @Pipe decorator.
+
+**Q19: Where should custom pipes be exported?**
+> A: In a shared pipes module or as standalone pipes.
+
+**Q20: How do you handle null/undefined in pipes?**
+> A: Check at start of transform():
+> ```typescript
+> if (!value) return '';
+> ```
+

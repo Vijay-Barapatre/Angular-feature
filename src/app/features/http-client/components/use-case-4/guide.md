@@ -417,3 +417,73 @@ describe('AuthInterceptor', () => {
 4. **Skip when needed** - Check URL to skip certain endpoints
 5. **Handle refresh loops** - Prevent infinite retry on token refresh
 
+---
+
+## ❓ Additional Interview Questions (13+)
+
+### Basic Questions
+
+**Q8: What does next() do in an interceptor?**
+> A: Passes the request to the next interceptor or HTTP handler. Must be called.
+
+**Q9: Can you have async logic in interceptors?**
+> A: Yes - return an Observable that resolves when async work completes.
+
+**Q10: How do you modify response in interceptor?**
+> A: Use `tap()` or `map()` on the Observable returned by next().
+
+---
+
+### Error Handling Questions
+
+**Q11: How do you handle errors globally with interceptors?**
+> A: Use `catchError()` on next() Observable:
+> ```typescript
+> return next(req).pipe(catchError(err => { /* handle */ }))
+> ```
+
+**Q12: How to show toast on 500 errors?**
+> A: Inject ToastService, check error.status in catchError.
+
+---
+
+### Advanced Questions
+
+**Q13: Can you conditionally bypass interceptor logic?**
+> A: Yes - check request properties (URL, headers) and return next(req) early.
+
+**Q14: How to add timeout to all requests?**
+> A: Use `timeout()` operator:
+> ```typescript
+> return next(req).pipe(timeout(30000))
+> ```
+
+**Q15: How to modify request body?**
+> A: Clone with body option:
+> ```typescript
+> req.clone({ body: { ...req.body, timestamp: Date.now() } })
+> ```
+
+---
+
+### Testing Questions
+
+**Q16: How do you test interceptors?**
+> A: Use HttpTestingController to verify requests have expected headers/body.
+
+**Q17: How to mock interceptor behavior in tests?**
+> A: Override providers in TestBed with custom test interceptor.
+
+---
+
+### Performance Questions
+
+**Q18: Do interceptors affect performance?**
+> A: Yes if heavy logic - keep interceptors lightweight, avoid blocking operations.
+
+**Q19: Can you disable interceptors for specific tests?**
+> A: Yes - provide empty array: `withInterceptors([])`.
+
+**Q20: How to debug interceptor execution order?**
+> A: Add console.log in each interceptor, check request/response logs.
+
