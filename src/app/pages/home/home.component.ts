@@ -341,6 +341,29 @@ export class HomeComponent {
                     color: 'primary'
                 }
             ]
+        },
+        {
+            name: 'Language Fundamentals',
+            icon: '📚',
+            description: 'Master JavaScript and TypeScript foundations for Angular',
+            features: [
+                {
+                    name: '🟨 JavaScript Essentials',
+                    route: '/javascript-essentials',
+                    description: 'Variables, spread/rest, destructuring, arrow functions, async/await',
+                    status: 'active',
+                    useCases: 6,
+                    color: 'primary'
+                },
+                {
+                    name: '🔷 TypeScript Features',
+                    route: '/typescript-features',
+                    description: 'Interfaces, generics, decorators, type guards, utility types',
+                    status: 'active',
+                    useCases: 6,
+                    color: 'accent'
+                }
+            ]
         }
     ];
 }

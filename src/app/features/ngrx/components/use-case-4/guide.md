@@ -313,3 +313,515 @@ mindmap
       Reuse
       Test projector
 ```
+
+---
+
+## 🎯 What Problem Does This Solve?
+
+### The Problem: Direct State Access Is Fragile & Inefficient
+
+**Without Selectors (BAD):**
+```typescript
+// Component directly accessing state structure
+this.store.pipe(
+    map(state => state.users.entities[state.users.selectedId])
+);
+
+// Another component doing same thing differently
+this.store.pipe(
+    map(state => {
+        const id = state.users.selectedId;
+        return state.users.list.find(u => u.id === id);
+    })
+);
+```
+
+**Problems:**
+1. **Tight coupling**: Components know state structure
+2. **Duplication**: Same logic in multiple places
+3. **No caching**: Expensive operations recompute on every state change
+4. **Refactoring nightmare**: Change state shape = update every component
+5. **Hard to test**: Logic scattered across components
+
+### How Selectors Solve This
+
+**With Selectors (GOOD):**
+```typescript
+// Centralized, cached, reusable
+export const selectCurrentUser = createSelector(
+    selectUserEntities,
+    selectSelectedUserId,
+    (entities, id) => id ? entities[id] : null
+);
+
+// Components just use селектор
+this.store.select(selectCurrentUser);  // Clean!
+```
+
+| Problem | Selector Solution |
+|---------|------------------|
+| Repeated computations | **Memoization** - cached results |
+| State structure coupling | **Abstraction** - single point of access |
+| Duplicated logic | **Reusability** - compose smaller selectors |
+| Expensive derives | **Lazy evaluation** - only computes when needed |
+| Testing complexity | **Pure functions** - easy to unit test |
+
+### Memoization Explained
+
+```
+State Change → Selector Input Check → Same? → Return Cached
+                                    ↓
+                                Different? → Recompute → Cache New Result
+```
+
+**Example:**
+```typescript
+// First call: items = [A, B, C]
+selectTotal()  // Computes: 100 + 200 + 150 = 450 ⚙️
+               // Caches: 450
+
+// Second call: items still [A, B, C] (same reference)
+selectTotal()  // Returns: 450 ⚡ (no computation!)
+
+// Third call: items = [A, B, C, D] (new reference)
+selectTotal()  // Computes: 100 + 200 + 150 + 50 = 500 ⚙️
+               // Caches: 500
+```
+
+---
+
+## 📚 Key Classes & Types Explained
+
+### 1. `createSelector()` (from `@ngrx/store`)
+
+```typescript
+export const selectSubtotal = createSelector(
+    selectItems,              // Input selector 1
+    selectDiscount,           // Input selector 2
+    (items, discount) => {    // Projector function
+        const subtotal = items.reduce((sum, i) => sum + i.price, 0);
+        return subtotal - discount;
+    }
+);
+```
+
+**Parameters:**
+- **Input selectors** (1-8): Selectors whose results are passed to projector
+- **Projector function**: Derives final value from inputs
+
+**How memoization works:**
+1. Input selectors are called with state
+2. Results compared to previous results (by reference)
+3. If ALL same → return cached output
+4. If ANY different → call projector with new values
+
+---
+
+### 2. `createFeatureSelector<T>()` (from `@ngrx/store`)
+
+```typescript
+export const selectUserState = createFeatureSelector<UserState>('users');
+// Equivalent to: state => state['users']
+```
+
+**What it is:** Gets a top-level slice of the root state.
+
+**When to use:**
+- Entry point for feature-specific selectors
+- Registered feature name must match `provideState('users', reducer)`
+
+**Type safety:**
+```typescript
+// AppState = { users: UserState, products: ProductState }
+createFeatureSelector<UserState>('users');  // Returns UserState
+```
+
+---
+
+### 3. `MemoizedSelector<State, Result>` Type
+
+```typescript
+const selectCount: MemoizedSelector<AppState, number> = createSelector(
+    selectUserState,
+    state => state.users.length
+);
+```
+
+**What it is:** The return type of `createSelector`.
+
+**Properties:**
+- `.projector` - The projection function (useful for testing)
+- `.release()` - Clears memoized value (rarely used)
+- `.setResult()` - Manually set cached value (advanced)
+
+---
+
+### 4. Projector Function
+
+```typescript
+createSelector(
+    selectA,
+    selectB,
+    selectC,
+    (a, b, c) => { /* This is the projector */ }
+    //  ↑ Receives outputs from input selectors
+);
+```
+
+**Rules:**
+- Must be a PURE function (no side effects)
+- Receives values from input selectors in order
+- Return value is memoized
+
+**Testing projectors directly:**
+```typescript
+const result = selectTotal.projector(items, tax, discount);
+// Calls projector directly without needing store
+```
+
+---
+
+### 5. `DefaultProjectorFn<T>` Type
+
+```typescript
+type DefaultProjectorFn<T> = (...args: any[]) => T;
+```
+
+**What it is:** Type definition for projector functions.
+
+**Usage in custom selectors:**
+```typescript
+function createCustomSelector<R>(
+    projector: DefaultProjectorFn<R>
+): MemoizedSelector<AppState, R>;
+```
+
+---
+
+### 6. Selector Config Options
+
+```typescript
+createSelector(
+    selectItems,
+    items => items.filter(i => i.active),
+    {
+        memoize: customMemoize,
+        memoizeOptions: {
+            maxSize: 10,
+            resultEqualityCheck: deepEqual
+        }
+    }
+);
+```
+
+| Option | Purpose |
+|--------|---------|
+| `memoize` | Custom memoization function |
+| `memoizeOptions.maxSize` | Cache size for parameterized selectors |
+| `memoizeOptions.resultEqualityCheck` | Compare results (not just inputs) |
+| `memoizeOptions.equalityCheck` | Custom input comparison |
+
+---
+
+## 🌍 Real-World Use Cases
+
+### 1. Shopping Cart Calculations
+```typescript
+export const selectCartItems = createSelector(
+    selectCartState,
+    state => state.items
+);
+
+export const selectSubtotal = createSelector(
+    selectCartItems,
+    items => items.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+);
+
+export const selectTax = createSelector(
+    selectSubtotal,
+    subtotal => subtotal * 0.1
+);
+
+export const selectShipping = createSelector(
+    selectSubtotal,
+    subtotal => subtotal > 100 ? 0 : 9.99
+);
+
+export const selectTotal = createSelector(
+    selectSubtotal,
+    selectTax,
+    selectShipping,
+    (subtotal, tax, shipping) => subtotal + tax + shipping
+);
+```
+
+### 2. Filtered & Sorted Product List
+```typescript
+export const selectProducts = createSelector(
+    selectProductState,
+    state => state.products
+);
+
+export const selectFilters = createSelector(
+    selectProductState,
+    state => state.filters
+);
+
+export const selectFilteredProducts = createSelector(
+    selectProducts,
+    selectFilters,
+    (products, { category, minPrice, maxPrice, inStock }) => {
+        return products.filter(p => {
+            if (category && p.category !== category) return false;
+            if (p.price < minPrice || p.price > maxPrice) return false;
+            if (inStock && p.stock === 0) return false;
+            return true;
+        });
+    }
+);
+
+export const selectSortedProducts = createSelector(
+    selectFilteredProducts,
+    selectSortBy,
+    (products, sortBy) => {
+        const sorted = [...products];
+        switch (sortBy) {
+            case 'price-asc': return sorted.sort((a, b) => a.price - b.price);
+            case 'price-desc': return sorted.sort((a, b) => b.price - a.price);
+            case 'name': return sorted.sort((a, b) => a.name.localeCompare(b.name));
+            default: return sorted;
+        }
+    }
+);
+```
+
+### 3. Dashboard ViewModel
+```typescript
+export const selectDashboardVM = createSelector(
+    selectCurrentUser,
+    selectRecentOrders,
+    selectNotifications,
+    selectAnalytics,
+    (user, orders, notifications, analytics) => ({
+        userName: user?.name ?? 'Guest',
+        orderCount: orders.length,
+        unreadNotifications: notifications.filter(n => !n.read).length,
+        totalRevenue: analytics.totalRevenue,
+        isLoading: !user || !orders.length
+    })
+);
+```
+
+### 4. Parameterized Selectors
+```typescript
+// By ID
+export const selectProductById = (id: string) => createSelector(
+    selectProductEntities,
+    entities => entities[id]
+);
+
+// By category
+export const selectProductsByCategory = (category: string) => createSelector(
+    selectAllProducts,
+    products => products.filter(p => p.category === category)
+);
+
+// Usage
+this.store.select(selectProductById('sku-123'));
+this.store.select(selectProductsByCategory('electronics'));
+```
+
+### 5. Cross-Feature Selectors
+```typescript
+// Combine data from multiple features
+export const selectOrderWithProducts = (orderId: string) => createSelector(
+    selectOrderById(orderId),
+    selectProductEntities,
+    (order, products) => ({
+        ...order,
+        items: order.itemIds.map(id => products[id])
+    })
+);
+```
+
+---
+
+## ❓ Complete Interview Questions (20+)
+
+### Basic Conceptual Questions
+
+**Q1: What is selector memoization?**
+> A: Caching mechanism that stores selector results. If input selectors return same values (by reference), the cached result is returned without recomputing.
+
+**Q2: Why use selectors instead of direct state access?**
+> A: Decoupling (components don't know state structure), reusability (single source of truth), memoization (performance), testability (pure functions).
+
+**Q3: When does a selector recompute?**
+> A: When ANY input selector returns a different value (compared by reference). If all inputs are same, cached result is returned.
+
+**Q4: What's the difference between `createSelector` and `createFeatureSelector`?**
+> A: `createFeatureSelector` accesses root state slices by key, `createSelector` derives data from other selectors.
+
+**Q5: How many input selectors can `createSelector` accept?**
+> A: Up to 8 input selectors in the overloaded signatures, but you can compose selectors to work around this.
+
+---
+
+### Memoization Questions
+
+**Q6: How does memoization improve performance?**
+> A: Expensive computations (filtering, sorting, aggregating) only run when inputs actually change. Unchanged inputs return cached result instantly.
+
+**Q7: What comparison does memoization use by default?**
+> A: Reference equality (`===`). Objects/arrays must be different references to trigger recomputation.
+
+**Q8: A selector returns a new array every time. Why is this a problem?**
+> A: Even if array contents are identical, new reference triggers downstream selectors and component re-renders. Use `resultEqualityCheck` for deep comparison.
+
+**Q9: How do you clear memoized values?**
+> A: Call `selector.release()`, but this is rarely needed. Memoization is usually beneficial.
+
+---
+
+### Composition Questions
+
+**Q10: Why compose small selectors instead of one large selector?**
+> A: 
+> - Better caching (each level cached independently)
+> - Reusability (combine in different ways)
+> - Testability (test small units)
+> - Maintainability (single responsibility)
+
+**Q11: How do you share selectors between features?**
+> A: Create a `shared/selectors` module or access other feature's selectors via root state:
+> ```typescript
+> export const selectUserFromProducts = createSelector(
+>     (state: AppState) => state.users.currentUser,
+>     user => user
+> );
+> ```
+
+**Q12: Can selectors call HTTP services?**
+> A: NO! Selectors must be PURE functions. No side effects. Use Effects for async operations.
+
+---
+
+### Parameterized Selector Questions
+
+**Q13: How do you create a selector that takes parameters?**
+> A: Factory function pattern:
+> ```typescript
+> export const selectById = (id: number) => createSelector(
+>     selectEntities,
+>     entities => entities[id]
+> );
+> ```
+
+**Q14: What's the memoization caveat with factory selectors?**
+> A: Each call to factory creates NEW selector instance with own cache. For performance, store selector instances:
+> ```typescript
+> // Cache instances
+> const selectorCache = new Map();
+> export const selectById = (id: number) => {
+>     if (!selectorCache.has(id)) {
+>         selectorCache.set(id, createSelector(...));
+>     }
+>     return selectorCache.get(id);
+> };
+> ```
+
+---
+
+### Testing Questions
+
+**Q15: How do you unit test a selector?**
+> A: Test the projector directly:
+> ```typescript
+> it('should calculate total', () => {
+>     const items = [{ price: 10 }, { price: 20 }];
+>     const result = selectTotal.projector(items);
+>     expect(result).toBe(30);
+> });
+> ```
+
+**Q16: How do you test selector with full state?**
+> A: Create mock state and call selector:
+> ```typescript
+> const state = { cart: { items: [...] } };
+> const result = selectTotal(state);
+> ```
+
+---
+
+### Scenario Questions
+
+**Q17: Component re-renders on every state change even though its data didn't change. How to debug?**
+> A: Check if selector returns new object/array reference every time. Use `distinctUntilChanged()` or fix selector to return stable references.
+
+**Q18: You have 10,000 items to filter and sort. How do you optimize?**
+> A: Compose selectors so filtering and sorting are separate:
+> ```typescript
+> selectFiltered → selectSorted
+> ```
+> If filter changes, sort recomputes. If only sort changes, filter uses cache.
+
+**Q19: How do you select data from multiple feature states?**
+> A: Use root state as input:
+> ```typescript
+> export const selectCombined = createSelector(
+>     (state: AppState) => state.feature1,
+>     (state: AppState) => state.feature2,
+>     (f1, f2) => ({ ...f1, ...f2 })
+> );
+> ```
+
+**Q20: Selector result needs transformation based on user locale. How?**
+> A: Include locale in selector inputs:
+> ```typescript
+> export const selectFormattedPrices = createSelector(
+>     selectProducts,
+>     selectUserLocale,
+>     (products, locale) => products.map(p => ({
+>         ...p,
+>         formattedPrice: new Intl.NumberFormat(locale).format(p.price)
+>     }))
+> );
+> ```
+
+---
+
+### Advanced Questions
+
+**Q21: What is `createSelectorFactory`?**
+> A: Lower-level API for custom memoization strategies:
+> ```typescript
+> const customSelector = createSelectorFactory(customMemoize);
+> ```
+
+**Q22: How do you implement "result equality check"?**
+> A: Use selector options to compare output values:
+> ```typescript
+> createSelector(
+>     selectItems,
+>     items => items.filter(i => i.active),
+>     { memoizeOptions: { resultEqualityCheck: deepEqual } }
+> );
+> ```
+
+**Q23: Can you use signals with selectors?**
+> A: Yes! Use `selectSignal` or `toSignal`:
+> ```typescript
+> readonly count = this.store.selectSignal(selectCount);
+> // Or
+> readonly count = toSignal(this.store.select(selectCount));
+> ```
+
+**Q24: What happens if projector throws an error?**
+> A: Error propagates to subscriber. The selector doesn't cache the error - it will retry on next state change.
+
+**Q25: How do NgRx selectors compare to Vue computed or React useMemo?**
+> A: Similar concept (derived state with caching), but NgRx selectors are:
+> - Defined outside components (reusable)
+> - Compose with other selectors
+> - Type-safe with TypeScript
+

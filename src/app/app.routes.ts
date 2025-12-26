@@ -323,6 +323,44 @@ export const routes: Routes = [
     },
 
     /**
+     * ANIMATIONS FEATURE MODULE (NEW!)
+     * Lazy-loaded: Only loads when user navigates to /animations/*
+     * Demonstrates Angular's built-in animation system
+     */
+    {
+        path: 'animations',
+        loadChildren: () => import('./features/animations/animations.routes').then(m => m.ANIMATIONS_ROUTES)
+    },
+
+    /**
+     * CONTROL FLOW FEATURE MODULE (Angular 17+ NEW!)
+     * Lazy-loaded: Only loads when user navigates to /control-flow/*
+     * Demonstrates @if, @for, @switch built-in control flow syntax
+     */
+    {
+        path: 'control-flow',
+        loadChildren: () => import('./features/control-flow/control-flow.routes').then(m => m.CONTROL_FLOW_ROUTES)
+    },
+
+    /**
+     * JAVASCRIPT ESSENTIALS FEATURE MODULE
+     * Core JavaScript concepts essential for Angular development
+     */
+    {
+        path: 'javascript-essentials',
+        loadChildren: () => import('./features/javascript-essentials/javascript-essentials.routes').then(m => m.JAVASCRIPT_ESSENTIALS_ROUTES)
+    },
+
+    /**
+     * TYPESCRIPT FEATURES MODULE
+     * TypeScript-specific features for robust Angular development
+     */
+    {
+        path: 'typescript-features',
+        loadChildren: () => import('./features/typescript-features/typescript-features.routes').then(m => m.TYPESCRIPT_FEATURES_ROUTES)
+    },
+
+    /**
      * PRACTICE EXERCISES
      * Centralized practice section for all features
      */

@@ -374,3 +374,249 @@ mindmap
       Always handle errors
 ```
 
+---
+
+## 🎯 What Problem Does This Solve?
+
+### The Problem: Traditional HTTP Is Eager and Hard to Cancel
+
+**Without Observables (BAD):**
+```typescript
+// Using fetch - no cancellation, eager execution
+async fetchUsers() {
+    try {
+        const response = await fetch('/api/users');
+        const users = await response.json();
+        this.users = users;
+    } catch (e) {
+        console.error(e);
+    }
+    // What if component is destroyed during fetch?
+    // What if we need to cancel?
+    // What if we need retry logic?
+}
+```
+
+**Problems:**
+1. **Eager execution**: Request starts immediately
+2. **No cancellation**: AbortController is tedious
+3. **Single value**: Can't handle streams
+4. **No built-in retry**: Must implement manually
+5. **Memory leaks**: Component destroyed mid-request
+
+### How HttpClient/Observables Solve This
+
+**With HttpClient Observables (GOOD):**
+```typescript
+// Using HttpClient - lazy, cancellable, powerful
+users$ = this.http.get<User[]>('/api/users').pipe(
+    retry(3),                    // Built-in retry
+    catchError(e => of([]))      // Built-in error handling
+);
+
+// In template - auto-cancels on destroy!
+{{ users$ | async }}
+```
+
+| Problem | Observable Solution |
+|---------|-------------------|
+| Eager execution | **Lazy**: Only executes on subscribe |
+| No cancellation | **Automatic**: Unsubscribe cancels request |
+| Single value | **Streams**: Can handle multiple emissions |
+| No retry | **Built-in**: `retry`, `retryWhen` operators |
+| Memory leaks | **Async pipe**: Auto-cleanup on destroy |
+
+---
+
+## 📚 Key Classes & Types Explained
+
+### 1. `HttpClient` Service
+
+```typescript
+import { HttpClient } from '@angular/common/http';
+
+private http = inject(HttpClient);
+
+// Methods return Observable<T>
+this.http.get<User[]>('/api/users');
+this.http.post<User>('/api/users', newUser);
+this.http.put<User>('/api/users/1', updatedUser);
+this.http.delete('/api/users/1');
+this.http.patch<User>('/api/users/1', partialUpdate);
+```
+
+**Key Characteristics:**
+- Returns `Observable<T>` (not Promise)
+- Automatically parses JSON responses
+- Supports typed responses via generics
+- Requires `provideHttpClient()` in app config
+
+---
+
+### 2. `Observable<T>` Type
+
+```typescript
+Observable<User[]>  // Will emit User[] then complete
+
+// Observable lifecycle:
+// 1. CREATED (not yet subscribed)
+// 2. SUBSCRIBED (request sent)
+// 3. EMITTING (data received)
+// 4. COMPLETED/ERRORED (done)
+```
+
+**For HTTP**: Emits one value then completes (cold observable).
+
+---
+
+### 3. `Subscription` Type
+
+```typescript
+import { Subscription } from 'rxjs';
+
+const sub: Subscription = observable$.subscribe();
+
+// Cleanup
+sub.unsubscribe();  // Cancels if still pending
+```
+
+---
+
+### 4. AsyncPipe
+
+```typescript
+// In template - handles subscribe/unsubscribe automatically
+{{ users$ | async }}
+
+// With @if
+@if (users$ | async; as users) {
+    @for (user of users; track user.id) {
+        <span>{{ user.name }}</span>
+    }
+}
+```
+
+**Benefits:**
+- Auto-subscribes when component renders
+- Auto-unsubscribes on component destroy
+- Works with OnPush change detection
+- No manual cleanup code
+
+---
+
+## ❓ Additional Interview Questions (10+)
+
+### RxJS Operator Questions
+
+**Q7: What does `shareReplay(1)` do and when do you need it?**
+> A: It caches the last emitted value and shares it with all subscribers. Use when multiple template bindings use the same Observable to prevent duplicate HTTP requests.
+
+**Q8: How do you handle errors in an Observable chain?**
+> A: Use `catchError()` operator:
+> ```typescript
+> .pipe(catchError(err => {
+>     console.error(err);
+>     return of([]);  // Return fallback value
+> }))
+> ```
+
+**Q9: What's the difference between `switchMap` and `mergeMap`?**
+> A:
+> - `switchMap`: Cancels previous request when new one starts
+> - `mergeMap`: Runs all requests in parallel
+> Use `switchMap` for search, `mergeMap` for batch operations.
+
+---
+
+### Architecture Questions
+
+**Q10: Should services subscribe to their own HTTP requests?**
+> A: No! Services should return Observables. Let components/consumers decide when to subscribe.
+
+**Q11: How do you configure HttpClient in a standalone app?**
+> A: In `app.config.ts`:
+> ```typescript
+> export const appConfig: ApplicationConfig = {
+>     providers: [provideHttpClient()]
+> };
+> ```
+
+**Q12: How do you add a base URL to all requests?**
+> A: Use an interceptor or create a base service with configured URL.
+
+---
+
+### Testing Questions
+
+**Q13: How do you mock HTTP requests in tests?**
+> A: Use `HttpTestingController`:
+> ```typescript
+> const req = httpMock.expectOne('/api/users');
+> req.flush([{ id: 1, name: 'Test' }]);
+> ```
+
+**Q14: How do you test error handling?**
+> A: Flush with error status:
+> ```typescript
+> req.flush('Error', { status: 500, statusText: 'Server Error' });
+> ```
+
+---
+
+### Performance Questions
+
+**Q15: How do you implement caching for HTTP requests?**
+> A: Use `shareReplay()` or implement a caching interceptor:
+> ```typescript
+> users$ = this.http.get<User[]>('/api/users').pipe(
+>     shareReplay({ bufferSize: 1, refCount: true })
+> );
+> ```
+
+**Q16: How do you debounce search requests?**
+> A:
+> ```typescript
+> searchTerm$.pipe(
+>     debounceTime(300),
+>     distinctUntilChanged(),
+>     switchMap(term => this.http.get(`/api/search?q=${term}`))
+> )
+> ```
+
+---
+
+### Edge Case Questions
+
+**Q17: What happens if the API returns non-JSON?**
+> A: By default, HttpClient expects JSON. For text:
+> ```typescript
+> this.http.get('/api/text', { responseType: 'text' })
+> ```
+
+**Q18: How do you get the full response including headers?**
+> A: Use observe option:
+> ```typescript
+> this.http.get('/api/users', { observe: 'response' })
+> // Returns Observable<HttpResponse<User[]>>
+> ```
+
+**Q19: How do you track upload/download progress?**
+> A:
+> ```typescript
+> this.http.post('/api/upload', formData, { 
+>     reportProgress: true, 
+>     observe: 'events' 
+> }).pipe(
+>     filter(event => event.type === HttpEventType.UploadProgress)
+> )
+> ```
+
+**Q20: How do you handle concurrent requests?**
+> A: Use `forkJoin` for parallel:
+> ```typescript
+> forkJoin({
+>     users: this.http.get<User[]>('/api/users'),
+>     roles: this.http.get<Role[]>('/api/roles')
+> }).subscribe(({ users, roles }) => {...})
+> ```
+

@@ -523,3 +523,326 @@ export class NameDirective {
     // Event: renderer.listen(el, 'click', handler)
 }
 ```
+
+---
+
+## 🎯 What Problem Does This Solve?
+
+### The Problem: Duplicated Behavior Logic Across Components
+
+**Without Directives (BAD):**
+```typescript
+// Component A
+@Component({...})
+export class CardComponent {
+    highlight() {
+        this.element.style.backgroundColor = 'yellow';
+        this.element.style.padding = '4px';
+        this.element.style.borderRadius = '4px';
+    }
+}
+
+// Component B - SAME CODE AGAIN!
+@Component({...})
+export class MenuItemComponent {
+    highlight() {
+        this.element.style.backgroundColor = 'yellow';
+        this.element.style.padding = '4px';
+        this.element.style.borderRadius = '4px';
+    }
+}
+
+// Component C - YET AGAIN!
+// ... and so on across 50 components
+```
+
+**Problems:**
+1. **Code duplication**: Same logic in multiple places
+2. **Hard to maintain**: Change highlight = update 50 files
+3. **Inconsistency**: Different implementations across components
+4. **Not reusable**: Logic locked inside components
+
+### How Directives Solve This
+
+**With Directives (GOOD):**
+```typescript
+// ONE directive, used EVERYWHERE
+@Directive({ selector: '[appHighlight]' })
+export class HighlightDirective {
+    ngOnInit() {
+        this.renderer.setStyle(this.el.nativeElement, 'backgroundColor', 'yellow');
+        this.renderer.setStyle(this.el.nativeElement, 'padding', '4px');
+        this.renderer.setStyle(this.el.nativeElement, 'borderRadius', '4px');
+    }
+}
+
+// Component A
+<div appHighlight>Card content</div>
+
+// Component B
+<span appHighlight>Menu item</span>
+
+// Component C, D, E... - one import, done!
+```
+
+| Problem | Directive Solution |
+|---------|-------------------|
+| Code duplication | **Single source**: One directive, reused everywhere |
+| Hard to maintain | **Centralized**: Update once, applies everywhere |
+| Inconsistency | **Uniform**: Same behavior guaranteed |
+| Not reusable | **Highly reusable**: Import and apply to any element |
+
+---
+
+## 📚 Key Classes & Types Explained
+
+### 1. `@Directive()` Decorator
+
+```typescript
+@Directive({
+    selector: '[appHighlight]',  // Attribute selector (brackets!)
+    standalone: true,            // Modern Angular 14+ pattern
+    host: { 'class': 'highlighted' }  // Static host binding
+})
+export class HighlightDirective { }
+```
+
+**Metadata Options:**
+| Property | Purpose |
+|----------|---------|
+| `selector` | CSS selector to match elements |
+| `standalone` | No NgModule required |
+| `host` | Static host element properties |
+| `providers` | Directive-scoped services |
+
+---
+
+### 2. `ElementRef` Service
+
+```typescript
+private el = inject(ElementRef);
+
+// Access the native DOM element
+const nativeEl = this.el.nativeElement;
+console.log(nativeEl.tagName);  // 'DIV', 'SPAN', etc.
+```
+
+**Purpose**: Reference to the host element the directive is attached to.
+
+**Warning**: Direct access to `nativeElement` should be avoided for SSR compatibility.
+
+---
+
+### 3. `Renderer2` Service
+
+```typescript
+private renderer = inject(Renderer2);
+
+// Safe DOM manipulation methods
+this.renderer.setStyle(el, 'color', 'red');
+this.renderer.addClass(el, 'active');
+this.renderer.setAttribute(el, 'aria-label', 'text');
+this.renderer.listen(el, 'click', () => { });
+this.renderer.createElement('div');
+this.renderer.appendChild(parent, child);
+```
+
+**Key Methods:**
+| Method | Purpose |
+|--------|---------|
+| `setStyle(el, style, value)` | Set inline style |
+| `removeStyle(el, style)` | Remove inline style |
+| `addClass(el, className)` | Add CSS class |
+| `removeClass(el, className)` | Remove CSS class |
+| `setAttribute(el, name, value)` | Set attribute |
+| `removeAttribute(el, name)` | Remove attribute |
+| `listen(el, event, callback)` | Add event listener |
+| `createElement(tag)` | Create new element |
+| `appendChild(parent, child)` | Append child to parent |
+
+---
+
+### 4. `@HostListener` Decorator
+
+```typescript
+@HostListener('mouseenter')
+onMouseEnter() {
+    this.highlight('yellow');
+}
+
+@HostListener('click', ['$event'])
+onClick(event: MouseEvent) {
+    console.log('Clicked at:', event.clientX, event.clientY);
+}
+```
+
+**Purpose**: Listen to host element events declaratively.
+
+---
+
+### 5. `@HostBinding` Decorator
+
+```typescript
+@HostBinding('class.active')
+isActive = false;
+
+@HostBinding('style.backgroundColor')
+bgColor = 'transparent';
+
+@HostBinding('attr.aria-expanded')
+expanded = false;
+```
+
+**Purpose**: Bind directive properties to host element properties.
+
+---
+
+## ❓ Complete Interview Questions (25+)
+
+### Basic Conceptual Questions
+
+**Q11: What is an attribute directive?**
+> A: A class that modifies the behavior or appearance of an existing DOM element without creating new elements.
+
+**Q12: How do you create a custom directive?**
+> A: Use `@Directive({ selector: '[appName]' })` with the selector in brackets.
+
+**Q13: Why use brackets in the selector?**
+> A: Brackets denote an attribute selector. Without them, Angular looks for an element tag.
+
+**Q14: What's the difference between attribute and structural directives?**
+> A: Attribute directives modify elements; structural directives (`*ngIf`, `*ngFor`) add/remove elements from the DOM.
+
+**Q15: What dependency is needed to safely modify the DOM?**
+> A: `Renderer2` for platform-agnostic, SSR-safe DOM manipulation.
+
+---
+
+### Implementation Questions
+
+**Q16: How do you apply styles to the host element?**
+> A: `this.renderer.setStyle(this.el.nativeElement, 'color', 'red')` or `@HostBinding('style.color')`.
+
+**Q17: How do you add/remove CSS classes?**
+> A: `this.renderer.addClass(el, 'className')` / `removeClass()` or `@HostBinding('class.active')`.
+
+**Q18: How do you listen to host events?**
+> A: `@HostListener('click')` decorator or `this.renderer.listen(el, 'click', handler)`.
+
+**Q19: How do you clean up event listeners?**
+> A: `renderer.listen()` returns an unsubscribe function. Call it in `ngOnDestroy`.
+
+**Q20: Can you inject services into directives?**
+> A: Yes! Use `inject(ServiceName)` just like in components.
+
+---
+
+### Advanced Questions
+
+**Q21: How do you pass inputs to a directive?**
+> A:
+> ```typescript
+> @Input() appHighlight: string = 'yellow';
+> // Usage: <div [appHighlight]="'red'">
+> ```
+
+**Q22: Can a directive have outputs?**
+> A: Yes! Use `@Output()` to emit events:
+> ```typescript
+> @Output() highlighted = new EventEmitter<boolean>();
+> ```
+
+**Q23: How do you access the host component from a directive?**
+> A: Inject the component type:
+> ```typescript
+> constructor(@Optional() private host: HostComponent) { }
+> ```
+
+**Q24: Can multiple directives be applied to one element?**
+> A: Yes! `<div appHighlight appTooltip appDraggable>` all apply.
+
+**Q25: How do directives interact with each other?**
+> A: They can inject each other or share a host component. Use `@Host()` modifier.
+
+---
+
+### Scenario Questions
+
+**Q26: Create a directive that tracks element visibility.**
+> A: Use Intersection Observer:
+> ```typescript
+> @Directive({ selector: '[appTrackVisible]' })
+> export class TrackVisibleDirective implements OnInit {
+>     @Output() visible = new EventEmitter<boolean>();
+>     
+>     ngOnInit() {
+>         const observer = new IntersectionObserver(entries => {
+>             this.visible.emit(entries[0].isIntersecting);
+>         });
+>         observer.observe(this.el.nativeElement);
+>     }
+> }
+> ```
+
+**Q27: Build a directive that copies text to clipboard on click.**
+> A:
+> ```typescript
+> @Directive({ selector: '[appCopyToClipboard]' })
+> export class CopyDirective {
+>     @Input() appCopyToClipboard: string = '';
+>     
+>     @HostListener('click')
+>     onClick() {
+>         navigator.clipboard.writeText(this.appCopyToClipboard);
+>     }
+> }
+> ```
+
+**Q28: Create a directive that prevents form submission on Enter key.**
+> A:
+> ```typescript
+> @Directive({ selector: '[appPreventEnterSubmit]' })
+> export class PreventEnterDirective {
+>     @HostListener('keydown.enter', ['$event'])
+>     onEnter(event: KeyboardEvent) {
+>         event.preventDefault();
+>     }
+> }
+> ```
+
+---
+
+### Debugging Questions
+
+**Q29: Directive doesn't apply - what do you check?**
+> A: 1) Brackets in selector, 2) Import in component, 3) Spelling, 4) Element exists when directive runs.
+
+**Q30: Directive works locally but fails in SSR - why?**
+> A: Using direct DOM access. Switch to `Renderer2`.
+
+**Q31: Event listeners causing memory leaks - how to fix?**
+> A: Store the unsubscribe function and call it in ngOnDestroy.
+
+---
+
+### Best Practice Questions
+
+**Q32: When should you use a directive vs CSS?**
+> A: Use directives when you need:
+> - Dynamic behavior based on inputs
+> - Event handling
+> - Logic that can't be expressed in CSS
+
+**Q33: How do you test a directive?**
+> A: Create a test host component, apply the directive, and assert the expected DOM changes:
+> ```typescript
+> @Component({ template: '<div appHighlight>Test</div>' })
+> class TestComponent { }
+> ```
+
+**Q34: Should directives have complex logic?**
+> A: No! Keep directives focused on one concern. Complex logic belongs in services.
+
+**Q35: How do you share state between directive instances?**
+> A: Inject a shared service that holds the state.
+

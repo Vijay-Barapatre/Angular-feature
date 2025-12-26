@@ -506,3 +506,164 @@ mindmap
       Type your inputs
       Document expected values
 ```
+
+---
+
+## ❓ Additional Interview Questions (15+)
+
+### Type Safety Questions
+
+**Q11: How do you make an @Input required in Angular 16+?**
+> A: Use the required option:
+> ```typescript
+> @Input({ required: true }) config!: ConfigType;
+> ```
+
+**Q12: How do you type an @Input that accepts multiple types?**
+> A: Use union types:
+> ```typescript
+> @Input() size: 'sm' | 'md' | 'lg' = 'md';
+> @Input() value: string | number = '';
+> ```
+
+**Q13: What is @Input transform and when would you use it?**
+> A: Transform allows automatic value conversion (Angular 16+):
+> ```typescript
+> @Input({ transform: booleanAttribute }) disabled = false;
+> // <div disabled> → disabled becomes true
+> ```
+
+---
+
+### Lifecycle Questions
+
+**Q14: What is the order of lifecycle hooks when inputs change?**
+> A: ngOnChanges → ngDoCheck → ngAfterContentChecked → ngAfterViewChecked
+
+**Q15: How do you access both previous and current values in ngOnChanges?**
+> A:
+> ```typescript
+> ngOnChanges(changes: SimpleChanges) {
+>     const prev = changes['color'].previousValue;
+>     const curr = changes['color'].currentValue;
+>     const isFirst = changes['color'].firstChange;
+> }
+> ```
+
+**Q16: When does ngOnChanges NOT fire?**
+> A: When the bound object reference doesn't change (e.g., mutating array/object). Use immutable updates.
+
+---
+
+### Pattern Questions
+
+**Q17: How do you use the setter pattern instead of ngOnChanges?**
+> A:
+> ```typescript
+> private _color = 'blue';
+> 
+> @Input()
+> set color(value: string) {
+>     this._color = value;
+>     this.applyStyle();  // React immediately
+> }
+> get color(): string { return this._color; }
+> ```
+
+**Q18: When is the setter pattern preferred over ngOnChanges?**
+> A: When you only have one input to react to. Setters are cleaner for single-input directives.
+
+**Q19: How do you handle null/undefined inputs?**
+> A:
+> ```typescript
+> @Input() color: string | null = null;
+> 
+> ngOnChanges() {
+>     if (this.color != null) {
+>         this.applyStyle(this.color);
+>     }
+> }
+> ```
+
+---
+
+### Scenario Questions
+
+**Q20: Create a directive that accepts a permission string and shows/hides element.**
+> A:
+> ```typescript
+> @Directive({ selector: '[appRequireRole]' })
+> export class RequireRoleDirective implements OnChanges {
+>     @Input() appRequireRole: string = '';
+>     private authService = inject(AuthService);
+>     
+>     ngOnChanges() {
+>         const hasRole = this.authService.hasRole(this.appRequireRole);
+>         this.renderer.setStyle(this.el.nativeElement, 'display', 
+>             hasRole ? '' : 'none');
+>     }
+> }
+> ```
+
+**Q21: How would you create a directive that adds a badge with text?**
+> A:
+> ```typescript
+> @Directive({ selector: '[appBadge]' })
+> export class BadgeDirective implements OnChanges {
+>     @Input() appBadge: string = '';
+>     @Input() badgeColor: string = 'red';
+>     
+>     ngOnChanges() {
+>         // Create/update badge element with text and color
+>     }
+> }
+> ```
+
+**Q22: Build a directive that tracks clicks and sends to analytics.**
+> A:
+> ```typescript
+> @Directive({ selector: '[appTrackClick]' })
+> export class TrackClickDirective {
+>     @Input() appTrackClick: string = '';
+>     
+>     @HostListener('click')
+>     onClick() {
+>         analytics.track('click', { element: this.appTrackClick });
+>     }
+> }
+> ```
+
+---
+
+### Advanced Questions
+
+**Q23: How do you pass dynamic properties computed at runtime?**
+> A: Use getters in the parent component:
+> ```typescript
+> // Parent
+> get dynamicConfig() {
+>     return { color: this.isDark ? 'white' : 'black' };
+> }
+> // Template
+> <div [appConfig]="dynamicConfig">
+> ```
+
+**Q24: Can you use signals with directive inputs?**
+> A: Yes! Use input() function (Angular 17+):
+> ```typescript
+> color = input('blue');  // InputSignal<string>
+> // Access with: this.color()
+> ```
+
+**Q25: How do you combine @Input with service data?**
+> A:
+> ```typescript
+> @Input() colorKey: string = 'primary';
+> private themeService = inject(ThemeService);
+> 
+> ngOnChanges() {
+>     const actualColor = this.themeService.getColor(this.colorKey);
+>     this.applyStyle(actualColor);
+> }
+> ```
+
