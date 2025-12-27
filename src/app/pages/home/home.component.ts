@@ -343,7 +343,31 @@ export class HomeComponent {
             ]
         },
         {
+            name: 'Testing & Quality',
+            icon: '🧪',
+            description: 'Comprehensive testing strategies for Angular applications',
+            features: [
+                {
+                    name: '🎭 E2E Testing (Playwright)',
+                    route: '/e2e-testing',
+                    description: 'End-to-end testing with Playwright: setup, page objects, API mocking, visual regression, CI/CD',
+                    status: 'active',
+                    useCases: 7,
+                    color: 'primary'
+                },
+                {
+                    name: 'Testing',
+                    route: '/testing',
+                    description: 'Unit and integration testing: components, services, HTTP, async, mocking, performance',
+                    status: 'active',
+                    useCases: 7,
+                    color: 'accent'
+                }
+            ]
+        },
+        {
             name: 'Language Fundamentals',
+
             icon: '📚',
             description: 'Master JavaScript and TypeScript foundations for Angular',
             features: [
