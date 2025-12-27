@@ -237,7 +237,115 @@ Think of component testing like a **puppet show**:
 
 ---
 
+## ❓ Additional Interview Questions (22+)
+
+### TestBed Questions
+
+**Q4: When should you use `compileComponents()`?**
+> A: When using templateUrl/styleUrls (external files). Not needed for inline templates.
+
+**Q5: What's the difference between TestBed and fixture?**
+> A: TestBed configures the testing module; Fixture wraps the component instance + DOM.
+
+**Q6: Can you reuse TestBed configuration across tests?**
+> A: Yes, but each test gets a fresh component instance via `createComponent()`.
+
+**Q7: How to configure multiple components?**
+> A: Add to imports array: `imports: [ComponentA, ComponentB]`.
+
+---
+
+### detectChanges() Questions
+
+**Q8: When must you call detectChanges()?**
+> A: After changing component properties or triggering events - Angular won't auto-detect in tests.
+
+**Q9: What happens if you forget detectChanges()?**
+> A: DOM won't update, tests fail - assertions on template see old values.
+
+**Q10: How many times can you call detectChanges()?**
+> A: As many as needed - after each state change you want reflected in DOM.
+
+**Q11: Is there automatic change detection in tests?**
+> A: No - must manually call `fixture.detectChanges()`.
+
+---
+
+### Query/Locator Questions
+
+**Q12: What's By.css vs nativeElement.querySelector?**
+> A: `By.css` returns DebugElement (Angular abstraction); querySelector returns raw DOM element.
+
+**Q13: How to query multiple elements?**
+> A: `queryAll()`: `fixture.debugElement.queryAll(By.css('.item'))`.
+
+**Q14: How to find element by directive?**
+> A: `By.directive(MyDirective)`.
+
+**Q15: What if query returns null?**
+> A: Element not found - add detectChanges() or check selector.
+
+---
+
+### Event Testing Questions
+
+**Q16: How to trigger click event?**
+> A: `debugElement.triggerEventHandler('click', null)` or `nativeElement.click()`.
+
+**Q17: How to trigger input change?**
+> A: Set value + dispatch event:
+> ```typescript
+> input.nativeElement.value = 'test';
+> input.nativeElement.dispatchEvent(new Event('input'));
+> ```
+
+**Q18: How to test form submission?**
+> A: Trigger submit on form element, then detect changes.
+
+---
+
+### Async Testing Questions
+
+**Q19: How to test async operations?**
+> A: Use `fakeAsync()` and `tick()` or `waitForAsync()`:
+> ```typescript
+> it('async test', fakeAsync(() => {
+>   component.loadData();
+>   tick(1000);
+>   expect(component.data).toBeDefined();
+> }));
+> ```
+
+**Q20: What's the difference between fakeAsync and waitForAsync?**
+> A: `fakeAsync` simulates time synchronously with `tick()`; `waitForAsync` waits for real async operations.
+
+---
+
+### Best Practice Questions
+
+**Q21: Should tests share component instances?**
+> A: No - create fresh instance per test in `beforeEach()`.
+
+**Q22: How to test @Input properties?**
+> A: Set directly on component instance: `component.title = 'Test'`, then `detectChanges()`.
+
+**Q23: How to test @Output events?**
+> A: Subscribe to EventEmitter:
+> ```typescript
+> component.save.subscribe(val => expect(val).toBe('data'));
+> component.saveData();
+> ```
+
+**Q24: Should you test private methods?**
+> A: No - test public API only (through template/inputs/outputs).
+
+**Q25: How to test conditional rendering (*ngIf)?**
+> A: Change condition, detectChanges(), query element - should exist/not exist.
+
+---
+
 ## 🧠 Mind Map
+
 
 ```mermaid
 mindmap

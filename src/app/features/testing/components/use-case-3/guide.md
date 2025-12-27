@@ -113,7 +113,72 @@ const mockUserService = createUserServiceMock();
 
 ---
 
-### 📦 Data Flow Summary (Visual Box Diagram)
+## ❓ Additional Interview Questions (20+)
+
+**Q3: How to create a spy object?**
+> A: `jasmine.createSpyObj('ServiceName', ['method1', 'method2'])`.
+
+**Q4: How to mock Observable properties?**
+> A: Third parameter: `jasmine.createSpyObj('S', [], { user$: of(null) })`.
+
+**Q5: What's and.returnValue vs and.callFake?**
+> A: `returnValue` returns static value; `callFake` executes custom function.
+
+**Q6: How to mock different return values per call?**
+> A: Chain: `spy.and.returnValues(value1, value2, value3)`.
+
+**Q7: How to verify method was called with specific args?**
+> A: `expect(spy).toHaveBeenCalledWith(arg1, arg2)`.
+
+**Q8: How to verify call count?**
+> A: `expect(spy).toHaveBeenCalledTimes(3)`.
+
+**Q9: How to reset spy between tests?**
+> A: Recreate in `beforeEach()` or use `spy.calls.reset()`.
+
+**Q10: When to use useValue vs useClass?**
+> A: `useValue` for spy objects; `useClass` for stub implementations.
+
+**Q11: How to mock HttpClient?**
+> A: `jasmine.createSpyObj('HttpClient', ['get', 'post'])`.
+
+**Q12: How to test Observable error handling?**
+> A: `spy.and.returnValue(throwError(() => new Error('test')))`.
+
+**Q13: Should you mock everything?**
+> A: No - only external dependencies (HTTP, services). Not framework code.
+
+**Q14: How to mock private methods?**
+> A: Don't - test public API only.
+
+**Q15: How to create reusable mocks?**
+> A: Export factory functions that return configured spy objects.
+
+**Q16: What's Jasmine vs Sinon?**
+> A: Both mocking libraries; Jasmine built-in, Sinon more features.
+
+**Q17: How to mock class with new keyword?**
+> A: Provide stub class in TestBed with `useClass`.
+
+**Q18: How to mock static methods?**
+> A: Use `spyOn(ClassName, 'methodName')`.
+
+**Q19: Can spies call through to real implementation?**
+> A: Yes: `spy.and.callThrough()`.
+
+**Q20: How to check if spy was NOT called?**
+> A: `expect(spy).not.toHaveBeenCalled()`.
+
+**Q21: How to get spy call arguments?**
+> A: `spy.calls.argsFor(0)` or `spy.calls.mostRecent().args`.
+
+**Q22: Should you verify every method call?**
+> A: No - only verify calls critical to test behavior.
+
+---
+
+## 🧠 Mind Map
+
 
 ```
 ┌─────────────────────────────────────────────────────────────┐

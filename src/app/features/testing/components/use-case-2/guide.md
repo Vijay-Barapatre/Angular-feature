@@ -111,7 +111,121 @@ it('should update signal', () => {
 
 ---
 
-### 📦 Data Flow Summary (Visual Box Diagram)
+## ❓ Additional Interview Questions (23+)
+
+### Setup & Configuration Questions
+
+**Q3: When to use TestBed vs new Service()?**
+> A: Use TestBed if service has dependencies. Use `new` for simple services with no DI.
+
+**Q4: How to inject dependencies in service tests?**
+> A: Provide in TestBed: `providers: [MyService, { provide: HttpClient, useValue: mockHttp }]`.
+
+**Q5: How to test singleton service?**
+> A: Same as any service - TestBed creates test instance, doesn't use app singleton.
+
+**Q6: Can you skip TestBed entirely?**
+> A: Yes for simple services: `service = new CounterService()`.
+
+---
+
+### Observable Testing Questions
+
+**Q7: How to test Observable emissions?**
+> A: Subscribe and collect values:
+> ```typescript
+> const values: number[] = [];
+> service.data$.subscribe(v => values.push(v));
+> service.emit(5);
+> expect(values).toEqual([5]);
+> ```
+
+**Q8: How to test Observable errors?**
+> A: Subscribe to error callback:
+> ```typescript
+> service.data$.subscribe({
+>   error: err => expect(err.message).toBe('Error')
+> });
+> ```
+
+**Q9: How to test Observable completion?**
+> A: Use `done()` callback or marble testing.
+
+**Q10: What is firstValueFrom()?**
+> A: RxJS helper that converts Observable to Promise - gets first emission:
+> ```typescript
+> const value = await firstValueFrom(service.data$);
+> ```
+
+**Q11: How to test debounced Observables?**
+> A: Use `fakeAsync()` and `tick(delay)` to fast-forward time.
+
+---
+
+### Signal Testing Questions
+
+**Q12: How to test signals?**
+> A: Call signal like function: `expect(service.count()).toBe(5)`.
+
+**Q13: How to test computed signals?**
+> A: Same as regular signals - they auto-update:
+> ```typescript
+> service.count.set(5);
+> expect(service.double()).toBe(10);
+> ```
+
+**Q14: Do signals need detectChanges()?**
+> A: Not in service tests (no DOM). Yes in component tests.
+
+---
+
+### Method Testing Questions
+
+**Q15: How to test method return values?**
+> A: Call method, assert return: `expect(service.add(2, 3)).toBe(5)`.
+
+**Q16: How to test void methods?**
+> A: Check side effects (property values, Observable emissions).
+
+**Q17: How to test methods with side effects?**
+> A: Assert state changes: `service.increment(); expect(service.count).toBe(1)`.
+
+---
+
+### Spy & Mock Questions
+
+**Q18: How to spy on service methods?**
+> A: Use Jasmine spy: `spyOn(service, 'getData').and.returnValue(of(data))`.
+
+**Q19: When to use spy vs mock?**
+> A: Spy to watch real service; mock for complete fake implementation.
+
+**Q20: How to verify method was called?**
+> A: `expect(spy).toHaveBeenCalled()` or `toHaveBeenCalledWith(args)`.
+
+---
+
+### Best Practice Questions
+
+**Q21: Should you test private methods?**
+> A: No - test public API only. Private methods tested through public ones.
+
+**Q22: How to handle service dependencies?**
+> A: Provide mocks in TestBed or inject mock in constructor.
+
+**Q23: How to test stateful services?**
+> A: Reset state in `beforeEach()` or create fresh instance.
+
+**Q24: Should you test RxJS operators?**
+> A: No - test YOUR logic, not framework internals.
+
+**Q25: How to organize service tests?**
+> A: Group by method using `describe()` blocks.
+
+---
+
+## 🧠 Mind Map
+
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
