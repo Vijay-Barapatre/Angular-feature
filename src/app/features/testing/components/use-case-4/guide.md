@@ -180,7 +180,87 @@ Think of fakeAsync + tick like a **time machine**:
 
 ---
 
+## ❓ Interview Questions (25+)
+
+**Q1: What is fakeAsync?**
+> A: Test zone that synchronously simulates asynchronous operations with time control.
+
+**Q2: What does tick() do?**
+> A: Fast-forwards virtual time by specified milliseconds.
+
+**Q3: What's the difference between tick() and flush()?**
+> A: `tick(ms)` advances specific time; `flush()` completes ALL pending async tasks.
+
+**Q4: When to use fakeAsync vs async?**
+> A: `fakeAsync` for timers/delays; `async` (deprecated) for general async.
+
+**Q5: What is discardPeriodicTasks()?**
+> A: Cancels pending `setInterval` tasks to prevent "pending timer" errors.
+
+**Q6: Can you use real setTimeout in fakeAsync?**
+> A: No - only Zone.js-patched timers work in fakeAsync.
+
+**Q7: How to test debounced Observables?**
+> A: Use `fakeAsync()` + `tick(debounceTime)`.
+
+**Q8: How to test Observable.timer?**
+> A: Wrap in `fakeAsync()`, use `tick()` to advance time.
+
+**Q9: What happens if you forget discardPeriodicTasks()?**
+> A: Test fails with "X timer(s) still in queue" error.
+
+**Q10: Can you nest fakeAsync?**
+> A: No - will throw error.
+
+**Q11: How to test animation delays?**
+> A: `tick(animationDuration)` in fakeAsync.
+
+**Q12: What is whenStable()?**
+> A: Waits for all Zone.js-tracked async operations to complete.
+
+**Q13: How to test Promise in fakeAsync?**
+> A: Promises work automatically, use `tick()` or `flush()`.
+
+**Q14: What's done() callback used for?**
+> A: Signal async test completion in Observable subscriptions.
+
+**Q15: Can you use HttpClient in fakeAsync?**
+> A: Yes, but use HttpTestingController for better control.
+
+**Q16: How to test throttle?**
+> A: Similar to debounce - trigger multiple calls, tick throttle time.
+
+**Q17: What's flushMicrotasks()?**
+> A: Flushes microtask queue (Promises, queueMicrotask).
+
+**Q18: How to test retry logic with delays?**
+> A: Use `fakeAsync()`, trigger error, tick retry delay.
+
+**Q19: Can you use async/await in fakeAsync?**
+> A: Yes, but prefer `tick()` for precise control.
+
+**Q20: How to test polling (interval)?**
+> A: `fakeAsync()`, tick poll interval multiple times, then `discardPeriodicTasks()`.
+
+**Q21: What if tick() time doesn't match?**
+> A: Test may pass but not actually test the delay - verify correct timing.
+
+**Q22: How to test Observable.combineLatest with delays?**
+> A: Tick each source's delay, verify combined emission.
+
+**Q23: Can you mix real and fake async?**
+> A: No - use one approach per test.
+
+**Q24: How to test component lifecycle with delays?**
+> A: Trigger lifecycle, tick delay, verify state.
+
+**Q25: Best practice for async cleanup?**
+> A: Always use `discardPeriodicTasks()` + `flush()` to prevent leaks.
+
+---
+
 ## 🧠 Mind Map
+
 
 ```mermaid
 mindmap
