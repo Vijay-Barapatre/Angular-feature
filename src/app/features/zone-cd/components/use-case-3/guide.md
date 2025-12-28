@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: OnPush tells Angular to only check component when inputs change or observables emit!
 
+![OnPush Infographic](onpush_infographic.png)
+
 ---
 
 ## 1. 🔍 Default vs OnPush
@@ -111,28 +113,135 @@ flowchart TD
 
 ---
 
-## 3. ❓ Interview Questions
+---
+
+## 🎯 What Problem Does This Solve?
+
+### The Problem: Change Detection is Expensive
+**Without OnPush (Default):**
+Angular checks *every* binding in *every* component whenever *anything* happens (click, timeout, xhr).
+```typescript
+// Even if this component didn't change at all...
+// Angular checks it 100 times just in case.
+```
+
+**Problems:**
+1.  **Slow Performance**: In large apps (1000+ components), checking everything takes > 16ms, causing frame drops.
+2.  **Unpredictable Updates**: Functions in templates (`{{ runHeavyCalc() }}`) re-run constantly.
+
+### How OnPush Solves This
+**With OnPush:**
+```typescript
+changeDetection: ChangeDetectionStrategy.OnPush
+// Angular: "I'll skip this subtree unless Input changes or you tell me to check."
+```
+
+| Problem | OnPush Solution |
+|---------|-----------------|
+| Global Checks | **Subtree Pruning**: Angular skips entire branches of the component tree during CD. |
+| Template Recalc | **Stability**: Bindings are only re-evaluated when dependencies genuinely change. |
+
+---
+
+## 📚 Key Classes & Types Explained
+
+### 1. `ChangeDetectionStrategy.OnPush`
+*   **Behavior**: Tells Angular's CD mechanism to treat this component as "Immutable".
+*   **Contract**: "I promise I will not update my UI unless my `@Input()` reference changes, or an event fires inside me."
+
+### 2. `AsyncPipe` (`| async`)
+*   **Role**: Essential companion to OnPush.
+*   **Magic**: When the observable emits, `AsyncPipe` internally calls `markForCheck()`, telling Angular "Hey, I have new data, please check this OnPush component next cycle."
+
+---
+
+## 🌍 Real-World Use Cases
+
+### 1. Dumb/Presentation Components
+A `UserCardComponent` that just displays `@Input() user`. It never changes unless the parent passes a new user. Perfect candidate.
+
+### 2. Lists / Tables
+A `DataGridComponent` with 500 rows. If one row updates, you don't want to check the other 499. OnPush with proper immutability handles this.
+
+### 3. Real-time Boards (Trello-like)
+Moving a card in "Column A" shouldn't cause "Column B" to re-render. OnPush isolates the updates.
+
+### 4. Third-Party UI Kits
+Most high-quality UI libraries (Material, PrimeNG) use OnPush internally to ensure they don't slow down your app.
+
+---
+
+## ❓ Complete Interview Questions (20+)
 
 ### Basic Questions
 
-#### Q1: Why doesn't my OnPush component update?
-**Answer:** Common causes:
-- Mutating object instead of new reference
-- Not using async pipe
-- External state change without markForCheck()
+**Q1: What triggers OnPush?**
+> A: Input Reference Change, Event inside component, Async Pipe, `markForCheck()`.
 
-```typescript
-// ❌ Won't trigger CD
-this.user.name = 'New';
+**Q2: Does changing an object property trigger OnPush?**
+> A: No! `user.name = 'Bob'` keeps the same object `user`. OnPush sees no change. You must do `user = {...user, name: 'Bob'}`.
 
-// ✅ Will trigger CD
-this.user = { ...this.user, name: 'New' };
-```
+**Q3: What causes "View not updating" in OnPush?**
+> A: Usually mutation of objects/arrays instead of replacement.
 
-#### Q2: async pipe with OnPush - why is it good?
-**Answer:** Async pipe automatically calls `markForCheck()` when observable emits, making OnPush safe to use.
+**Q4: Does clicking a button in an OnPush component trigger CD?**
+> A: Yes! Angular knows that because an event handler fired inside the component, state *might* have changed, so it marks it for check.
+
+**Q5: Difference between `Default` and `OnPush`?**
+> A: Default checks always. OnPush checks only on signals (Input/Event/Manual).
 
 ---
+
+### Scenario-Based Questions
+
+**Q6: Scenario: Data arrives via WebSocket service.**
+> A: If component uses OnPush, you must manually call `cdr.markForCheck()` after updating local state, or use an `Observable` + `async` pipe.
+
+**Q7: Scenario: Parent is Default, Child is OnPush.**
+> A: Parent checks often. When it reaches Child, it skips Child 99% of the time unless Inputs changed.
+
+**Q8: Scenario: Parent is OnPush, Child is Default.**
+> A: If Parent is skipped, Child is ALSO skipped (subtree pruning), even if Child is Default. The skipping happens at the branch root.
+
+**Q9: Scenario: `setTimeout` update in OnPush.**
+> A: Requires `markForCheck()`. `setTimeout` triggers global CD, but OnPush components ignore global CD unless marked.
+
+**Q10: Scenario: Testing OnPush components.**
+> A: You might need to manually trigger change detection in tests (`fixture.detectChanges()`) more often after setting inputs.
+
+---
+
+### Advanced Questions
+
+**Q11: How does `Input` binding check work?**
+> A: Strict equality `===`.
+
+**Q12: Does `HostListener` trigger OnPush?**
+> A: Yes, it's considered an event inside the component.
+
+**Q13: Can I turn off CD completely?**
+> A: `changeDetection: ChangeDetectionStrategy.OnPush` is NOT off. Iterating manual `detach()` is "off".
+
+**Q14: Impact of Signal Inputs?**
+> A: Signals integrate perfectly. When a Signal Input changes, it notifies the component to check, similar to RxJS async pipe logic (but usually more granular).
+
+**Q15: Does `markForCheck` trigger CD immediately?**
+> A: No. It sets a flag. The check happens at the end of the current microtask/turn.
+
+**Q16: `markForCheck` vs `detectChanges`?**
+> A: `markForCheck` moves up the tree (marks ancestors). `detectChanges` moves down the tree (checks children).
+
+**Q17: Is OnPush default in new Angluar?**
+> A: No, but highly recommended.
+
+**Q18: What is "Dirty" state?**
+> A: Internal flag `LViewFlags.Dirty`. `markForCheck` sets this.
+
+**Q19: Can I use OnPush with mutable data?**
+> A: Technically yes, if you manually `markForCheck` every time you mutate. But it defeats the purpose and is error-prone.
+
+**Q20: How to debug OnPush issues?**
+> A: Use Angular DevTools "Profiler" to see how many change detection cycles ran for a component. If it's 0 when you expected 1, you missed a trigger.
 
 ## 🧠 Mind Map
 

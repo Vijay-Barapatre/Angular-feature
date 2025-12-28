@@ -2,6 +2,8 @@
 
 > **💡 Lightbulb Moment**: Zone.js patches async APIs so Angular knows when to check for changes!
 
+![Zone Execution Infographic](zone_execution_infographic.png)
+
 ---
 
 ## 1. 🔍 What is Zone.js?
