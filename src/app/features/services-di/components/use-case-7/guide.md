@@ -106,7 +106,112 @@ providers: [
 
 ---
 
-## 3. 🚀 How It Works (Runtime Flow)
+## 3. 🔍 Deep Dive: Code Breakdown
+
+This implementation uses **7 Key Points** to make the magic happen:
+
+### 🏭 The "Factory Logic" (Step-by-Step)
+
+This pattern allows Angular to **dynamically choose** which service to create at runtime.
+
+#### 1. The Provider Configuration (`use-factory-example.component.ts`)
+
+This is the most critical part. We tell Angular: *"Don't just use a class. Run THIS function to get the service."*
+
+```typescript
+providers: [
+  // 1️⃣ CONFIGURATION
+  // We provide the configuration first. This is what the factory will read.
+  // We use 'useValue' because the config is just a static object (DEBUG_CONFIG).
+  { provide: APP_CONFIG, useValue: DEBUG_CONFIG },
+
+  // 2️⃣ THE FACTORY PROVIDER
+  {
+    provide: AppService, // 👈 The Token: Components will ask for "AppService"
+
+    // 🏭 THE FACTORY FUNCTION
+    // This function runs when the component is created.
+    // It receives the dependencies we listed in 'deps' below.
+    useFactory: (http: HttpClient, config: AppConfig) => {
+      
+      // 🔍 POINT 1: RUNTIME LOGIC
+      // We can run ANY javascript here. We check the config flag.
+      console.log('🏭 Factory running! Is Production?', config.isProduction);
+
+      if (config.isProduction) {
+        // 🔴 POINT 2: MANUAL CREATION (Prod)
+        // If prod, we manually "new up" the ProdService.
+        // We MUST pass 'http' because ProdService expects it in its constructor.
+        return new ProdService(http);
+      } else {
+        // 🟢 POINT 3: MANUAL CREATION (Debug)
+        // If debug, we create the DebugService.
+        return new DebugService(http);
+      }
+    },
+
+    // 🔗 POINT 4: THE MAP (deps)
+    // This array tells Angular WHAT to inject into the factory function arguments.
+    // Order matches the function arguments above!
+    // [0] HttpClient -> becomes 'http' argument
+    // [1] APP_CONFIG -> becomes 'config' argument
+    deps: [HttpClient, APP_CONFIG] 
+  }
+]
+```
+
+#### 2. The Abstract Contract (`service.model.ts`)
+
+This is the "Interface". The component talks to *this*, not the specific implementations.
+
+```typescript
+// 📄 POINT 5: THE CONTRACT
+// We use an abstract class so it can be used as a Token (interfaces can't be tokens).
+export abstract class AppService {
+    abstract getData(): void;
+}
+```
+
+#### 3. The Concrete Implementations (`service.implementations.ts`)
+
+These are the actual workers. They both "sign the contract" (implement `AppService`).
+
+```typescript
+@Injectable()
+export class ProdService implements AppService {
+    // 🧱 POINT 6: SHARED DEPENDENCIES
+    // Both services need HttpClient, so our Factory must provide it.
+    constructor(private http: HttpClient) {} 
+    getData() { console.log('🔴 Production API Call'); }
+}
+
+@Injectable()
+export class DebugService implements AppService {
+    constructor(private http: HttpClient) {}
+    getData() { console.log('🟢 Fake/Debug Data'); }
+}
+```
+
+#### 4. The Consumption (`use-factory-example.component.ts`)
+
+The component is kept completely ignorant of the complexity!
+
+```typescript
+export class UseFactoryExampleComponent {
+  constructor(
+    // 🪄 POINT 7: THE MAGIC
+    // The component asks for 'AppService'.
+    // It has NO IDEA that a factory ran.
+    // It has NO IDEA if it got ProdService or DebugService.
+    private appService: AppService
+  ) { }
+
+  ngOnInit() {
+    // Calls the method on whichever instance was created
+    this.appService.getData(); 
+  }
+}
+```
 
 1.  Angular creates `UseFactoryExampleComponent`.
 2.  It sees the component needs `AppService`.
@@ -212,16 +317,98 @@ In both cases, the component just says: *"I need something that matches this tok
 
 ---
 
-## 7. ❓ Interview Questions
+---
 
-### Q: Why use `deps`?
-**A:** The `deps` array tells Angular which services to inject into your factory function. The order in `deps` must match the order of arguments in your factory function.
+## 🌍 Real-World Use Cases
 
-### Q: Can I inject `HttpClient` into a factory?
-**A:** Yes! Just add `HttpClient` to the `deps` array and add it as an argument to your factory function.
+### 1. API Mocking (Dev vs Prod)
+The classic example. Using a real HTTP service in production (`PropApi`) and a static JSON returner in development (`MockApi`).
 
-### Q: Can I pass a value (like `DEBUG_CONFIG`) directly into `deps`?
-**A:** **No.** The `deps` array only accepts **Injection Tokens** (classes, `InjectionToken`, or string tokens). Angular uses these tokens to *look up* providers. It cannot use a raw object value as a lookup key. You must provide the value using a token (like `APP_CONFIG`) and then put that token in `deps`.
+### 2. Feature Toggling
+Enabled/Disabling features based on a server-side flag fetched at startup.
+```typescript
+useFactory: (flags) => flags.isNewDashboard ? new NewDashboardService() : new LegacyDashboardService()
+```
 
-❌ **Wrong:** `deps: [DEBUG_CONFIG]`
-✅ **Right:** `deps: [APP_CONFIG]` (where `APP_CONFIG` is provided with `useValue: DEBUG_CONFIG`)
+### 3. Localization / i18n
+Loading different `LanguageService` implementations based on the browser's locale (detected at runtime).
+
+### 4. AB Testing
+Randomly assigning a user to "Variant A" or "Variant B" service for an experiment.
+
+### 5. Tenant-Specific Configuration
+In a multi-tenant app (SaaS), reading the subdomain (`customer.app.com`) and creating a `TenantService` configured specifically for that customer.
+
+---
+
+## ❓ Complete Interview Questions (20+)
+
+### Basic Questions
+
+**Q1: Why use `useFactory` over `useClass`?**
+> A: When creation requires runtime logic (ifs/else) or configuration dependency.
+
+**Q2: What is the `deps` array for?**
+> A: Maps tokens to factory function arguments.
+
+**Q3: Can `useFactory` return a primitive?**
+> A: Yes (e.g., a connection string).
+
+**Q4: Is the factory run multiple times?**
+> A: Only if the provider is non-singleton (component level) or requested multiple times in different scopes.
+
+**Q5: Can I use async logic in `useFactory`?**
+> A: No, must return instance synchronously.
+
+---
+
+### Scenario-Based Questions
+
+**Q6: Scenario: 3rd Party Library needs a config object.**
+> A: Use factory to create the library instance with the config injected from `APP_CONFIG`.
+
+**Q7: Scenario: Recursive Dependencies.**
+> A: Be careful! Factory A needs B, B needs A = Error.
+
+**Q8: Scenario: Runtime switch.**
+> A: Check config, return `new ClassA()` or `new ClassB()`.
+
+**Q9: Scenario: Passing static string to service.**
+> A: Wrap string in `InjectionToken`, inject it into factory.
+
+**Q10: Scenario: Reading Browser specific API.**
+> A: Check `PLATFORM_ID`, returns mock if server, real if browser.
+
+---
+
+### Advanced Questions
+
+**Q11: Can `inject()` be used inside `useFactory`?**
+> A: Yes, in modern Angular.
+
+**Q12: How to test `useFactory`?**
+> A: Test the factory function as a standalone function.
+
+**Q13: Does strict mode affect `deps`?**
+> A: Yes, types must match.
+
+**Q14: Can I use `useFactory` with `providedIn: 'root'`?**
+> A: Yes!
+
+**Q15: What if I want to return an Observable?**
+> A: Use `APP_INITIALIZER` token, not a regular service provider.
+
+**Q16: Can I update the service later?**
+> A: No, once created, the instance is fixed for that injector.
+
+**Q17: Difference from `useValue`?**
+> A: `useValue` is static/constant. `useFactory` computes the value.
+
+**Q18: Performance cost?**
+> A: Negligible, runs once per injector.
+
+**Q19: Can multiple factories depend on each other?**
+> A: Yes, standard DI resolution applies.
+
+**Q20: Is `deps` required if using `inject()`?**
+> A: No.

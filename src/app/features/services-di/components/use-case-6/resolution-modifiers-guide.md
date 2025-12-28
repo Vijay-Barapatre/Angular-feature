@@ -594,94 +594,88 @@ flowchart TB
 
 ---
 
-## 7. ❓ Interview & Concept Questions
+---
+
+## 7. ❓ Interview & Concept Questions (20+)
 
 ### Core Concepts
 
-**Q1: What does @Optional() do and when would you use it?**
-> **A:** `@Optional()` tells Angular to inject `null` instead of throwing an error if the dependency isn't found. Use it for:
-> - Optional features (analytics, logging)
-> - Plugin architectures
-> - Graceful degradation
+**Q1: What does @Optional() return if the service is not found?**
+> **A:** It returns `null`. Without it, Angular throws a `NullInjectorError`.
 
-**Q2: Explain the difference between @Self() and @SkipSelf().**
-> **A:**
-> - `@Self()`: Only look in THIS component's injector. Error if not found locally.
-> - `@SkipSelf()`: Ignore THIS component's injector, start search from parent.
+**Q2: What is the scope of @Self()?**
+> **A:** It restricts the search to the **current ElementInjector** only. It does not check parents or the ModuleInjector.
 
-### Debugging
+**Q3: How does @SkipSelf() differ from @Optional()?**
+> **A:** `@SkipSelf()` changes *where* search starts (parent). `@Optional()` changes *what* happens if search fails (no error).
 
-**Q3: You get NullInjectorError but you have @Optional(). What's happening?**
-> **A:** Likely scenarios:
-> 1. @Optional() isn't on the right parameter
-> 2. There's a typo in the import
-> 3. A transitive dependency is missing (the optional service needs something)
+**Q4: When does @Host() stop searching?**
+> **A:** It stops at the "Host" element. For components, this is the component itself. For directives, it is the component the directive is on.
 
-**Q4: A child component is getting the parent's service when it has its own. Fix?**
-> **A:** Use `@Self()` to enforce using only the local provider:
-> ```typescript
-> constructor(@Self() private svc: MyService) {}
-> ```
+**Q5: Can I use multiple modifiers?**
+> **A:** Yes! `@SkipSelf() @Optional()` is a common pattern to find a parent service or fail gracefully.
 
-### Performance
+---
 
-**Q5: Does @Self() have any performance benefit?**
-> **A:** Yes, minor. `@Self()` does O(1) lookup (only current injector) vs O(h) for default (h = hierarchy depth). Usually negligible, but good for consistency.
+### Debugging & Logic
 
-### Architecture
+**Q6: Why would I get a NullInjectorError even with @Optional()?**
+> **A:** You might have a typo in the token, or the *dependency of the dependency* is missing (and that one isn't optional).
 
-**Q6: How would you implement a recursive tree where children know their parent?**
-> **A:**
-> ```typescript
-> @Component({
->     providers: [TreeNodeService]
-> })
-> export class TreeNode {
->     constructor(
->         @Self() private self: TreeNodeService,
->         @SkipSelf() @Optional() private parent: TreeNodeService | null
->     ) {
->         if (parent) parent.addChild(self);
->     }
-> }
-> ```
+**Q7: Usage of @Self() in Lazy Loaded modules?**
+> **A:** `@Self()` doesn't care about modules. It only cares about the Component tree.
 
-**Q7: When would you use @Host() over @Self()?**
-> **A:** `@Host()` is for directives that need config from their host component but shouldn't search beyond. `@Self()` is for components that provide their own services.
+**Q8: Can @SkipSelf() go to Root?**
+> **A:** Yes, if it doesn't find it in parents, it continues up to Root (unless `@Host` is also present).
+
+**Q9: What is the "Host View"?**
+> **A:** The template that contains the component/directive. `@Host()` searches until it hits the boundary of this view.
+
+**Q10: If a component is projected (ng-content), where does @Host() stop?**
+> **A:** It stops at the component *hosting* the projected content, i.e., the component where the `<ng-content>` tag actually lives in the DOM structure.
+
+---
 
 ### Scenario-Based
 
-**Q8: Build a form where each field has its own validation state.**
-> **A:**
-> ```typescript
-> @Component({
->     selector: 'app-field',
->     providers: [FieldValidation]
-> })
-> export class FieldComponent {
->     constructor(@Self() private validation: FieldValidation) {
->         // Each field isolated
->     }
-> }
-> ```
+**Q11: Scenario: Parent Access.**
+> **Q:** How do I get the specific `ListNode` instance that contains my `ListItem`?
+> **A:** Inject `ListNode` with `@SkipSelf()` (if item is inside node template) or just `ListNode` (standard lookup).
 
-**Q9: You want a component that works with or without analytics. Design it.**
-> **A:**
-> ```typescript
-> @Component({ ... })
-> export class MyComponent {
->     constructor(@Optional() private analytics: AnalyticsService | null) {}
->     
->     doAction(): void {
->         this.analytics?.track('action');  // Safe even if null
->         // Actual action here
->     }
-> }
-> ```
+**Q12: Scenario: Directive Isolation.**
+> **Q:** A `tooltip` directive needs config from the button it's on, but NOT from global config.
+> **A:** Use `@Self()` or `@Host()` to limit search to the button.
 
-**Q10: Combine multiple modifiers: @SkipSelf() @Optional(). Explain behavior.**
-> **A:** This says "Look for the dependency starting from my PARENT (skip self), and if not found anywhere, return null (optional)." Common for:
-> ```typescript
-> @SkipSelf() @Optional() parent: ParentService | null
-> // Get parent's instance if exists, null if I'm the root
-> ```
+**Q13: Scenario: Circular Dependency.**
+> **Q:** A service needs to inject a component that uses the service?
+> **A:** This is bad design, but `@Self()` on `Injector` can sometimes help extract it lazily.
+
+**Q14: Scenario: Theme Overrides.**
+> **Q:** A section of the app wants to force 'Dark Mode' for all children.
+> **A:** Provide `ThemeService` in the SectionComponent. Children get this instance. Use `@SkipSelf()` if you need to consult the global theme first.
+
+**Q15: Scenario: Avoiding Infinite Loops.**
+> **Q:** A custom form control implements `ControlValueAccessor` and injects `NgControl`.
+> **A:** Use `@Self()` to get the control on *this* element without circular referencing errors.
+
+---
+
+### Value & Performance
+
+**Q16: Performance of modifiers?**
+> **A:** `@Self()` is fastest (check one place). Others are standard tree traversal.
+
+**Q17: Does @Optional() increase bundle size?**
+> **A:** No.
+
+**Q18: Can I use modifiers with `useFactory`?**
+> **A:** Yes! You can pass flags to the factory or use `inject(Token, {optional: true})` inside it.
+
+**Q19: What is the default if no modifier is used?**
+> **A:** Search starts at local, goes up to Root, throws error if missing.
+
+**Q20: Can I use modifiers in constructor of a Pipe?**
+> **A:** Yes, pipes are created by the injector of the component where they are used.
+
+**Q21: Does `@Host()` works on Services?**
+> **A:** Services don't have a "Host Element" in the DOM sense. It's used in Components/Directives.

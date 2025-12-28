@@ -93,8 +93,9 @@ export class UsersComponent {
 
 ## 🍳 Restaurant Kitchen Analogy (Easy to Remember!)
 
-Think of Dependency Injection like a **restaurant kitchen**:
+![Services & DI Restaurant Kitchen Infographic](services-di-restaurant-infographic.png)
 
+Think of Dependency Injection like a **restaurant kitchen**:
 | Concept | Kitchen Analogy | Memory Trick |
 |---------|----------------|--------------| 
 | **Service** | 👨‍🍳 **Specialized chef**: Makes one type of dish (API calls, auth, etc.) | **"Expert at one thing"** |

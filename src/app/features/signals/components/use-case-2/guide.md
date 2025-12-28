@@ -4,6 +4,9 @@
 
 ![Computed Signals Infographic](./signals-computed-infographic.png)
 
+> **✨ New Visualization**:  
+> ![Computed Signals Analogy](./signals-computed-infographic-new.png)
+
 ---
 
 ## 1. 🔍 What are Computed Signals?

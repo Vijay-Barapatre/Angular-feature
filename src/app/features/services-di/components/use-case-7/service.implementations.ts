@@ -4,6 +4,8 @@ import { AppService } from './service.model';
 
 @Injectable()
 export class ProdService implements AppService {
+    // 🧱 POINT 6: SHARED DEPENDENCIES
+    // Both services need HttpClient, so our Factory must provide it manually via 'new ProdService(http)'.
     constructor(private http: HttpClient) { }
 
     getData(): void {

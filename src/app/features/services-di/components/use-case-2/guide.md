@@ -239,7 +239,126 @@ mindmap
 
 ---
 
-## ❓ Additional Interview Questions (20+)
+## 🎯 What Problem Does This Solve?
+
+### The Problem: Hardcoding & Name Collisions
+**Without InjectionToken (BAD):**
+```typescript
+// ❌ Problem 1: Hardcoding strings in every service
+constructor(private http: HttpClient) {
+    this.baseUrl = 'https://api.example.com'; // Hard to change per environment
+}
+
+// ❌ Problem 2: String tokens collision
+providers: [
+    { provide: 'CONFIG', useValue: { ... } }, // Library A uses 'CONFIG'
+    { provide: 'CONFIG', useValue: { ... } }  // Library B uses 'CONFIG' -> OVERWRITES A! 😱
+]
+```
+
+**Problems:**
+1.  **Rigidity**: Hard to configuration change (Dev vs Prod).
+2.  **Collisions**: Different libraries might use the same string token.
+3.  **No Type Safety**: Injecting `'CONFIG'` returns `any`.
+
+### How InjectionToken Solves This
+**With InjectionToken (GOOD):**
+```typescript
+// ✅ Unique Token
+export const API_URL = new InjectionToken<string>('API_URL');
+
+// ✅ Type Safe & Flexible
+providers: [{ provide: API_URL, useValue: environment.apiUrl }]
+
+// ✅ Easy to inject
+private url = inject(API_URL); // Typescript knows it's a string
+```
+
+| Problem | InjectionToken Solution |
+|---------|-------------------------|
+| Hardcoding | **Decoupling**: Config is passed in, not hardcoded. |
+| Collisions | **Uniqueness**: `new InjectionToken()` creates a unique reference, even if names match. |
+| Type Safety | **Generics**: `InjectionToken<T>` ensures you get the right type. |
+
+---
+
+## 📚 Key Classes & Types Explained
+
+### 1. `InjectionToken<T>`
+```typescript
+const TOKEN = new InjectionToken<string>('Description');
+```
+*   **Purpose**: Creates a unique token for dependency injection.
+*   **Generic `<T>`**: Specifies the type of value this token will return.
+*   **Description**: A string used for debugging error messages (e.g., "No provider for Description").
+
+### 2. `Provider` Object
+```typescript
+{ provide: ACCESS_TOKEN, useValue: '123-abc' }
+```
+*   **`provide`**: The token/key (what you ask for).
+*   **`useValue`**: The static value to return.
+*   **Other strategies**: `useFactory` (dynamic), `useClass` (classes), `useExisting` (alias).
+
+### 3. `inject()` with Tokens
+```typescript
+const value = inject(MY_TOKEN);
+```
+*   **Behavior**: Looks up the token in the currently active injector.
+*   **Options**: `inject(TOKEN, { optional: true })` returns null if not found.
+
+---
+
+## 🌍 Real-World Use Cases
+
+### 1. Global App Configuration
+```typescript
+export interface AppConfig {
+    title: string;
+    theme: 'dark' | 'light';
+}
+export const CONFIG = new InjectionToken<AppConfig>('App Config');
+
+// Provider
+{ provide: CONFIG, useValue: { title: 'My App', theme: 'dark' } }
+```
+
+### 2. API Endpoint URLs (Environment Variables)
+```typescript
+export const API_URL = new InjectionToken<string>('API URL');
+
+// In module/component
+providers: [
+    { provide: API_URL, useValue: environment.apiUrl }
+]
+```
+
+### 3. Third-Party Library Config (e.g., Firebase)
+```typescript
+export const FIREBASE_OPTIONS = new InjectionToken<FirebaseOptions>('FIX_OPTS');
+
+// Library defines token, you provide value
+{ provide: FIREBASE_OPTIONS, useValue: { apiKey: '...' } }
+```
+
+### 4. Platform ID (SSR vs Browser)
+Angular built-in token to check if running on server or browser.
+```typescript
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+
+const platform = inject(PLATFORM_ID);
+const isBrowser = isPlatformBrowser(platform);
+```
+
+### 5. Window/Document Object (SSR Safe)
+Wrapping global objects for safe SSR usage.
+```typescript
+export const WINDOW = new InjectionToken<Window>('Window', {
+    providedIn: 'root',
+    factory: () => window // Fallback or mocking possible
+});
+```
 
 ### Basic Questions
 

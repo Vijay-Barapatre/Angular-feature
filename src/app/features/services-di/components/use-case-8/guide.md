@@ -247,44 +247,79 @@ As shown in this example! If you are building a dashboard where different module
 
 ---
 
-## 6. ❓ Interview Questions
+---
+
+## ❓ Complete Interview Questions (20+)
 
 ### Basic Questions
 
-#### Q1: What happens without multi: true?
-**Answer:** Later providers override earlier ones. Only last wins:
-```typescript
-{ provide: Logger, useClass: FileLogger },
-{ provide: Logger, useClass: ConsoleLogger }  // Only this is used!
-```
+**Q1: What does `multi: true` do?**
+> A: Tells Angular to accumulate providers for a token into an Array, rather than overwriting.
 
-#### Q2: Common Angular multi providers?
-**Answer:**
-- `HTTP_INTERCEPTORS` - HTTP interceptor chain
-- `APP_INITIALIZER` - App startup tasks
-- `HAMMER_GESTURE_CONFIG` - Gesture handlers
+**Q2: What type is injected when using `multi: true`?**
+> A: An Array of values (e.g., `AppPlugin[]`).
+
+**Q3: Common built-in multi tokens?**
+> A: `HTTP_INTERCEPTORS`, `APP_INITIALIZER`, `NG_VALIDATORS`.
+
+**Q4: Does order matter in multi providers?**
+> A: Yes, the array order matches the registration order (Module import order).
+
+**Q5: Can I mix multi and non-multi providers for same token?**
+> A: No. It's either a multi-token or it isn't. Mixing causes errors.
 
 ---
 
 ### Scenario-Based Questions
 
-#### Scenario: Plugin System
-**Question:** Create a plugin system where features can register handlers.
+**Q6: Scenario: Plugin System.**
+> A: Use `multi: true` to allow modules to register plugins. Inject `PluginToken[]`.
 
-**Answer:**
-```typescript
-export const PLUGINS = new InjectionToken<Plugin[]>('Plugins');
+**Q7: Scenario: Validation.**
+> A: `NG_VALIDATORS` uses multi to verify all validators pass.
 
-// Feature A registers
-{ provide: PLUGINS, useClass: FeatureAPlugin, multi: true }
+**Q8: Scenario: Interceptors.**
+> A: `HTTP_INTERCEPTORS` uses multi to chain requests.
 
-// Feature B registers
-{ provide: PLUGINS, useClass: FeatureBPlugin, multi: true }
+**Q9: Scenario: Feature extension.**
+> A: Add new functionality without touching core code by finding the multi-token and adding a provider.
 
-// Core loads all
-plugins = inject(PLUGINS);
-plugins.forEach(p => p.init());
-```
+**Q10: Scenario: Startup config.**
+> A: `APP_INITIALIZER` runs multiple implementation functions in parallel (or sequence depending on how you wait).
+
+---
+
+### Advanced Questions
+
+**Q11: Can I remove a multi provider?**
+> A: Hard. Generally additive only.
+
+**Q12: How to enforce order?**
+> A: Control module import order.
+
+**Q13: Can multi providers rely on each other?**
+> A: No, they are peers in the array. One cannot easily depend on another in the same array during creation.
+
+**Q14: Performance of multi providers?**
+> A: Iterating the array is fast. Instantiating many services might take time.
+
+**Q15: What if one fails?**
+> A: Depends on consumption. If you `forEach` and one throws, loop breaks.
+
+**Q16: Can I use `useFactory` in multi?**
+> A: Yes!
+
+**Q17: `useValue` in multi?**
+> A: Yes!
+
+**Q18: What is `NG_VALUE_ACCESSOR`?**
+> A: A multi token? No, actually usually single per component. Wait, validators are multi.
+
+**Q19: How to debug multi providers?**
+> A: Inspect the injected array to see what's inside.
+
+**Q20: Is `multi: true` default?**
+> A: No, default is false (overwrite).
 
 ---
 

@@ -44,24 +44,44 @@ import { APP_CONFIG, AppConfig, PROD_CONFIG, DEBUG_CONFIG } from './config.token
     { provide: APP_CONFIG, useValue: DEBUG_CONFIG }, // Default to Debug
 
     // 2. Provide the AppService using useFactory
+    // 2. Provide the AppService using useFactory
     {
-      provide: AppService,
+      provide: AppService, // 👈 The Token: Components will ask for "AppService"
+
+      // 🏭 THE FACTORY FUNCTION
+      // This function runs when the component is created.
+      // It receives the dependencies we listed in 'deps' below.
       useFactory: (http: HttpClient, config: AppConfig) => {
-        // 🏭 Factory Logic: Decide which service to create based on config
+        // 🔍 POINT 1: RUNTIME LOGIC
+        // We can run ANY javascript here. We check the config flag.
         console.log('🏭 Factory running! Config isProduction:', config.isProduction);
 
         if (config.isProduction) {
+          // 🔴 POINT 2: MANUAL CREATION (Prod)
+          // If prod, we manually "new up" the ProdService.
+          // We MUST pass 'http' because ProdService expects it in its constructor.
           return new ProdService(http);
         } else {
+          // 🟢 POINT 3: MANUAL CREATION (Debug)
+          // If debug, we create the DebugService.
           return new DebugService(http);
         }
       },
-      deps: [HttpClient, APP_CONFIG] // 🔧 Dependencies needed by the factory
+
+      // 🔗 POINT 4: THE MAP (deps)
+      // This array tells Angular WHAT to inject into the factory function arguments.
+      // Order matches the function arguments above!
+      // [0] HttpClient -> becomes 'http' argument
+      // [1] APP_CONFIG -> becomes 'config' argument
+      deps: [HttpClient, APP_CONFIG]
     }
   ]
 })
 export class UseFactoryExampleComponent implements OnInit {
-  // We inject the abstract AppService, but we get the concrete instance decided by the factory!
+  // 🪄 POINT 7: THE MAGIC
+  // The component asks for 'AppService'.
+  // It has NO IDEA that a factory ran.
+  // It has NO IDEA if it got ProdService or DebugService.
   constructor(
     private appService: AppService,
     @Inject(APP_CONFIG) public config: AppConfig
