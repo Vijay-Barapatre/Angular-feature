@@ -16,6 +16,8 @@ import { isDevMode } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { productReducer } from './app/features/ngrx/components/use-case-3/store/product.reducer';
+import { cartReducer } from './app/features/ngrx/components/use-case-4/store/cart.reducer';
+import { devToolsReducer } from './app/features/ngrx/components/use-case-5/store/devtools.reducer';
 
 /**
  * Bootstrap the Angular application
@@ -29,7 +31,9 @@ bootstrapApplication(AppComponent, {
         provideRouter(routes),      // Enable routing
         provideHttpClient(),        // Enable HTTP client for mock API calls
         provideStore({              // ✅ Initialize NgRx Store with reducers
-            products: productReducer  // Entity Adapter use case
+            products: productReducer,   // Entity Adapter use case
+            cart: cartReducer,          // Selectors use case
+            devtools: devToolsReducer   // DevTools use case
         }),
         provideEffects(),           // ✅ Initialize NgRx Effects
         provideStoreDevtools({      // ✅ Enable Redux DevTools

@@ -1,13 +1,13 @@
 /**
  * ============================================================================
- * 🛠️ NgRx Dev Tools - Educational Component
+ * 🛠️ NgRx DevTools - Educational Component
  * ============================================================================
  * 
  * Redux DevTools is a browser extension that provides powerful debugging
  * capabilities for NgRx applications.
  * 
  * ============================================================================
- * 📚 WHAT DEV TOOLS PROVIDE
+ * 📚 WHAT DEVTOOLS PROVIDE
  * ============================================================================
  * 
  * 1. ACTION LOG - See every action dispatched with timestamp
@@ -21,10 +21,10 @@
  * 🎯 SETUP
  * ============================================================================
  * 
- * // app.config.ts
+ * // main.ts
  * import { provideStoreDevtools } from '@ngrx/store-devtools';
  * 
- * export const appConfig = {
+ * bootstrapApplication(AppComponent, {
  *   providers: [
  *     provideStore(reducers),
  *     provideStoreDevtools({
@@ -32,11 +32,14 @@
  *       logOnly: !isDevMode() // Restrict in production
  *     })
  *   ]
- * };
+ * });
  */
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as DevToolsActions from './store/devtools.actions';
+import * as DevToolsSelectors from './store/devtools.selectors';
 
 @Component({
     selector: 'app-devtools-demo',
@@ -72,7 +75,7 @@ import { RouterLink } from '@angular/router';
                         <div class="step">
                             <span class="step-num">3</span>
                             <div class="step-content">
-                                <strong>Configure in app.config.ts</strong>
+                                <strong>Configure in main.ts</strong>
                                 <div class="code-block">
                                     <pre>provideStoreDevtools(&#123;
   maxAge: 25,
@@ -88,32 +91,32 @@ import { RouterLink } from '@angular/router';
                 <section class="card features-card">
                     <h2>✨ DevTools Features</h2>
                     <div class="features-grid">
-                        <div class="feature" (click)="selectedFeature.set('action-log')">
+                        <div class="feature">
                             <span class="icon">📋</span>
                             <strong>Action Log</strong>
                             <p>See every dispatched action</p>
                         </div>
-                        <div class="feature" (click)="selectedFeature.set('state-tree')">
+                        <div class="feature">
                             <span class="icon">🌳</span>
                             <strong>State Tree</strong>
                             <p>Explore full state structure</p>
                         </div>
-                        <div class="feature" (click)="selectedFeature.set('time-travel')">
+                        <div class="feature">
                             <span class="icon">⏰</span>
                             <strong>Time Travel</strong>
                             <p>Jump to any past state</p>
                         </div>
-                        <div class="feature" (click)="selectedFeature.set('diff')">
+                        <div class="feature">
                             <span class="icon">📊</span>
                             <strong>State Diff</strong>
                             <p>See what changed per action</p>
                         </div>
-                        <div class="feature" (click)="selectedFeature.set('export')">
+                        <div class="feature">
                             <span class="icon">💾</span>
                             <strong>Export/Import</strong>
                             <p>Save state for bug reports</p>
                         </div>
-                        <div class="feature" (click)="selectedFeature.set('skip')">
+                        <div class="feature">
                             <span class="icon">⏭️</span>
                             <strong>Skip Actions</strong>
                             <p>What-if analysis</p>
@@ -125,11 +128,11 @@ import { RouterLink } from '@angular/router';
                 <section class="card demo-card">
                     <h2>🎮 Interactive Demo</h2>
                     <p class="description">
-                        Click buttons below and watch the Redux DevTools panel (F12 → Redux tab)
+                        Click buttons below and watch the <strong>Redux DevTools panel</strong> (F12 → Redux tab)
                     </p>
                     <div class="demo-state">
                         <span class="label">Count:</span>
-                        <span class="value">{{ count() }}</span>
+                        <span class="value">{{ count$ | async }}</span>
                     </div>
                     <div class="button-row">
                         <button (click)="increment()" class="btn">Increment</button>
@@ -137,19 +140,15 @@ import { RouterLink } from '@angular/router';
                         <button (click)="reset()" class="btn danger">Reset</button>
                         <button (click)="addRandom()" class="btn primary">Add Random</button>
                     </div>
-                    <div class="action-log">
-                        <h3>Action History (Local)</h3>
-                        <div class="log-list">
-                            @for (action of actionLog(); track $index) {
-                                <div class="log-item">
-                                    <span class="time">{{ action.time }}</span>
-                                    <span class="type">{{ action.type }}</span>
-                                    @if (action.payload !== undefined) {
-                                        <span class="payload">{{ action.payload }}</span>
-                                    }
-                                </div>
-                            }
-                        </div>
+                    <div class="instructions">
+                        <h3>📍 How to Use DevTools:</h3>
+                        <ol>
+                            <li>Open browser DevTools (F12)</li>
+                            <li>Click "Redux" tab (install extension if not visible)</li>
+                            <li>Click buttons above and watch actions appear</li>
+                            <li>Click any action to see state before/after</li>
+                            <li>Use slider to time-travel through states!</li>
+                        </ol>
                     </div>
                 </section>
 
@@ -219,7 +218,7 @@ import { RouterLink } from '@angular/router';
 
         .features-card { grid-column: 1 / -1; }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-        .feature { background: #0f172a; padding: 1rem; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
+        .feature { background: #0f172a; padding: 1rem; border-radius: 8px; transition: transform 0.2s; }
         .feature:hover { transform: translateY(-2px); background: #1a2744; }
         .feature .icon { font-size: 1.5rem; }
         .feature strong { display: block; color: #f8fafc; margin: 0.5rem 0 0.25rem; }
@@ -230,18 +229,15 @@ import { RouterLink } from '@angular/router';
         .demo-state { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #0f172a; border-radius: 8px; margin-bottom: 1rem; }
         .demo-state .label { color: #94a3b8; }
         .demo-state .value { font-size: 2rem; font-weight: bold; color: #3b82f6; }
-        .button-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .button-row { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
         .btn { padding: 0.5rem 1rem; border-radius: 6px; border: none; background: #334155; color: white; cursor: pointer; }
         .btn.primary { background: #3b82f6; }
         .btn.danger { background: #ef4444; }
 
-        .action-log { background: #0f172a; padding: 1rem; border-radius: 8px; }
-        .action-log h3 { color: #94a3b8; font-size: 0.9rem; margin: 0 0 0.5rem 0; }
-        .log-list { max-height: 150px; overflow-y: auto; }
-        .log-item { display: flex; gap: 1rem; padding: 0.5rem; border-bottom: 1px solid #1e293b; font-family: monospace; font-size: 0.85rem; }
-        .log-item .time { color: #64748b; }
-        .log-item .type { color: #f59e0b; }
-        .log-item .payload { color: #10b981; }
+        .instructions { background: #0f172a; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; }
+        .instructions h3 { color: #f8fafc; margin: 0 0 1rem 0; font-size: 1rem; }
+        .instructions ol { color: #94a3b8; margin: 0; padding-left: 1.5rem; }
+        .instructions li { padding: 0.25rem 0; }
 
         .practices-card { grid-column: 1 / -1; }
         .practices-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -255,33 +251,25 @@ import { RouterLink } from '@angular/router';
     `]
 })
 export class DevToolsDemoComponent {
-    count = signal(0);
-    actionLog = signal<Array<{ time: string, type: string, payload?: number }>>([]);
-    selectedFeature = signal<string>('');
+    private store = inject(Store);
 
-    private logAction(type: string, payload?: number) {
-        const time = new Date().toLocaleTimeString();
-        this.actionLog.update(log => [{ time, type, payload }, ...log.slice(0, 9)]);
-    }
+    // Observable from NgRx store
+    count$ = this.store.select(DevToolsSelectors.selectCount);
 
     increment() {
-        this.count.update(c => c + 1);
-        this.logAction('[Counter] Increment');
+        this.store.dispatch(DevToolsActions.increment());
     }
 
     decrement() {
-        this.count.update(c => c - 1);
-        this.logAction('[Counter] Decrement');
+        this.store.dispatch(DevToolsActions.decrement());
     }
 
     reset() {
-        this.count.set(0);
-        this.logAction('[Counter] Reset');
+        this.store.dispatch(DevToolsActions.reset());
     }
 
     addRandom() {
         const value = Math.floor(Math.random() * 100);
-        this.count.set(value);
-        this.logAction('[Counter] Set Random', value);
+        this.store.dispatch(DevToolsActions.setRandom({ value }));
     }
 }

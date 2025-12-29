@@ -22,39 +22,29 @@
  * 4. TESTABILITY: Pure functions are easy to unit test.
  * 
  * ============================================================================
- * 🎯 SELECTOR TYPES
+ * 🎯 SELECTOR TYPES DEMONSTRATED
  * ============================================================================
  * 
  * 1. Feature Selector - Gets a slice of root state
- *    createFeatureSelector<UserState>('users')
+ *    selectCartState = createFeatureSelector<CartState>('cart')
  * 
  * 2. Simple Selector - Extracts a property
- *    createSelector(selectUserState, state => state.loading)
+ *    selectCartItems = createSelector(selectCartState, state => state.items)
  * 
  * 3. Composed Selector - Combines multiple selectors
- *    createSelector(selectUsers, selectFilter, (users, filter) => ...)
+ *    selectGrandTotal = createSelector(selectAfterDiscount, selectTax, ...)
  * 
  * 4. Parameterized Selector - Takes runtime arguments
- *    selectUserById = (id) => createSelector(...)
+ *    selectItemsByCategory = (category) => createSelector(...)
  */
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, signal, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-interface Product {
-    id: number;
-    name: string;
-    price: number;
-    category: string;
-    quantity: number;
-}
-
-interface CartState {
-    items: Product[];
-    discount: number;
-    taxRate: number;
-}
+import { Store } from '@ngrx/store';
+import * as CartActions from './store/cart.actions';
+import * as CartSelectors from './store/cart.selectors';
+import { Product } from './store/cart.model';
 
 @Component({
     selector: 'app-selectors-demo',
@@ -65,7 +55,7 @@ interface CartState {
             <header class="demo-header">
                 <a routerLink="/ngrx" class="back-link">← Back to NgRx Overview</a>
                 <h1>🔍 Use Case 4: Selectors Deep Dive</h1>
-                <p>Memoized, Composed, and Parameterized Selectors</p>
+                <p>Memoized, Composed, and Parameterized Selectors with <strong>createSelector()</strong></p>
             </header>
 
             <div class="content-grid">
@@ -73,13 +63,15 @@ interface CartState {
                 <section class="card state-card">
                     <h2>📦 Cart State (Raw)</h2>
                     <div class="code-block">
-                        <pre>items: {{ cart().items.length }} products
-discount: {{ cart().discount }}%
-taxRate: {{ cart().taxRate }}%</pre>
+                        <pre>items: {{ (items$ | async)?.length || 0 }} products
+discount: {{ (discount$ | async) }}%
+taxRate: {{ (taxRate$ | async) }}%</pre>
                     </div>
                     <div class="controls">
-                        <label>Discount %: <input type="range" min="0" max="50" [ngModel]="cart().discount" (ngModelChange)="setDiscount($event)"></label>
-                        <span class="value">{{ cart().discount }}%</span>
+                        <label>Discount %: <input type="range" min="0" max="50" 
+                            [ngModel]="(discount$ | async)" 
+                            (ngModelChange)="setDiscount($event)"></label>
+                        <span class="value">{{ (discount$ | async) }}%</span>
                     </div>
                 </section>
 
@@ -89,27 +81,27 @@ taxRate: {{ cart().taxRate }}%</pre>
                     <div class="derived-grid">
                         <div class="derived-item">
                             <span class="label">selectSubtotal</span>
-                            <span class="value">\${{ selectSubtotal() | number:'1.2-2' }}</span>
+                            <span class="value">\${{ (subtotal$ | async) | number:'1.2-2' }}</span>
                             <span class="formula">Σ(price × quantity)</span>
                         </div>
                         <div class="derived-item">
                             <span class="label">selectDiscountAmount</span>
-                            <span class="value">-\${{ selectDiscountAmount() | number:'1.2-2' }}</span>
+                            <span class="value">-\${{ (discountAmount$ | async) | number:'1.2-2' }}</span>
                             <span class="formula">subtotal × discount%</span>
                         </div>
                         <div class="derived-item">
                             <span class="label">selectAfterDiscount</span>
-                            <span class="value">\${{ selectAfterDiscount() | number:'1.2-2' }}</span>
+                            <span class="value">\${{ (afterDiscount$ | async) | number:'1.2-2' }}</span>
                             <span class="formula">subtotal - discount</span>
                         </div>
                         <div class="derived-item">
                             <span class="label">selectTax</span>
-                            <span class="value">+\${{ selectTax() | number:'1.2-2' }}</span>
+                            <span class="value">+\${{ (tax$ | async) | number:'1.2-2' }}</span>
                             <span class="formula">afterDiscount × taxRate%</span>
                         </div>
                         <div class="derived-item highlight">
                             <span class="label">selectGrandTotal</span>
-                            <span class="value total">\${{ selectGrandTotal() | number:'1.2-2' }}</span>
+                            <span class="value total">\${{ (grandTotal$ | async) | number:'1.2-2' }}</span>
                             <span class="formula">afterDiscount + tax</span>
                         </div>
                     </div>
@@ -157,8 +149,8 @@ taxRate: {{ cart().taxRate }}%</pre>
                         }
                     </div>
                     <div class="category-result">
-                        <span class="count">{{ selectByCategory().length }}</span> items
-                        <span class="total">\${{ selectCategoryTotal() | number:'1.2-2' }}</span>
+                        <span class="count">{{ (categoryItems$ | async)?.length || 0 }}</span> items
+                        <span class="total">\${{ (categoryTotal$ | async) | number:'1.2-2' }}</span>
                     </div>
                 </section>
 
@@ -254,75 +246,52 @@ taxRate: {{ cart().taxRate }}%</pre>
     `]
 })
 export class SelectorsDemoComponent {
-    // State
-    cart = signal<CartState>({
-        items: [
-            { id: 1, name: 'Laptop', price: 999, category: 'Electronics', quantity: 1 },
-            { id: 2, name: 'Mouse', price: 29, category: 'Electronics', quantity: 2 },
-            { id: 3, name: 'Coffee', price: 12, category: 'Food', quantity: 3 },
-            { id: 4, name: 'Notebook', price: 5, category: 'Office', quantity: 5 },
-        ],
-        discount: 10,
-        taxRate: 8
-    });
+    private store = inject(Store);
 
+    // Observable selectors from NgRx store
+    items$ = this.store.select(CartSelectors.selectCartItems);
+    discount$ = this.store.select(CartSelectors.selectDiscount);
+    taxRate$ = this.store.select(CartSelectors.selectTaxRate);
+
+    // Composed selectors
+    subtotal$ = this.store.select(CartSelectors.selectSubtotal);
+    discountAmount$ = this.store.select(CartSelectors.selectDiscountAmount);
+    afterDiscount$ = this.store.select(CartSelectors.selectAfterDiscount);
+    tax$ = this.store.select(CartSelectors.selectTax);
+    grandTotal$ = this.store.select(CartSelectors.selectGrandTotal);
+
+    // Category selection
     categories = ['All', 'Electronics', 'Food', 'Office'];
     selectedCategory = signal('All');
+
+    // Parameterized selectors (recreated when category changes)
+    categoryItems$ = this.store.select(CartSelectors.selectItemsByCategory(this.selectedCategory()));
+    categoryTotal$ = this.store.select(CartSelectors.selectCategoryTotal(this.selectedCategory()));
 
     // Memoization tracking
     computeCount = signal(0);
     selectCallCount = signal(0);
 
-    // SELECTORS (as computed - memoized!)
+    constructor() {
+        // Update parameterized selectors when category changes
+        effect(() => {
+            const category = this.selectedCategory();
+            this.categoryItems$ = this.store.select(CartSelectors.selectItemsByCategory(category));
+            this.categoryTotal$ = this.store.select(CartSelectors.selectCategoryTotal(category));
+        });
+    }
 
-    // Base selector - get items
-    selectItems = computed(() => this.cart().items);
-
-    // Composed selector - subtotal from items
-    selectSubtotal = computed(() => {
-        this.computeCount.update(c => c + 1); // Track computation
-        return this.cart().items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    });
-
-    // Selector using another selector + state
-    selectDiscountAmount = computed(() =>
-        this.selectSubtotal() * (this.cart().discount / 100)
-    );
-
-    selectAfterDiscount = computed(() =>
-        this.selectSubtotal() - this.selectDiscountAmount()
-    );
-
-    selectTax = computed(() =>
-        this.selectAfterDiscount() * (this.cart().taxRate / 100)
-    );
-
-    // Final composed selector
-    selectGrandTotal = computed(() =>
-        this.selectAfterDiscount() + this.selectTax()
-    );
-
-    // Parameterized selector (factory pattern)
-    selectByCategory = computed(() => {
-        const category = this.selectedCategory();
-        if (category === 'All') return this.cart().items;
-        return this.cart().items.filter(item => item.category === category);
-    });
-
-    selectCategoryTotal = computed(() =>
-        this.selectByCategory().reduce((sum, item) => sum + (item.price * item.quantity), 0)
-    );
-
-    // Actions
     setDiscount(value: number) {
-        this.cart.update(state => ({ ...state, discount: value }));
+        this.store.dispatch(CartActions.setDiscount({ discount: value }));
     }
 
     callSelectorWithoutChange() {
         this.selectCallCount.update(c => c + 1);
-        // Just read the selector - won't recompute if state unchanged
-        const total = this.selectGrandTotal();
-        console.log('Grand Total:', total);
+        // Read selector - won't recompute if state unchanged (memoization!)
+        this.grandTotal$.subscribe((total: number) => {
+            console.log('Grand Total:', total);
+            this.computeCount.set(CartSelectors.getSubtotalComputeCount());
+        }).unsubscribe();
     }
 
     addRandomItem() {
@@ -333,9 +302,11 @@ export class SelectorsDemoComponent {
             category: this.categories[Math.floor(Math.random() * 3) + 1],
             quantity: 1
         };
-        this.cart.update(state => ({
-            ...state,
-            items: [...state.items, newItem]
-        }));
+        this.store.dispatch(CartActions.addItem({ item: newItem }));
+
+        // Update compute count
+        setTimeout(() => {
+            this.computeCount.set(CartSelectors.getSubtotalComputeCount());
+        }, 100);
     }
 }
