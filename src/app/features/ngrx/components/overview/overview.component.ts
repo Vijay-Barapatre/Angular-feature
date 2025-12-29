@@ -85,6 +85,39 @@ import { RouterLink } from '@angular/router';
                         <span>Architecture</span>
                     </div>
                 </div>
+
+                <!--Use Case 7: Router Store -->
+                <div class="feature-card" routerLink="use-case-7">
+                    <div class="card-icon">🔗</div>
+                    <h3>Router Store</h3>
+                    <p>Sync Angular Router with NgRx Store state</p>
+                    <div class="tags">
+                        <span>Navigation</span>
+                        <span>Route State</span>
+                    </div>
+                </div>
+
+                <!-- Use Case 8: Component Store -->
+                <div class="feature-card" routerLink="use-case-8">
+                    <div class="card-icon">🎯</div>
+                    <h3>Component Store</h3>
+                    <p>Local reactive state management for components</p>
+                    <div class="tags">
+                        <span>Local State</span>
+                        <span>Reactive</span>
+                    </div>
+                </div>
+
+                <!-- Use Case 9: Advanced Patterns -->
+                <div class="feature-card" routerLink="use-case-9">
+                    <div class="card-icon">⚡</div>
+                    <h3>Advanced Patterns</h3>
+                    <p>Meta-reducers, runtime checks, and production setup</p>
+                    <div class="tags">
+                        <span>Meta-reducers</span>
+                        <span>Production</span>
+                    </div>
+                </div>
             </div>
         </div>
     `,

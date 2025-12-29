@@ -26,14 +26,14 @@
  * 🎯 ENTITY STATE STRUCTURE
  * ============================================================================
  * 
- * Instead of: User[] = [{ id: 1, name: 'John' }, { id: 2, name: 'Jane' }]
+ * Instead of: Product[] = [{ id: 1, name: 'Laptop' }, { id: 2, name: 'Mouse' }]
  * 
  * Entity Adapter stores:
  * {
  *   ids: [1, 2],           // Ordered array of IDs
  *   entities: {
- *     1: { id: 1, name: 'John' },
- *     2: { id: 2, name: 'Jane' }
+ *     1: { id: 1, name: 'Laptop' },
+ *     2: { id: 2, name: 'Mouse' }
  *   }
  * }
  * 
@@ -43,32 +43,26 @@
  * - Easy to check existence: id in entities
  * 
  * ============================================================================
- * 🔧 ADAPTER METHODS
+ * 🔧 ADAPTER METHODS USED
  * ============================================================================
  * 
- * | Method      | Purpose              | Example                      |
- * |-------------|----------------------|------------------------------|
- * | addOne      | Add single entity    | adapter.addOne(user, state)  |
- * | addMany     | Add multiple         | adapter.addMany(users, state)|
- * | setAll      | Replace all          | adapter.setAll(users, state) |
- * | updateOne   | Update single        | adapter.updateOne({id, changes}, state) |
- * | updateMany  | Update multiple      | adapter.updateMany(updates, state) |
- * | removeOne   | Delete single        | adapter.removeOne(id, state) |
- * | removeMany  | Delete multiple      | adapter.removeMany(ids, state) |
- * | upsertOne   | Add or update        | adapter.upsertOne(user, state) |
+ * | Method      | Action              | Where Used           |
+ * |-------------|---------------------|----------------------|
+ * | setAll      | Replace all         | loadProductsSuccess  |
+ * | addOne      | Add single          | addProduct           |
+ * | updateOne   | Update single       | updateProduct        |
+ * | removeOne   | Remove single       | removeProduct        |
+ * | removeAll   | Clear all           | removeAllProducts    |
+ * | map         | Transform all       | toggleAllStock       |
  */
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-interface Product {
-    id: number;
-    name: string;
-    price: number;
-    category: string;
-    inStock: boolean;
-}
+import { Store } from '@ngrx/store';
+import { Product } from './store/product.model';
+import * as ProductActions from './store/product.actions';
+import * as ProductSelectors from './store/product.selectors';
 
 @Component({
     selector: 'app-entity-adapter',
@@ -87,15 +81,15 @@ interface Product {
                 <section class="card structure-card">
                     <h2>🗃️ Entity State Structure</h2>
                     <div class="code-block">
-                        <pre>{{ entityStructure() | json }}</pre>
+                        <pre>{{ (entityStructure$ | async) | json }}</pre>
                     </div>
                     <div class="stats">
                         <div class="stat">
-                            <span class="value">{{ products().length }}</span>
+                            <span class="value">{{ (productTotal$ | async) || 0 }}</span>
                             <span class="label">Total Products</span>
                         </div>
                         <div class="stat">
-                            <span class="value">{{ inStockCount() }}</span>
+                            <span class="value">{{ (inStockCount$ | async) || 0 }}</span>
                             <span class="label">In Stock</span>
                         </div>
                     </div>
@@ -126,9 +120,9 @@ interface Product {
 
                 <!-- PRODUCTS LIST -->
                 <section class="card products-card">
-                    <h2>📋 Products ({{ products().length }})</h2>
+                    <h2>📋 Products ({{ (productTotal$ | async) || 0 }})</h2>
                     <div class="products-list">
-                        @for (product of products(); track product.id) {
+                        @for (product of products$ | async; track product.id) {
                             <div class="product-item" [class.out-of-stock]="!product.inStock">
                                 <div class="product-info">
                                     <span class="id">#{{ product.id }}</span>
@@ -283,29 +277,16 @@ interface Product {
     `]
 })
 export class EntityAdapterComponent {
-    // Simulating Entity State structure
     private nextId = 1;
-    private entityState = signal<{ ids: number[], entities: Record<number, Product> }>({
-        ids: [],
-        entities: {}
-    });
-
     newProduct = { name: '', price: 0 };
 
-    // Computed values (like selectors)
-    products = computed(() => {
-        const state = this.entityState();
-        return state.ids.map(id => state.entities[id]);
-    });
+    // Observables from Store
+    products$ = this.store.select(ProductSelectors.selectAllProducts);
+    productTotal$ = this.store.select(ProductSelectors.selectProductTotal);
+    inStockCount$ = this.store.select(ProductSelectors.selectInStockCount);
+    entityStructure$ = this.store.select(ProductSelectors.selectEntityStructure);
 
-    inStockCount = computed(() =>
-        this.products().filter(p => p.inStock).length
-    );
-
-    entityStructure = computed(() => ({
-        ids: this.entityState().ids,
-        entities: '{ ' + Object.keys(this.entityState().entities).join(', ') + ' }'
-    }));
+    constructor(private store: Store) { }
 
     addProduct() {
         if (!this.newProduct.name) return;
@@ -318,46 +299,25 @@ export class EntityAdapterComponent {
             inStock: true
         };
 
-        // Entity Adapter style: addOne
-        this.entityState.update(state => ({
-            ids: [...state.ids, product.id],
-            entities: { ...state.entities, [product.id]: product }
-        }));
+        // Dispatch action using Entity Adapter's addOne
+        this.store.dispatch(ProductActions.addProduct({ product }));
 
         this.newProduct = { name: '', price: 0 };
     }
 
     removeProduct(id: number) {
-        // Entity Adapter style: removeOne
-        this.entityState.update(state => {
-            const { [id]: removed, ...remainingEntities } = state.entities;
-            return {
-                ids: state.ids.filter(i => i !== id),
-                entities: remainingEntities
-            };
-        });
+        // Dispatch action using Entity Adapter's removeOne
+        this.store.dispatch(ProductActions.removeProduct({ id }));
     }
 
     toggleStock(id: number) {
-        // Entity Adapter style: updateOne
-        this.entityState.update(state => ({
-            ...state,
-            entities: {
-                ...state.entities,
-                [id]: { ...state.entities[id], inStock: !state.entities[id].inStock }
-            }
-        }));
+        // Dispatch action using Entity Adapter's updateOne
+        this.store.dispatch(ProductActions.toggleProductStock({ id }));
     }
 
     toggleAllStock() {
-        // Entity Adapter style: updateMany
-        this.entityState.update(state => {
-            const updatedEntities = { ...state.entities };
-            state.ids.forEach(id => {
-                updatedEntities[id] = { ...updatedEntities[id], inStock: !updatedEntities[id].inStock };
-            });
-            return { ...state, entities: updatedEntities };
-        });
+        // Dispatch action using Entity Adapter's map
+        this.store.dispatch(ProductActions.toggleAllStock());
     }
 
     loadSampleData() {
@@ -369,15 +329,12 @@ export class EntityAdapterComponent {
             { id: this.nextId++, name: 'Keyboard', price: 129, category: 'Electronics', inStock: true },
         ];
 
-        // Entity Adapter style: setAll
-        this.entityState.set({
-            ids: sampleProducts.map(p => p.id),
-            entities: sampleProducts.reduce((acc, p) => ({ ...acc, [p.id]: p }), {})
-        });
+        // Dispatch action using Entity Adapter's setAll
+        this.store.dispatch(ProductActions.loadProductsSuccess({ products: sampleProducts }));
     }
 
     removeAll() {
-        // Entity Adapter style: removeAll
-        this.entityState.set({ ids: [], entities: {} });
+        // Dispatch action using Entity Adapter's removeAll
+        this.store.dispatch(ProductActions.removeAllProducts());
     }
 }

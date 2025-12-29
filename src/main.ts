@@ -15,6 +15,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { isDevMode } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
+import { productReducer } from './app/features/ngrx/components/use-case-3/store/product.reducer';
 
 /**
  * Bootstrap the Angular application
@@ -27,7 +28,9 @@ bootstrapApplication(AppComponent, {
     providers: [
         provideRouter(routes),      // Enable routing
         provideHttpClient(),        // Enable HTTP client for mock API calls
-        provideStore(),             // ✅ Initialize NgRx Store
+        provideStore({              // ✅ Initialize NgRx Store with reducers
+            products: productReducer  // Entity Adapter use case
+        }),
         provideEffects(),           // ✅ Initialize NgRx Effects
         provideStoreDevtools({      // ✅ Enable Redux DevTools
             maxAge: 25,

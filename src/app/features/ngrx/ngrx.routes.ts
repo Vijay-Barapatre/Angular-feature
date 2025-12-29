@@ -41,6 +41,18 @@ export const NGRX_ROUTES: Routes = [
     {
         path: 'use-case-6',
         loadComponent: () => import('./components/use-case-6/best-practices.component').then(m => m.BestPracticesComponent)
+    },
+    {
+        path: 'use-case-7',
+        loadComponent: () => import('./components/use-case-7/router-store-demo.component').then(m => m.RouterStoreDemoComponent)
+    },
+    {
+        path: 'use-case-8',
+        loadComponent: () => import('./components/use-case-8/component-store-demo.component').then(m => m.ComponentStoreDemoComponent)
+    },
+    {
+        path: 'use-case-9',
+        loadComponent: () => import('./components/use-case-9/advanced-patterns.component').then(m => m.AdvancedPatternsComponent)
     }
 ];
 
