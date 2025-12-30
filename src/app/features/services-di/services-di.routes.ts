@@ -103,6 +103,30 @@ export const SERVICES_DI_ROUTES: Routes = [
     },
 
     /**
+     * USE CASE 7: useFactory Provider
+     * Demonstrates:
+     * - useFactory for conditional service creation
+     * - Injecting dependencies into factory functions
+     * - Runtime service instantiation based on config
+     */
+    {
+        path: 'use-case-7',
+        loadComponent: () => import('./components/use-case-7/use-factory-example.component').then(m => m.UseFactoryExampleComponent)
+    },
+
+    /**
+     * USE CASE 8: Multi-Providers
+     * Demonstrates:
+     * - Using multi: true for plugin systems
+     * - Injecting arrays of services under same token
+     * - Building extensible plugin architectures
+     */
+    {
+        path: 'use-case-8',
+        loadComponent: () => import('./components/use-case-8/multi-provider-example.component').then(m => m.MultiProviderExampleComponent)
+    },
+
+    /**
      * LEARNER EXERCISE
      * Interactive template for hands-on practice
      * Contains TODO comments and hints
