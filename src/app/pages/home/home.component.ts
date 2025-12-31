@@ -253,6 +253,14 @@ export class HomeComponent {
                     status: 'active',
                     useCases: 7,
                     color: 'primary'
+                },
+                {
+                    name: '👷 Web Workers',
+                    route: '/web-workers',
+                    description: 'Background thread processing for heavy computations without blocking UI',
+                    status: 'active',
+                    useCases: 5,
+                    color: 'accent'
                 }
             ]
         },

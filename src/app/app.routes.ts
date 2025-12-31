@@ -361,6 +361,16 @@ export const routes: Routes = [
     },
 
     /**
+     * WEB WORKERS FEATURE MODULE
+     * Lazy-loaded: Only loads when user navigates to /web-workers/*
+     * Demonstrates background thread processing with Web Workers
+     */
+    {
+        path: 'web-workers',
+        loadChildren: () => import('./features/web-workers/web-workers.routes').then(m => m.WEB_WORKERS_ROUTES)
+    },
+
+    /**
      * PRACTICE EXERCISES
      * Centralized practice section for all features
      */

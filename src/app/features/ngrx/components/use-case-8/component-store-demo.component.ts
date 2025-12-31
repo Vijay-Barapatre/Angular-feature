@@ -5,86 +5,86 @@ import { tap } from 'rxjs';
 
 // Local state interface
 interface ModalState {
-    isOpen: boolean;
-    title: string;
-    content: string;
-    confirmText: string;
-    loading: boolean;
+  isOpen: boolean;
+  title: string;
+  content: string;
+  confirmText: string;
+  loading: boolean;
 }
 
 // Component Store for Modal
 class ModalStore extends ComponentStore<ModalState> {
-    constructor() {
-        super({
-            isOpen: false,
-            title: '',
-            content: '',
-            confirmText: 'Confirm',
-            loading: false
-        });
-    }
-
-    // ===== SELECTORS =====
-    readonly isOpen$ = this.select(state => state.isOpen);
-    readonly title$ = this.select(state => state.title);
-    readonly content$ = this.select(state => state.content);
-    readonly confirmText$ = this.select(state => state.confirmText);
-    readonly loading$ = this.select(state => state.loading);
-
-    // ViewModel selector
-    readonly vm$ = this.select({
-        isOpen: this.isOpen$,
-        title: this.title$,
-        content: this.content$,
-        confirmText: this.confirmText$,
-        loading: this.loading$
+  constructor() {
+    super({
+      isOpen: false,
+      title: '',
+      content: '',
+      confirmText: 'Confirm',
+      loading: false
     });
+  }
 
-    // ===== UPDATERS =====
-    readonly openModal = this.updater((state, config: { title: string; content: string }) => ({
-        ...state,
-        isOpen: true,
-        title: config.title,
-        content: config.content,
-        loading: false
-    }));
+  // ===== SELECTORS =====
+  readonly isOpen$ = this.select(state => state.isOpen);
+  readonly title$ = this.select(state => state.title);
+  readonly content$ = this.select(state => state.content);
+  readonly confirmText$ = this.select(state => state.confirmText);
+  readonly loading$ = this.select(state => state.loading);
 
-    readonly closeModal = this.updater(state => ({
-        ...state,
-        isOpen: false,
-        loading: false
-    }));
+  // ViewModel selector
+  readonly vm$ = this.select({
+    isOpen: this.isOpen$,
+    title: this.title$,
+    content: this.content$,
+    confirmText: this.confirmText$,
+    loading: this.loading$
+  });
 
-    readonly setLoading = this.updater((state, loading: boolean) => ({
-        ...state,
-        loading
-    }));
+  // ===== UPDATERS =====
+  readonly openModal = this.updater((state, config: { title: string; content: string }) => ({
+    ...state,
+    isOpen: true,
+    title: config.title,
+    content: config.content,
+    loading: false
+  }));
 
-    // ===== EFFECTS =====
-    readonly confirm = this.effect<void>(trigger$ =>
-        trigger$.pipe(
-            tap(() => this.setLoading(true)),
-            tap(() => {
-                // Simulate async operation
-                setTimeout(() => {
-                    console.log('Confirmed!');
-                    this.closeModal();
-                }, 1500);
-            })
-        )
-    );
+  readonly closeModal = this.updater(state => ({
+    ...state,
+    isOpen: false,
+    loading: false
+  }));
+
+  readonly setLoading = this.updater((state, loading: boolean) => ({
+    ...state,
+    loading
+  }));
+
+  // ===== EFFECTS =====
+  readonly confirm = this.effect<void>(trigger$ =>
+    trigger$.pipe(
+      tap(() => this.setLoading(true)),
+      tap(() => {
+        // Simulate async operation
+        setTimeout(() => {
+          console.log('Confirmed!');
+          this.closeModal();
+        }, 1500);
+      })
+    )
+  );
 }
 
 @Component({
-    selector: 'app-component-store-demo',
-    standalone: true,
-    imports: [CommonModule],
-    providers: [ModalStore],
-    template: `
+  selector: 'app-component-store-demo',
+  standalone: true,
+  imports: [CommonModule],
+  providers: [ModalStore],
+  template: `
     <div class="h-full flex flex-col">
       <div class="p-6">
         <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-100">
-          Component Store (@ngrx/component-store)
+          Component Store (&#64;ngrx/component-store)
         </h2>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -172,19 +172,19 @@ class ModalStore extends ComponentStore<ModalState> {
             </div>
 
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-              <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-4">Code Example</h3>
-              <pre class="text-xs bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>class MyStore extends ComponentStore&lt;State&gt; {{'{'}}{{'}'}}
+              <pre class="text-xs bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto"><code>class MyStore extends ComponentStore&lt;State&gt; &#123;
 
-// Selectors
-readonly data$ = this.select(s => s.data);
+  // Selectors
+  readonly data$ = this.select(s =&gt; s.data);
 
-// Updaters  
-readonly update = this.updater((s, v) => (...))
+  // Updaters  
+  readonly update = this.updater((s, v) =&gt; (...))
 
-// Effects
-readonly load = this.effect<void>(trigger$ =>
-  trigger$.pipe(switchMap(() => api.load()))
-)</code></pre>
+  // Effects
+  readonly load = this.effect&lt;void&gt;(trigger$ =&gt;
+    trigger$.pipe(switchMap(() =&gt; api.load()))
+  )
+&#125;</code></pre>
             </div>
           </div>
         </div>
@@ -223,22 +223,22 @@ readonly load = this.effect<void>(trigger$ =>
       </div>
     </div>
   `,
-    styles: []
+  styles: []
 })
 export class ComponentStoreDemoComponent {
-    constructor(public modalStore: ModalStore) { }
+  constructor(public modalStore: ModalStore) { }
 
-    openConfirmModal(): void {
-        this.modalStore.openModal({
-            title: 'Confirm Action',
-            content: 'Are you sure you want to proceed with this action?'
-        });
-    }
+  openConfirmModal(): void {
+    this.modalStore.openModal({
+      title: 'Confirm Action',
+      content: 'Are you sure you want to proceed with this action?'
+    });
+  }
 
-    openDeleteModal(): void {
-        this.modalStore.openModal({
-            title: 'Delete Item',
-            content: 'This action cannot be undone. Are you sure?'
-        });
-    }
+  openDeleteModal(): void {
+    this.modalStore.openModal({
+      title: 'Delete Item',
+      content: 'This action cannot be undone. Are you sure?'
+    });
+  }
 }

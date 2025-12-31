@@ -5,14 +5,14 @@ import { Store } from '@ngrx/store';
 import { getRouterSelectors } from '@ngrx/router-store';
 
 @Component({
-    selector: 'app-router-store-demo',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-router-store-demo',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="h-full flex flex-col">
       <div class="p-6">
         <h2 class="text-3xl font-bold mb-6 text-slate-800 dark:text-slate-100">
-          Router Store (@ngrx/router-store)
+          Router Store (&#64;ngrx/router-store)
         </h2>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -107,9 +107,9 @@ import { getRouterSelectors } from '@ngrx/router-store';
                 Router Store Setup Required
               </h3>
               <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
-                <p>To use <code class="px-1 bg-yellow-100 dark:bg-yellow-800 rounded">@ngrx/router-store</code>, you need to:</p>
+                <p>To use <code class="px-1 bg-yellow-100 dark:bg-yellow-800 rounded">&#64;ngrx/router-store</code>, you need to:</p>
                 <ol class="list-decimal list-inside mt-2 space-y-1">
-                  <li>Install: <code class="px-1 bg-yellow-100 dark:bg-yellow-800 rounded">npm install @ngrx/router-store</code></li>
+                  <li>Install: <code class="px-1 bg-yellow-100 dark:bg-yellow-800 rounded">npm install &#64;ngrx/router-store</code></li>
                   <li>Add <code class="px-1 bg-yellow-100 dark:bg-yellow-800 rounded">provideRouterStore()</code> to app config</li>
                   <li>Use <code class="px-1 bg-yellow-100 dark:bg-yellow-800 rounded">getRouterSelectors()</code> to access route state</li>
                 </ol>
@@ -120,7 +120,7 @@ import { getRouterSelectors } from '@ngrx/router-store';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     code {
       font-family: 'Courier New', monospace;
       font-size: 0.875rem;
@@ -128,31 +128,31 @@ import { getRouterSelectors } from '@ngrx/router-store';
   `]
 })
 export class RouterStoreDemoComponent {
-    // Router selectors from Store
-    private selectors = getRouterSelectors();
+  // Router selectors from Store
+  private selectors = getRouterSelectors();
 
-    currentUrl$ = this.store.select(this.selectors.selectUrl);
-    queryParams$ = this.store.select(this.selectors.selectQueryParams);
-    params$ = this.store.select(this.selectors.selectRouteParams);
-    data$ = this.store.select(this.selectors.selectRouteData);
+  currentUrl$ = this.store.select(this.selectors.selectUrl);
+  queryParams$ = this.store.select(this.selectors.selectQueryParams);
+  params$ = this.store.select(this.selectors.selectRouteParams);
+  data$ = this.store.select(this.selectors.selectRouteData);
 
-    constructor(
-        private router: Router,
-        private store: Store
-    ) { }
+  constructor(
+    private router: Router,
+    private store: Store
+  ) { }
 
-    navigateToUseCase1(): void {
-        this.router.navigate(['/ngrx/use-case-1']);
-    }
+  navigateToUseCase1(): void {
+    this.router.navigate(['/ngrx/use-case-1']);
+  }
 
-    navigateWithParams(): void {
-        this.router.navigate([], {
-            queryParams: { page: 2, sort: 'name' },
-            queryParamsHandling: 'merge'
-        });
-    }
+  navigateWithParams(): void {
+    this.router.navigate([], {
+      queryParams: { page: 2, sort: 'name' },
+      queryParamsHandling: 'merge'
+    });
+  }
 
-    goBack(): void {
-        window.history.back();
-    }
+  goBack(): void {
+    window.history.back();
+  }
 }

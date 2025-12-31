@@ -1,24 +1,57 @@
-# 🏬 Use Case 1: Store Basics
+# 🏬 Use Case 1: NgRx Store Basics
 
-> **💡 Lightbulb Moment**: The Store is just a **client-side database**. Actions are "transactions", Reducers are "database updates", and Selectors are "SQL queries".
-
-## 📊 NgRx Store Basics - Visual Flow
-
-![NgRx Store Basics Flow](./ngrx-store-basics-flow.png)
+## 📑 Index
+1. [🎯 What Problem Does This Solve?](#-what-problem-does-this-solve)
+2. [🔍 How It Works](#-how-it-works)
+3. [🚀 Implementation](#-implementation)
+4. [🗄️ The Restaurant Analogy](#-the-restaurant-analogy)
+5. [🧠 Mind Map](#-mind-map)
+6. [📚 Key Classes & Types](#-key-classes--types)
+7. [🌍 Real-World Use Cases](#-real-world-use-cases)
+8. [❓ Interview Questions](#-interview-questions)
 
 ---
 
-## 1. 🔍 How It Works (The Concept)
+## 🎯 What Problem Does This Solve?
 
-### The Redux Pattern
-Instead of components managing their own state (chaos 🌪️), a central store manages specific slices of state (order 🏛️).
+### The Problem: State Management Chaos 🌪️
+In large-scale Angular applications, managing state across multiple components becomes difficult:
+- **Prop Drilling**: Passing data down multiple levels of components.
+- **Inconsistent State**: Two components showing different data for the same entity.
+- **Complex Debugging**: Difficult to track why and when the state changed.
+- **Tight Coupling**: Components depending directly on each other's state.
+- **Boilerplate**: Repetitive logic in services for state updates.
 
-1.  **Action**: Describes an event (e.g., "Login Button Clicked").
-2.  **Reducer**: Pure function that takes current state + action and returns **new state**.
-3.  **Selector**: Pure function that grabs a slice of state to give to components.
-4.  **Store**: The container that holds the state.
+### The Solution: NgRx Store 🏛️
+NgRx provides a **Single Source of Truth** and a predictable state container:
+- ✅ **Centralized State**: All shared data lives in one place.
+- ✅ **Predictability**: State changes only through explicit Actions and pure Reducers.
+- ✅ **Decoupling**: Components don't know about each other; they only talk to the Store.
+- ✅ **Performance**: Built-in memoization and OnPush change detection friendliness.
+- ✅ **Tooling**: Powerful debugging with Redux DevTools.
 
-### 📊 Data Flow Diagram
+### Comparison: Component State vs NgRx Store
+
+| Aspect | Component State | NgRx Store |
+|--------|----------------|------------|
+| **Scope** | Local to component | Global / Feature-wide |
+| **Communication** | @Input / @Output | Selectors / Actions |
+| **Predictability** | Low (any method can change) | High (Strict Reducer flow) |
+| **Debugging** | Manual console logs | Redux DevTools Time Travel |
+| **Persistence** | Lost on navigation | Centralized (Can be synced) |
+
+---
+
+## 🔍 How It Works
+
+### The Redux Flow
+NgRx follows the Redux pattern:
+1. **Action**: Describes what happened ("What").
+2. **Reducer**: Pure function that updates state ("How").
+3. **Selector**: Queries data from store ("Query").
+4. **Store**: The database in memory ("Storage").
+
+### Data Flow Diagram
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ba2bd2', 'primaryTextColor': '#fff', 'lineColor': '#a855f7'}}}%%
@@ -38,741 +71,101 @@ flowchart LR
     style F fill:#3b82f6,stroke:#2563eb,color:#fff
 ```
 
+### 🎬 Behind the Scenes: `createReducer` Flow
+1. **Initialization**: When app loads, `createReducer` maps Action Types to Handlers.
+2. **Registration**: Reducer is registered with `provideStore()`.
+3. **Execution**: When an action is dispatched, the Store calls the Reducer with Current State + Action, which returns a **New State** object.
+
 ---
 
-## 2. 🚀 Step-by-Step Implementation Guide
+## 🚀 Implementation
 
 ### Step 1: Define Actions
-Think of these as the **commands** your app can understand.
-
 ```typescript
 // store/counter.actions.ts
 import { createAction, props } from '@ngrx/store';
 
-// 🛡️ CRITICAL: Naming convention '[Source] Event' for debugging
-export const increment = createAction('[Counter] Increment');
-export const decrement = createAction('[Counter] Decrement');
-export const reset = createAction('[Counter] Reset');
+export const increment = createAction('[Counter Page] Increment');
+export const decrement = createAction('[Counter Page] Decrement');
+export const reset = createAction('[Counter Page] Reset');
 
-// Action WITH payload
+// Action with payload
 export const setCustomValue = createAction(
     '[Counter Page] Set Custom Value',
     props<{ value: number }>()
 );
 ```
-
----
-
-### 🔬 Deep Dive: `createAction` with `props` Explained
-
-Let's break down this action syntax in detail:
-
-```typescript
-export const setCustomValue = createAction(
-    '[Counter Page] Set Custom Value',
-    props<{ value: number }>()
-);
-```
-
-#### **Breaking it down:**
-
-| Part | Purpose |
-|------|---------|
-| `createAction()` | NgRx factory function to create type-safe actions |
-| `'[Counter Page] Set Custom Value'` | **Action Type** - unique string identifier |
-| `props<{ value: number }>()` | **Payload definition** - data the action carries |
-
----
-
-#### **1️⃣ Action Type String: `'[Counter Page] Set Custom Value'`**
-
-This follows the NgRx naming convention:
-```
-[Source] Event Description
-```
-
-- **`[Counter Page]`** → Where the action originates (component/page)
-- **`Set Custom Value`** → What happened (the event)
-
-This makes debugging easy in Redux DevTools - you can see exactly where each action came from!
-
-**Examples of good action type names:**
-```typescript
-'[Login Page] Submit Credentials'      // Login form submitted
-'[Product API] Load Products Success'  // API call succeeded
-'[Cart Sidebar] Remove Item'           // User removed item
-'[Auth Guard] Redirect To Login'       // Guard triggered redirect
-```
-
----
-
-#### **2️⃣ Props Function: `props<{ value: number }>()`**
-
-This defines the **payload** - the data that travels with the action:
-
-```typescript
-props<{ value: number }>()
-//     ↑ TypeScript interface defining the payload shape
-```
-
-When you dispatch this action, you **MUST** provide a `value`:
-
-```typescript
-// ✅ Correct - providing the required value
-this.store.dispatch(setCustomValue({ value: 42 }));
-
-// ❌ Error - TypeScript will complain!
-this.store.dispatch(setCustomValue()); // Missing 'value'
-this.store.dispatch(setCustomValue({ value: 'hello' })); // Wrong type (string instead of number)
-this.store.dispatch(setCustomValue({ count: 42 })); // Wrong property name
-```
-
----
-
-#### **3️⃣ How It Works (Complete Flow)**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Component                                                  │
-│  ─────────                                                  │
-│  this.store.dispatch(setCustomValue({ value: 100 }))        │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Action Created (Object)                                    │
-│  ──────────────────────                                     │
-│  {                                                          │
-│    type: '[Counter Page] Set Custom Value',                 │
-│    value: 100                                               │
-│  }                                                          │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Reducer Handles Action                                     │
-│  ──────────────────────                                     │
-│  on(setCustomValue, (state, { value }) => ({                │
-│    ...state,                                                │
-│    count: value  // Sets count to 100                       │
-│  }))                                                        │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│  New State                                                  │
-│  ─────────                                                  │
-│  { count: 100 }                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-#### **4️⃣ Comparison: Actions With vs Without Props**
-
-```typescript
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Action WITHOUT payload (no data needed)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const increment = createAction('[Counter] Increment');
-
-// Usage: Just call it
-store.dispatch(increment());
-// Resulting action: { type: '[Counter] Increment' }
-
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Action WITH single prop
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const setCustomValue = createAction(
-    '[Counter] Set Value',
-    props<{ value: number }>()
-);
-
-// Usage: Must provide value
-store.dispatch(setCustomValue({ value: 42 }));
-// Resulting action: { type: '[Counter] Set Value', value: 42 }
-
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Action WITH multiple props
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-export const addProduct = createAction(
-    '[Cart] Add Product',
-    props<{ productId: string; quantity: number; price: number }>()
-);
-
-// Usage: Provide all required properties
-store.dispatch(addProduct({ 
-    productId: 'abc123', 
-    quantity: 2, 
-    price: 29.99 
-}));
-// Resulting action: { 
-//   type: '[Cart] Add Product', 
-//   productId: 'abc123', 
-//   quantity: 2, 
-//   price: 29.99 
-// }
-
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Action WITH complex object prop
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-interface User {
-    id: string;
-    name: string;
-    email: string;
-}
-
-export const loginSuccess = createAction(
-    '[Auth API] Login Success',
-    props<{ user: User; token: string }>()
-);
-
-// Usage: Provide full user object
-store.dispatch(loginSuccess({ 
-    user: { id: '1', name: 'John', email: 'john@example.com' },
-    token: 'jwt-token-here'
-}));
-```
-
----
-
-#### **5️⃣ Why Use `props<T>()` Instead of Just an Object?**
-
-The `props()` function provides several benefits:
-
-| Benefit | Description |
-|---------|-------------|
-| ✅ **Type Safety** | TypeScript checks payload shape at compile time |
-| ✅ **Autocomplete** | IDE knows what properties are required |
-| ✅ **Immutability** | Props are treated as readonly |
-| ✅ **Consistency** | Standard pattern across your codebase |
-| ✅ **Better DevTools** | Props are clearly visible in Redux DevTools |
-
-**Without props (NOT recommended):**
-```typescript
-// ❌ No type safety, easy to make mistakes
-store.dispatch({ type: '[Counter] Set', val: 42 }); // typo: 'val' instead of 'value'
-```
-
-**With props (RECOMMENDED):**
-```typescript
-// ✅ TypeScript will catch errors immediately
-store.dispatch(setCustomValue({ val: 42 })); // Error: 'val' doesn't exist, did you mean 'value'?
-```
-
----
-
-#### **6️⃣ Accessing Props in Reducers**
-
-When you handle an action with props in a reducer, you can destructure the props:
-
-```typescript
-// In reducer
-on(setCustomValue, (state, action) => ({
-    ...state,
-    count: action.value  // Access via action object
-}))
-
-// OR with destructuring (cleaner)
-on(setCustomValue, (state, { value }) => ({
-    ...state,
-    count: value  // Directly destructure value
-}))
-
-// Multiple props destructuring
-on(addProduct, (state, { productId, quantity, price }) => ({
-    ...state,
-    items: [...state.items, { productId, quantity, price }]
-}))
-```
-
----
-
-#### **💡 Real-World Analogy: Labeled Envelope**
-
-Think of `createAction` with `props` like a **labeled envelope** in an office:
-
-| Concept | Analogy |
-|---------|---------|
-| `createAction()` | Creating an envelope |
-| `'[Counter Page] Set Value'` | Label on envelope (who sent it, what's it about) |
-| `props<{ value: number }>()` | What's INSIDE the envelope (the payload) |
-| `dispatch()` | Sending the envelope to the mailroom (store) |
-| `reducer` | Clerk who opens envelope and takes action |
-
-```
-📝 Order Form (Action with Props)
-┌────────────────────────────────────────┐
-│  FROM: [Counter Page]                  │  ← Source
-│  RE: Set Custom Value                  │  ← Event
-│                                        │
-│  ┌────────────────────────────────┐    │
-│  │  CONTENTS:                     │    │
-│  │  • value: 100                  │    │  ← Props (payload)
-│  └────────────────────────────────┘    │
-└────────────────────────────────────────┘
-```
-
----
-
-### 🏭 Deep Dive: What Is a Factory Function?
-
-NgRx uses **Factory Functions** extensively. Understanding this pattern is key to mastering NgRx!
-
-#### **Definition**
-
-A **Factory Function** is a function that **creates and returns** other values (objects or functions) instead of using a `class` with `new`.
-
-```typescript
-// Factory function that creates User objects
-function createUser(name: string, age: number) {
-    return {
-        name,
-        age,
-        greet() {
-            return `Hi, I'm ${this.name}`;
-        }
-    };
-}
-
-// Usage - the factory "manufactures" objects
-const user1 = createUser('John', 25);
-const user2 = createUser('Jane', 30);
-```
-
----
-
-#### **Why Called "Factory"? 🏭**
-
-Think of a **real factory**:
-- You give it **raw materials** (parameters)
-- It **manufactures** something (object/function)
-- You get back a **finished product**
-
-```
-Input (params)  →  Factory Function  →  Output (object/function)
-     ↓                    ↓                      ↓
-   name, age        createUser()            { name, age, greet() }
-```
-
----
-
-#### **NgRx Factory Functions**
-
-| Factory | Input | Output |
-|---------|-------|--------|
-| `createAction()` | Action type string + props | Action creator function |
-| `createReducer()` | Initial state + `on()` handlers | Reducer function |
-| `createSelector()` | Input selectors + projector | Memoized selector function |
-| `createEffect()` | Source function | Effect Observable |
-| `createEntityAdapter()` | Config options | Adapter with CRUD methods |
-
-**Example with `createAction`:**
-```typescript
-// Factory creates an ACTION CREATOR function
-const increment = createAction('[Counter] Increment');
-//  ↑ increment is now a FUNCTION (not an action yet!)
-
-// Calling the action creator MANUFACTURES an action object
-const action = increment();
-// action = { type: '[Counter] Increment' }
-
-// With props:
-const setValue = createAction('[Counter] Set', props<{ value: number }>());
-const action2 = setValue({ value: 42 });
-// action2 = { type: '[Counter] Set', value: 42 }
-```
-
----
-
-#### **Factory vs Class vs Regular Function**
-
-```typescript
-// 1. CLASS - uses `new` keyword
-class User {
-    constructor(public name: string) {}
-}
-const user = new User('John');  // requires `new` keyword!
-
-// 2. FACTORY FUNCTION - returns created value
-function createUser(name: string) {
-    return { name };  // no `new` needed
-}
-const user = createUser('John');  // just call it!
-
-// 3. REGULAR FUNCTION - does work, returns simple data
-function greet(name: string): string {
-    return `Hello ${name}`;  // returns data, not a "thing"
-}
-```
-
----
-
-#### **Why Factories in NgRx?**
-
-| Benefit | Description |
-|---------|-------------|
-| ✅ **Configuration** | Pass options, get configured object back |
-| ✅ **Type Inference** | TypeScript infers types from factory params |
-| ✅ **Encapsulation** | Hide internal complexity |
-| ✅ **Composability** | Factories can use other factories |
-| ✅ **No `new` keyword** | Cleaner syntax, easier testing |
-
----
-
-#### **Memory Trick: The Pizza Factory 🍕**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    🏭 PIZZA FACTORY                         │
-│                                                             │
-│   INPUT: createPizza('pepperoni', 'large')                  │
-│                         ↓                                   │
-│   MANUFACTURING:  - Start with dough                        │
-│                   - Add sauce                               │
-│                   - Add pepperoni                           │
-│                   - Make it large                           │
-│                         ↓                                   │
-│   OUTPUT: { type: 'pepperoni', size: 'large', slices: 8 }   │
-│                                                             │
-│   You don't make the pizza yourself!                        │
-│   You tell the factory what you want, it manufactures it.   │
-└─────────────────────────────────────────────────────────────┘
-
-Same for NgRx:
-┌─────────────────────────────────────────────────────────────┐
-│                    🏭 ACTION FACTORY                        │
-│                                                             │
-│   INPUT: createAction('[Counter] Increment')                │
-│                         ↓                                   │
-│   MANUFACTURING:  - Create action creator function          │
-│                   - Configure type property                 │
-│                   - Add type safety                         │
-│                         ↓                                   │
-│   OUTPUT: increment() → { type: '[Counter] Increment' }     │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
 
 ### Step 2: Create Reducer
-The **logic** that handles the commands.
-
 ```typescript
 // store/counter.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import { increment, decrement, reset } from './counter.actions';
+import { increment, decrement, reset, setCustomValue } from './counter.actions';
 
-export const initialState = { count: 0 };
+export interface CounterState {
+    count: number;
+}
+
+export const initialState: CounterState = { count: 0 };
 
 export const counterReducer = createReducer(
     initialState,
-    // 🛡️ CRITICAL: IMMUTABLE updates (never modify state directly)
     on(increment, state => ({ ...state, count: state.count + 1 })),
     on(decrement, state => ({ ...state, count: state.count - 1 })),
-    on(reset, state => ({ ...state, count: 0 }))
+    on(reset, state => ({ ...state, count: 0 })),
+    on(setCustomValue, (state, { value }) => ({ ...state, count: value }))
 );
 ```
 
 ### Step 3: Create Selectors
-The **queries** to get data back out.
-
 ```typescript
 // store/counter.selectors.ts
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { CounterState } from './counter.reducer';
 
-export const selectFeature = createFeatureSelector<{count: number}>('counter');
+export const selectCounterState = createFeatureSelector<CounterState>('counter');
 
 export const selectCount = createSelector(
-    selectFeature,
+    selectCounterState,
     (state) => state.count
 );
 ```
 
 ### Step 4: Component Integration
-Connecting the UI to the Store.
-
 ```typescript
-// components/store-basics.component.ts
+// counter.component.ts
 @Component({ ... })
-export class StoreBasicsComponent {
+export class CounterComponent {
     private store = inject(Store);
-    
-    // Select data (Observable stream)
     count$ = this.store.select(selectCount);
     
     increment() {
-        // Dispatch action
         this.store.dispatch(increment());
     }
 }
 ```
 
----
-
-## 3. 🐛 Common Pitfalls & Debugging
-
-### ❌ Bad Example: Mutating State
-
-```typescript
-on(increment, state => {
-    // ☠️ ERROR: Modifying state directly!
-    state.count = state.count + 1;
-    return state;
-})
-```
-
-### ✅ Good Example: Returning New State
-
-```typescript
-on(increment, state => ({
-    // ✅ Spread operator creates shallow copy
-    ...state,
-    count: state.count + 1
-}))
-```
-
-**Why it fails?** Angular and NgRx rely on reference changes (`===` check) to know if data changed. If you mutate the object in place, the reference stays the same, and your **UI will not update**.
+### 🔬 Deep Dive: Factory Functions 🏭
+NgRx uses **Factory Functions** (functions that return other functions/objects).
+- `createAction()`: Returns an **Action Creator**.
+- `createReducer()`: Returns a **Reducer Function**.
+- `createSelector()`: Returns a **Memoized Selector**.
 
 ---
 
-## 4. ⚡ Performance & Architecture
+## 🗄️ The Restaurant Analogy
 
-### Performance Benefits
-1.  **OnPush Change Detection**: Since Observables and async pipe handle updates, you can use `ChangeDetectionStrategy.OnPush` everywhere.
-2.  **Memoization**: Selectors are **memoized**. If the state hasn't changed, the selector returns the *cached* result instantly without recomputing logic.
+Thinking of NgRx as a **Restaurant Operation** makes it easy to remember:
 
-### Architecture Place
-- **Smart Components**: Connect to Store (dispatch/select).
-- **Dumb Components**: Receive `@Input` data and emit `@Output` events (no store dependency).
+| NgRx Concept | Restaurant Part | Role |
+|--------------|-----------------|------|
+| **Store** | 🏭 **Kitchen** | The central place where state/food lives. |
+| **Action** | 📝 **Order Ticket** | A message saying "Customer wants Pizza" (Source + Event). |
+| **Reducer** | 👨‍🍳 **Chef** | Takes ingredients (old state) + order (action) and produces a new dish (new state). |
+| **Selector** | 🧑‍🍳 **Waiter** | Fetches the finished dish from the kitchen for the customer. |
+| **Effect** | 🚨 **Supplier Run** | If the kitchen is out of cheese, call the supplier (API call). |
 
-```
-[Store] <==> [Smart Component] ==> [Dumb Component]
-```
-
----
-
-## 5. 🌍 Real World Use Cases
-
-1.  **User Session State**: `user`, `role`, `token`, `isLoggedIn` accessible everywhere.
-2.  **Shopping Cart**: Items added from product page, visible in header cart count, manageable in checkout page.
-3.  **App Configuration**: Theme settings, language preferences, sidebar collapse state.
-
----
-
-## 🍝 Restaurant Analogy (Easy to Remember!)
-
-Think of NgRx like a **restaurant operation**:
-
-| Concept | Restaurant Analogy | Memory Trick |
-|---------|--------------------|---------------|
-| **Store** | 🏭 **Kitchen**: Central place where all food/state lives | **"The hub"** |
-| **Action** | 📝 **Order ticket**: "Table 5 wants pizza" | **"What happened"** |
-| **Reducer** | 👨‍🍳 **Chef**: Takes order + ingredients, creates dish | **"State updater"** |
-| **Selector** | 🧑‍🍳 **Waiter**: Brings finished dish to table | **"Data query"** |
-| **Effect** | 🚨 **Supplier run**: "We're out of cheese, call supplier" | **"Side effects"** |
-
-### 📖 Story to Remember:
-
-> 🍝 **A Night at Restaurant Angular**
->
-> You're a customer (component) ordering food:
->
-> **The Flow:**
-> ```
-> 1. You (Component) → "I want a pizza!" (dispatch Action)
->    
-> 2. Waiter takes order to Kitchen (Store receives Action)
->    
-> 3. Chef (Reducer) looks at:
->    - Current ingredients (current state)
->    - Order ticket (action)
->    - Creates new dish (returns new state)
->    
-> 4. Waiter (Selector) brings pizza to your table
->    - store.select(selectPizza) → Observable<Pizza>
->    
-> 5. Side tasks (Effects):
->    - "Cheese ran out? Order more from supplier (API call)"
-> ```
->
-> **Chef NEVER leaves kitchen. Chef NEVER calls suppliers. Pure cooking only!**
-
-### 🎯 Quick Reference:
-```
-🏭 Store    = Kitchen (central state container)
-📝 Action   = Order ticket ("what happened")
-👨‍🍳 Reducer  = Chef (pure state updates)
-🧑‍🍳 Selector = Waiter (queries state for component)
-🚨 Effect   = Supplier calls (side effects, API calls)
-```
-
----
-
-## 7. ❓ Interview & Concept Questions
-
-### Basic Questions
-
-**Q1: Why use NgRx instead of a simple Service with BehaviorSubject?**
-> A: Services are great for simple state. NgRx provides structure, debugging (Redux DevTools), strict one-way data flow, and separation of concerns (side effects vs state updates) crucial for large enterprise apps.
-
-**Q2: What is a "Pure Function" in the context of Reducers?**
-> A: A function that given the same input (state + action) always returns the same output, without any side effects (API calls, changing global vars).
-
-**Q3: The UI isn't updating but the action is dispatched. Why?**
-> A: Likely state mutation in the reducer. Ensure you return a **new object** (`...state`) instead of modifying `state`. Also check if the selector is correctly looking at the right feature slice.
-
-**Q4: Can I handle API calls in Reducers?**
-> A: **NO!** Reducers must be synchronous and pure. API calls belong in **Effects**.
-
-**Q5: What is Selector Memoization?**
-> A: It's a caching mechanism. If the inputs to a selector haven't changed, it returns the last calculated value without re-running the function, saving CPU cycles.
-
----
-
-### Scenario-Based Questions
-
-#### Scenario 1: Shopping Cart
-**Question:** Design the actions and state for a shopping cart that can add items, remove items, update quantity, and clear cart.
-
-**Answer:**
-```typescript
-// Actions
-export const addToCart = createAction('[Cart] Add Item', props<{ product: Product, quantity: number }>());
-export const removeFromCart = createAction('[Cart] Remove Item', props<{ productId: string }>());
-export const updateQuantity = createAction('[Cart] Update Quantity', props<{ productId: string, quantity: number }>());
-export const clearCart = createAction('[Cart] Clear');
-
-// State
-interface CartState {
-    items: CartItem[];
-    totalQuantity: number;
-    totalPrice: number;
-}
-
-// Reducer
-on(addToCart, (state, { product, quantity }) => {
-    const existing = state.items.find(i => i.productId === product.id);
-    if (existing) {
-        return {
-            ...state,
-            items: state.items.map(i => 
-                i.productId === product.id 
-                    ? { ...i, quantity: i.quantity + quantity }
-                    : i
-            )
-        };
-    }
-    return {
-        ...state,
-        items: [...state.items, { productId: product.id, name: product.name, price: product.price, quantity }]
-    };
-})
-```
-
----
-
-#### Scenario 2: Optimistic Updates
-**Question:** User clicks "Like" button. Update UI immediately, but if API fails, rollback.
-
-**Answer:**
-```typescript
-// Actions
-export const likePost = createAction('[Post] Like', props<{ postId: string }>());
-export const likePostSuccess = createAction('[Post] Like Success', props<{ postId: string }>());
-export const likePostFailure = createAction('[Post] Like Failure', props<{ postId: string, previousLikes: number }>());
-
-// Reducer - Optimistically increment
-on(likePost, (state, { postId }) => ({
-    ...state,
-    posts: state.posts.map(p => 
-        p.id === postId ? { ...p, likes: p.likes + 1 } : p
-    )
-}))
-
-// Reducer - Rollback on failure
-on(likePostFailure, (state, { postId, previousLikes }) => ({
-    ...state,
-    posts: state.posts.map(p => 
-        p.id === postId ? { ...p, likes: previousLikes } : p
-    )
-}))
-```
-
----
-
-#### Scenario 3: Loading Multiple Entities
-**Question:** Dashboard needs to load users, products, and orders. How do you track loading state for each?
-
-**Answer:**
-```typescript
-interface AppState {
-    users: { data: User[], loading: boolean, error: string | null };
-    products: { data: Product[], loading: boolean, error: string | null };
-    orders: { data: Order[], loading: boolean, error: string | null };
-}
-
-// Selectors
-export const selectUsersLoading = createSelector(selectUserState, state => state.loading);
-export const selectProductsLoading = createSelector(selectProductState, state => state.loading);
-
-// Combined loading selector
-export const selectDashboardLoading = createSelector(
-    selectUsersLoading,
-    selectProductsLoading,
-    selectOrdersLoading,
-    (u, p, o) => u || p || o  // True if ANY is loading
-);
-```
-
----
-
-#### Scenario 4: Derived State
-**Question:** You have a list of items with prices. Create a selector that computes total, tax, and grand total.
-
-**Answer:**
-```typescript
-export const selectCartItems = createSelector(selectCartState, state => state.items);
-
-export const selectSubtotal = createSelector(
-    selectCartItems,
-    items => items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-);
-
-export const selectTax = createSelector(
-    selectSubtotal,
-    subtotal => subtotal * 0.1  // 10% tax
-);
-
-export const selectGrandTotal = createSelector(
-    selectSubtotal,
-    selectTax,
-    (subtotal, tax) => subtotal + tax
-);
-```
-**Why selectors?** Memoization! If items haven't changed, tax doesn't recompute.
-
----
-
-### Advanced Questions
-
-**Q6: When would you use `createFeatureSelector` vs direct selector?**
-> A: `createFeatureSelector` is for top-level feature slices registered with `StoreModule.forFeature()`. It provides type safety and simplifies accessing nested state.
-
-**Q7: How do you combine multiple reducers?**
-> A: Use `ActionReducerMap` for root state:
-```typescript
-export const reducers: ActionReducerMap<AppState> = {
-    counter: counterReducer,
-    users: userReducer
-};
-```
-
-**Q8: What's the difference between State and ViewModel?**
-> A: State is the raw data in store. ViewModel is derived/computed data for the UI (from selectors). Keep state normalized, derive complex structures via selectors.
+> **Key Rule**: The Chef (Reducer) **NEVER** leaves the kitchen and **NEVER** calls suppliers. They only cook (pure functions)!
 
 ---
 
@@ -782,169 +175,96 @@ export const reducers: ActionReducerMap<AppState> = {
 mindmap
   root((NgRx Basics))
     Action
-      Event
-      Unique Type
-      Props/Payload
+      Source: [Counter Page]
+      Event: Increment
+      Props: { value: 5 }
     Reducer
       Pure Function
-      Immutable
-      New State
+      Immutable State
+      Initial State
     Selector
-      Query
-      Memoized
-      Observable
+      Queries
+      Memoization
+      Feature Selector
     Store
-      Single Source of Truth
-      Dispatch
-      Select
+      Dispatch Actions
+      Select State
+      Single Instance
 ```
 
 ---
 
-## 8. 🔄 How `createReducer` Executes (In Detail)
+## 📚 Key Classes & Types
 
-Understanding the execution flow helps debug issues and understand the NgRx lifecycle.
+### 1. `Store<T>`
+The central service used for dispatching actions and selecting state.
+- `dispatch(action)`: Triggers a state change.
+- `select(selector)`: Returns an Observable of the requested data.
 
-### Phase 1: INITIALIZATION (When App Loads)
+### 2. `createAction` & `props<T>`
+Used to define type-safe action creators. The string must be unique and follows the `[Source] Event` pattern.
 
-```typescript
-// This runs ONCE when the app bootstraps
-export const counterReducer = createReducer(
-    initialState,           // { count: 0, updatedAt: null }
-    on(increment, ...),
-    on(decrement, ...),
-    on(reset, ...),
-    on(setCustomValue, ...)
-);
-```
+### 3. `createReducer` & `on`
+Defines how state transitions happen. `on(action, handler)` maps a specific action to a logic block.
 
-**What happens:**
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ 1. createReducer() is CALLED                                   │
-│    ↓                                                            │
-│ 2. Each on() creates a mapping: { type → handler }             │
-│    • 'on(increment, fn)' → { type: '[Counter Page] Increment', │
-│                               handler: fn }                     │
-│    ↓                                                            │
-│ 3. createReducer RETURNS a new function:                       │
-│    counterReducer = (state, action) => { ... }                 │
-│                                                                 │
-│ 4. counterReducer is stored (not yet executed!)                │
-└─────────────────────────────────────────────────────────────────┘
-```
+### 4. `createSelector` & `createFeatureSelector`
+- `createFeatureSelector`: Grabs a slice of top-level state (e.g., 'auth', 'cart').
+- `createSelector`: Combines and transforms state slices with memoization.
 
 ---
 
-### Phase 2: REGISTRATION (Store Setup)
+## 🌍 Real-World Use Cases
 
-```typescript
-// In app.config.ts
-provideStore({ counter: counterReducer })
-//            ^^^^^^^^^^^^^^^^^^^^^^^^
-// Store now knows: "for 'counter' slice, use counterReducer function"
-```
+### 1. **Authentication Flow**
+Storing the current user, permissions, and tokens. Any component can "Select" the user to show a profile name or check roles.
 
----
+### 2. **Shopping Cart**
+A product page dispatches `addToCart`. The header component selects `cartItems.count` to update the icon badge immediately.
 
-### Phase 3: EXECUTION (When Action is Dispatched)
+### 3. **Theming & Preferences**
+User changes font size or Dark Mode. The update is dispatched to the store and applied globally across all layouts.
 
-```typescript
-// User clicks button → component dispatches
-this.store.dispatch(increment());
-```
+### 4. **Complex Dashboards**
+Multiple widgets (charts, tables) listening to the same "FinancialData" state slice. When data refills, all widgets update simultaneously.
 
-**What happens:**
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ STEP 1: Component dispatches action                            │
-│         increment() returns: { type: '[Counter Page] Increment'}│
-│                                                                 │
-│ STEP 2: Store receives the action                              │
-│         ↓                                                        │
-│ STEP 3: Store calls counterReducer(currentState, action)       │
-│         • currentState = { count: 5, updatedAt: ... }          │
-│         • action = { type: '[Counter Page] Increment' }         │
-│         ↓                                                        │
-│ STEP 4: Inside counterReducer:                                 │
-│         • Checks action.type against all registered handlers   │
-│         • Finds match: '[Counter Page] Increment'              │
-│         • Calls the matching handler function                  │
-│         ↓                                                        │
-│ STEP 5: Handler executes:                                      │
-│         function(state) {                                       │
-│             return {                                            │
-│                 ...state,               // { count: 5, ... }    │
-│                 count: state.count + 1, // count: 6             │
-│                 updatedAt: new Date()   // new timestamp        │
-│             };                                                  │
-│         }                                                       │
-│         ↓                                                        │
-│ STEP 6: Handler returns NEW state: { count: 6, updatedAt: ... }│
-│         ↓                                                        │
-│ STEP 7: Store updates its state with the new state             │
-│         ↓                                                        │
-│ STEP 8: All selectors re-evaluate                              │
-│         selectCount now returns 6                               │
-│         ↓                                                        │
-│ STEP 9: Components using count$ | async get new value          │
-│         UI updates to show "6"                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
+### 5. **Navigation History**
+Storing breadcrumbs or "Recently Viewed Items" into a store slice as the user navigates through the app.
 
 ---
 
-### Simplified Internal Code of `createReducer`
+## ❓ Interview Questions
 
-```typescript
-// What createReducer ESSENTIALLY does internally:
-function createReducer<S>(initialState: S, ...handlers: Handler<S>[]) {
-    
-    // Build a map of action types to handler functions
-    const handlerMap = new Map<string, Function>();
-    for (const handler of handlers) {
-        handlerMap.set(handler.actionType, handler.fn);
-    }
-    
-    // RETURN the actual reducer function (this is Phase 1)
-    return function reducer(state: S = initialState, action: Action): S {
-        
-        // Look up handler for this action type (this runs in Phase 3)
-        const handler = handlerMap.get(action.type);
-        
-        if (handler) {
-            // Found matching handler - call it and return new state
-            return handler(state, action);
-        }
-        
-        // No matching handler - return unchanged state
-        return state;
-    };
-}
-```
+### Basic (1-8)
+1. **What is NgRx and why do we use it?**
+2. **Explain the One-Way Data Flow in NgRx.**
+3. **What is the "Single Source of Truth"?**
+4. **What is an Action and what should be its naming convention?**
+5. **What is a Reducer and why must it be a "Pure Function"?**
+6. **What is a Selector and what is memoization?**
+7. **How do you dispatch an Action from a component?**
+8. **What are the benefits of using Redux DevTools?**
 
----
+### Intermediate (9-16)
+9. **How does NgRx handle Immutable updates?**
+10. **What happens if you mutate state directly in a Reducer?**
+11. **Explain `createFeatureSelector` vs `createSelector`.**
+12. **What are `props` in an Action?**
+13. **How do you handle multiple entities in one state slice?**
+14. **Explain the benefits of `OnPush` change detection with NgRx.**
+15. **What is a "Smart Component" vs a "Dumb Component" in NgRx architecture?**
+16. **How do you define the `initialState`?**
 
-### Key TypeScript Concepts Used
-
-| Concept | Where Used | Purpose |
-|---------|------------|---------|
-| **Higher-Order Function** | `createReducer()` | Returns another function |
-| **Generic Types** | `createReducer<S>` | Type-safe state |
-| **Rest Parameters** | `...handlers` | Accept multiple `on()` calls |
-| **Arrow Functions** | `(state) => ({...})` | Concise handlers |
-| **Spread Operator** | `{ ...state, count: 1 }` | Immutable updates |
-| **Destructuring** | `(state, { value })` | Extract payload props |
+### Advanced (17-25)
+17. **What is the "Action-Reducer-Selector" lifecycle in detail?**
+18. **How does memoization improve performance for expensive computations in Selectors?**
+19. **Explain the Higher-Order Function used in `createReducer`.**
+20. **How would you debug a circular dependency in NgRx selectors?**
+21. **What is the difference between `@ngrx/store` and `@ngrx/component-store`?**
+22. **Explain the role of `ActionReducerMap`.**
+23. **How do you handle "Optimistic Updates" in basic Store logic?**
+24. **When should state stay in a Service/Component instead of the Store?**
+25. **How would you test a Reducer?**
 
 ---
 
-### Quick Reference Table
-
-| Phase | When | What Happens |
-|-------|------|--------------|
-| **Initialization** | App load | `createReducer` runs, returns reducer function |
-| **Registration** | Store setup | Reducer registered with `provideStore()` |
-| **Execution** | Action dispatch | Reducer called, handler runs, state updates |
-
+> **Pro Tip**: Use the **Redux DevTools** to "Time Travel" through your actions. It's the best way to see how your state transitions over time!
