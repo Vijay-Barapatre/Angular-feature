@@ -313,7 +313,7 @@ export class AdvancedPatternsComponent {
     if (this.persistenceEnabled) {
       console.log('[NgRx Persistence] State saved to localStorage');
     }
-  }
+ }
 
   tryMutation(): void {
     // Simulate what would happen if you tried to mutate state

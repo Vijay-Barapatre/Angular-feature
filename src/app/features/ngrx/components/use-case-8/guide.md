@@ -4,6 +4,180 @@
 
 ![NgRx Component Store Infographic](./component-store-infographic.png)
 
+## 📑 Index
+1. [🎯 What Problem Does This Solve?](#1--what-problem-does-it-solve)
+2. [🔍 Implementation Architecture](#-implementation-architecture)
+3. [🚀 Core API](#2--core-api)
+4. [🗄️ The Personal Assistant Analogy](#-the-personal-assistant-analogy)
+5. [🧠 Mind Map](#-mind-map)
+6. [🌍 Real-World Use Cases](#3--real-world-use-cases)
+7. [📚 Key Classes & Types](#-key-classes--types)
+8. [❓ Interview Questions](#-complete-interview-questions-25)
+
+---
+
+## 🔍 Implementation Architecture
+
+### How Component Store Is Structured
+
+```
+┌─────────────────────────────────────────────┐
+│       ModalStore (ComponentStore)           │
+├─────────────────────────────────────────────┤
+│  STATE (Interface)                          │
+│  ├─ isOpen: boolean                         │
+│  ├─ title: string                           │
+│  ├─ content: string                         │
+│  ├─ confirmText: string                     │
+│  └─ loading: boolean                        │
+├─────────────────────────────────────────────┤
+│  SELECTORS (this.select)                    │
+│  ├─ isOpen$    → Observable<boolean>        │
+│  ├─ title$     → Observable<string>         │
+│  └─ vm$        → Combined ViewModel         │
+├─────────────────────────────────────────────┤
+│  UPDATERS (this.updater)                    │
+│  ├─ openModal(config)  → Updates state      │
+│  ├─ closeModal()       → Resets isOpen      │
+│  └─ setLoading(bool)   → Sets loading       │
+├─────────────────────────────────────────────┤
+│  EFFECTS (this.effect)                      │
+│  └─ confirm()  → Async operation            │
+└─────────────────────────────────────────────┘
+```
+
+### Key Implementation Parts
+
+| Part | Purpose | Method |
+|------|---------|--------|
+| **State Interface** | Type-safe state shape | TypeScript interface |
+| **`extends ComponentStore<T>`** | Inherits reactive capabilities | Class extension |
+| **`super(initialState)`** | Sets initial state | Constructor call |
+| **`this.select()`** | Creates reactive selectors | Returns `Observable<T>` |
+| **`this.updater()`** | Synchronous state mutations | Returns void |
+| **`this.effect()`** | Async side effects | Returns subscription |
+
+### Data Flow
+
+```mermaid
+flowchart LR
+    A[Component] -->|Call| B[Updater/Effect]
+    B -->|Modifies| C[State]
+    C -->|Triggers| D[Selector]
+    D -->|Emits| E[Observable]
+    E -->|async pipe| A
+```
+
+---
+
+## 🗄️ The Personal Assistant Analogy
+
+Think of ComponentStore like a **Personal Assistant** that only works for one person:
+
+| ComponentStore | Personal Assistant |
+|---------------|-------------------|
+| **ComponentStore class** | The assistant hired for YOU |
+| **State** | The assistant's notepad/memory |
+| **Selectors** | Asking "What's my schedule?" |
+| **Updaters** | "Update my calendar" commands |
+| **Effects** | "Book a flight" (async task) |
+| **Component lifecycle** | Assistant quits when you leave |
+
+> **Key Insight**: Unlike a global store (company-wide database), ComponentStore is YOUR personal assistant that remembers YOUR stuff and leaves when you're done!
+
+---
+
+## 🧠 Mind Map
+
+```mermaid
+mindmap
+  root((Component Store))
+    Initialization
+      super(initialState)
+      Lazy: setState()
+    Selectors
+      this.select()
+      Composed selectors
+      ViewModel pattern
+    Updaters
+      this.updater()
+      patchState()
+      Immutable updates
+    Effects
+      this.effect()
+      RxJS operators
+      tapResponse()
+    Lifecycle
+      providers: []
+      Auto cleanup
+      OnDestroy
+```
+
+---
+
+## 📚 Key Classes & Types
+
+### 1. `ComponentStore<T>`
+Base class that provides all reactive functionality.
+
+```typescript
+class MyStore extends ComponentStore<State> {
+  constructor() {
+    super(initialState);  // Required!
+  }
+}
+```
+
+### 2. `select()` Method
+Creates memoized selectors that return Observables.
+
+```typescript
+// Simple
+readonly count$ = this.select(s => s.count);
+
+// Composed
+readonly vm$ = this.select({
+  count: this.count$,
+  loading: this.loading$
+});
+```
+
+### 3. `updater()` Method
+Creates synchronous state update functions.
+
+```typescript
+readonly increment = this.updater((state, amount: number) => ({
+  ...state,
+  count: state.count + amount
+}));
+```
+
+### 4. `effect()` Method
+Creates async side-effect handlers.
+
+```typescript
+readonly load = this.effect<number>(id$ => 
+  id$.pipe(
+    switchMap(id => this.api.get(id)),
+    tap(data => this.patchState({ data }))
+  )
+);
+```
+
+### 5. `tapResponse()` Utility
+Helper for handling success/error in effects.
+
+```typescript
+import { tapResponse } from '@ngrx/component-store';
+
+switchMap(id => this.api.get(id).pipe(
+  tapResponse(
+    data => this.setData(data),
+    error => this.setError(error)
+  )
+))
+```
+
 ---
 
 ## 1. 🎯 What Problem Does It Solve?
