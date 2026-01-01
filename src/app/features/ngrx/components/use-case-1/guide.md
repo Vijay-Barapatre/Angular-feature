@@ -80,6 +80,52 @@ flowchart LR
 
 ## 🚀 Implementation
 
+### Step 0: Configure NgRx in `main.ts` ⚙️
+
+Before using NgRx in any component, you must configure the Store providers in your application's bootstrap configuration. This is done in `main.ts`:
+
+```typescript
+// main.ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+    providers: [
+        // ✅ Step 1: Initialize NgRx Store with your reducers
+        provideStore({
+            counter: counterReducer,    // Register feature reducers
+            products: productReducer,
+            cart: cartReducer
+        }),
+        
+        // ✅ Step 2: Initialize NgRx Effects (for async operations)
+        provideEffects(),  // Add effect classes inside array when needed
+        
+        // ✅ Step 3: Enable Redux DevTools for debugging
+        provideStoreDevtools({
+            maxAge: 25,        // Retains last 25 states
+            logOnly: false,    // Log actions in production
+            autoPause: true    // Pause when window is not focused
+        })
+    ]
+});
+```
+
+> **⚠️ Key Point**: The `provideStore()` function is **required** for NgRx to work. Without it, the `Store` service will not be available for injection. The `provideEffects()` and `provideStoreDevtools()` are optional but highly recommended.
+
+#### Provider Functions Explained
+
+| Provider | Purpose | Required? |
+|----------|---------|-----------|
+| `provideStore({...})` | Registers reducers and creates the Store singleton | ✅ **Yes** |
+| `provideEffects([...])` | Enables side-effect handling (API calls, etc.) | Optional |
+| `provideStoreDevtools({...})` | Connects to Redux DevTools browser extension | Optional |
+
+---
+
 ### Step 1: Define Actions
 ```typescript
 // store/counter.actions.ts
