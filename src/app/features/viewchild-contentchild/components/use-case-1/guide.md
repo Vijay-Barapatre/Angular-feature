@@ -4,6 +4,140 @@
 
 ---
 
+## 🔗 How @ViewChild Works: Deep Dive
+
+> [!IMPORTANT]
+> `@ViewChild` queries elements from your component's **own template**. The result is available in `ngAfterViewInit` - NOT before!
+
+### The Complete Query Flow
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#8b5cf6', 'primaryTextColor': '#fff'}}}%%
+flowchart TB
+    subgraph Template["📝 Component Template"]
+        T1["&lt;input #myInput /&gt;"]
+        T2["&lt;app-child&gt;&lt;/app-child&gt;"]
+    end
+    
+    subgraph Decorator["🎯 @ViewChild Decorator"]
+        D1["@ViewChild 'myInput'"]
+        D2["@ViewChild ChildComponent"]
+    end
+    
+    subgraph Result["✅ Query Result"]
+        R1["inputElement: ElementRef"]
+        R2["childComponent: ChildComponent"]
+    end
+    
+    T1 --> D1
+    D1 --> R1
+    T2 --> D2
+    D2 --> R2
+    
+    style Template fill:#e0f2fe
+    style Decorator fill:#fef3c7
+    style Result fill:#dcfce7
+```
+
+### Lifecycle Timing: When Is @ViewChild Available?
+
+```mermaid
+sequenceDiagram
+    participant C as Constructor
+    participant I as ngOnInit
+    participant V as ngAfterViewInit
+    participant Q as @ViewChild
+    
+    C->>Q: undefined ❌
+    Note over C: View not created yet
+    
+    I->>Q: undefined ❌
+    Note over I: View still rendering
+    
+    V->>Q: ElementRef ✅
+    Note over V: View is ready!
+    
+    Note over Q: Safe to use now!
+```
+
+### Step-by-Step: Query Resolution
+
+| Step | What Happens | Code |
+|------|--------------|------|
+| **1** | Template has element with #ref | `<input #myInput />` |
+| **2** | Decorator queries the view | `@ViewChild('myInput')` |
+| **3** | Angular renders the view | Template → DOM |
+| **4** | Query resolves | `inputElement = ElementRef` |
+| **5** | Lifecycle hook fires | `ngAfterViewInit()` |
+| **6** | Safe to access | `this.inputElement.nativeElement.focus()` |
+
+### Code Mapping: Your Implementation
+
+```typescript
+@Component({
+    template: `
+        <input #myInput />            <!-- 👈 Template reference -->
+        <app-child></app-child>       <!-- 👈 Child component -->
+    `
+})
+export class ParentComponent implements AfterViewInit {
+    // Query by template reference
+    @ViewChild('myInput') inputElement!: ElementRef<HTMLInputElement>;
+    
+    // Query by component type
+    @ViewChild(ChildComponent) childComponent!: ChildComponent;
+    
+    // ❌ NOT AVAILABLE HERE
+    constructor() {
+        // this.inputElement → undefined!
+    }
+    
+    // ❌ NOT AVAILABLE HERE
+    ngOnInit() {
+        // this.inputElement → undefined!
+    }
+    
+    // ✅ AVAILABLE HERE
+    ngAfterViewInit() {
+        this.inputElement.nativeElement.focus();  // Works!
+        this.childComponent.doSomething();        // Works!
+    }
+}
+```
+
+### Visual: ViewChild vs ContentChild
+
+```
+┌───────────────────────────────────────────────────────────┐
+│ PARENT COMPONENT                                          │
+│                                                           │
+│   Template (ViewChild queries HERE):                      │
+│   ┌─────────────────────────────────────────────────────┐ │
+│   │ <input #myInput />    ← @ViewChild('myInput') ✅    │ │
+│   │ <app-child>                                         │ │
+│   │   <p>Projected content</p>  ← @ContentChild ❌      │ │
+│   │ </app-child>                                        │ │
+│   └─────────────────────────────────────────────────────┘ │
+│                                                           │
+│   @ViewChild = Queries OWN template                       │
+│   @ContentChild = Queries PROJECTED content (inside child)│
+└───────────────────────────────────────────────────────────┘
+```
+
+### 🔑 Query Options Reference
+
+| Option | Purpose | Example |
+|--------|---------|---------|
+| **Template ref** | Query by #name | `@ViewChild('myInput')` |
+| **Component type** | Query by class | `@ViewChild(ChildComponent)` |
+| **static: true** | Available in ngOnInit | `{ static: true }` |
+| **read: Type** | Return different type | `{ read: ElementRef }` |
+
+> [!TIP]
+> **Memory Trick**: Think of `@ViewChild` as a **remote control** 🎮 - you can only use it AFTER the TV (view) is turned on (ngAfterViewInit)!
+
+---
+
 ## 1. 🔍 What is @ViewChild?
 
 Queries a single element, directive, or component from the view (template).

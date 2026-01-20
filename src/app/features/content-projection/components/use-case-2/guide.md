@@ -4,6 +4,153 @@
 
 ---
 
+## 🔗 How Multi-Slot Projection Works: Deep Dive
+
+> [!IMPORTANT]
+> Multi-slot projection uses the `select` attribute to route different pieces of content to different slots. Angular matches content **once** - first match wins!
+
+### The Complete Selector Matching Flow
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#8b5cf6', 'primaryTextColor': '#fff'}}}%%
+flowchart TB
+    subgraph Parent["👤 Parent provides content"]
+        P1["h2 dialog-title"]
+        P2["p no attribute"]
+        P3["div dialog-actions"]
+    end
+    
+    subgraph Matcher["🔍 Angular Selector Matcher"]
+        M1{"Check select='dialog-title'"}
+        M2{"Check select='dialog-actions'"}
+        M3{"No selector = catch-all"}
+    end
+    
+    subgraph Child["📦 Child template slots"]
+        S1["Header Slot"]
+        S2["Footer Slot"]
+        S3["Body Slot default"]
+    end
+    
+    P1 --> M1
+    M1 -->|"MATCH"| S1
+    
+    P3 --> M2
+    M2 -->|"MATCH"| S2
+    
+    P2 --> M1
+    M1 -->|"no match"| M2
+    M2 -->|"no match"| M3
+    M3 -->|"CATCH-ALL"| S3
+    
+    style S1 fill:#22c55e
+    style S2 fill:#22c55e
+    style S3 fill:#fbbf24
+```
+
+### Runtime: How Angular Matches Content
+
+```mermaid
+sequenceDiagram
+    participant A as Angular
+    participant C as Content Pieces
+    participant S as Slots
+    
+    A->>C: Get all child content from parent
+    
+    loop For each content piece
+        A->>A: Read content attributes/classes
+        
+        alt Has dialog-title attribute
+            A->>S: Route to header slot
+        else Has dialog-actions attribute
+            A->>S: Route to footer slot
+        else No matching selector
+            A->>S: Route to catch-all slot
+        end
+    end
+    
+    A->>S: Render all slots with content
+    Note over S: DOM complete!
+```
+
+### Step-by-Step Matching Process
+
+| Step | Content | Checks | Result |
+|------|---------|--------|--------|
+| **1** | `<h2 dialog-title>` | Has `[dialog-title]`? ✅ | → Header slot |
+| **2** | `<p>Are you sure?</p>` | Has `[dialog-title]`? ❌ | Continue... |
+| | | Has `[dialog-actions]`? ❌ | Continue... |
+| | | Catch-all exists? ✅ | → Body slot |
+| **3** | `<div dialog-actions>` | Has `[dialog-actions]`? ✅ | → Footer slot |
+
+### Code Mapping: Your Implementation
+
+```typescript
+// CHILD: MultiSlotCardComponent (defines slots)
+@Component({
+    selector: 'app-multi-slot-card',
+    template: `
+        <div class="card">
+            <div class="card-header">
+                <ng-content select="[card-header]"></ng-content>  👈 Slot 1
+            </div>
+            <div class="card-body">
+                <ng-content select="[card-body]"></ng-content>    👈 Slot 2
+            </div>
+            <div class="card-footer">
+                <ng-content select="[card-footer]"></ng-content>  👈 Slot 3
+            </div>
+        </div>
+    `,
+})
+```
+
+```html
+<!-- PARENT: Routes content to slots via attributes -->
+<app-multi-slot-card>
+    <h3 card-header>🚀 Feature Card</h3>     <!-- → Goes to header slot -->
+    <p card-body>This content goes into body</p>  <!-- → Goes to body slot -->
+    <div card-footer>                         <!-- → Goes to footer slot -->
+        <button>Action 1</button>
+        <button>Action 2</button>
+    </div>
+</app-multi-slot-card>
+```
+
+### 🔑 Selector Types Reference
+
+| Selector Type | Syntax | Example Match |
+|---------------|--------|---------------|
+| **Attribute** | `select="[header]"` | `<div header>` |
+| **Element** | `select="app-header"` | `<app-header>` |
+| **CSS Class** | `select=".header"` | `<div class="header">` |
+| **Multiple** | `select="[a], [b]"` | Either `[a]` OR `[b]` |
+| **Catch-all** | _(no select)_ | Everything unmatched |
+
+### Visual: Content Routing
+
+```
+PARENT CONTENT:                      CHILD SLOTS:
+┌─────────────────────┐              ┌─────────────────────┐
+│ <h3 card-header>    │ ─────────┐   │ select="[card-header]"
+│   🚀 Feature        │          └──►│   → "🚀 Feature"     │
+└─────────────────────┘              ├─────────────────────┤
+┌─────────────────────┐              │ select="[card-body]" │
+│ <p card-body>       │ ────────────►│   → "body content"   │
+│   body content      │              ├─────────────────────┤
+└─────────────────────┘              │ select="[card-footer]"
+┌─────────────────────┐              │   → buttons          │
+│ <div card-footer>   │ ────────────►└─────────────────────┘
+│   <button>Action</button>
+└─────────────────────┘
+```
+
+> [!TIP]
+> **Memory Trick**: Think of selectors as **mail sorting** - each piece of mail (content) gets routed to the labeled mailbox (slot) that matches its label (attribute)!
+
+---
+
 ## 1. 🔍 Selector Types
 
 ```html

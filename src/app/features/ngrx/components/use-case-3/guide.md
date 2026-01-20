@@ -118,6 +118,239 @@ entities[5];  // O(1) - instant!
 
 ---
 
+## 🔗 Entity Adapter Deep Dive: Complete Flow
+
+> [!IMPORTANT]
+> Entity Adapter transforms your **array-based state** into a **dictionary-based state** with O(1) performance for all CRUD operations.
+
+### The Transformation: Array → Dictionary
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#3b82f6', 'primaryTextColor': '#fff'}}}%%
+flowchart LR
+    subgraph Array["❌ Traditional Array"]
+        A1["[Product1, Product2, Product3, ...]"]
+        A2["Find ID 5 → Loop through ALL items O(n)"]
+    end
+    
+    subgraph Entity["✅ Entity Adapter"]
+        E1["ids: [1, 2, 3, 5]"]
+        E2["entities: { 1: {...}, 2: {...}, 3: {...}, 5: {...} }"]
+        E3["Find ID 5 → Direct lookup entities[5] O(1)"]
+    end
+    
+    Array --> |"createEntityAdapter()"| Entity
+    
+    style Array fill:#fee2e2
+    style Entity fill:#dcfce7
+```
+
+### Complete Setup & Runtime Flow
+
+```mermaid
+%%{init: {'theme': 'base'}}%%
+flowchart TB
+    subgraph Setup["🔧 SETUP (One Time)"]
+        C1["createEntityAdapter&lt;Product&gt;()"] --> C2["Returns adapter with CRUD methods"]
+        C2 --> C3["adapter.getInitialState({loading, error})"]
+        C3 --> C4["{ ids: [], entities: {}, loading: false, error: null }"]
+    end
+    
+    subgraph Runtime["⚡ RUNTIME (On Every Action)"]
+        direction TB
+        A["Action Dispatched"] --> R["Reducer"]
+        
+        R --> |"addProduct"| M1["adapter.addOne(product, state)"]
+        R --> |"loadProductsSuccess"| M2["adapter.setAll(products, state)"]
+        R --> |"updateProduct"| M3["adapter.updateOne({id, changes}, state)"]
+        R --> |"removeProduct"| M4["adapter.removeOne(id, state)"]
+        R --> |"toggleProductStock"| M5["adapter.updateOne({id, changes: {inStock: !current}})"]
+        R --> |"toggleAllStock"| M6["adapter.map(p =&gt; ({...p, inStock: !p.inStock}))"]
+        R --> |"removeAllProducts"| M7["adapter.removeAll(state)"]
+        
+        M1 --> S["New Immutable State"]
+        M2 --> S
+        M3 --> S
+        M4 --> S
+        M5 --> S
+        M6 --> S
+        M7 --> S
+    end
+    
+    subgraph Selectors["🔍 SELECTORS (Read State)"]
+        S --> SEL1["selectAll → Product[] (for *ngFor)"]
+        S --> SEL2["selectEntities → {id: Product} (for lookup)"]
+        S --> SEL3["selectTotal → number (count)"]
+        S --> SEL4["selectInStockProducts → filtered array"]
+        S --> SEL5["selectProductById(id) → single Product"]
+    end
+    
+    style Setup fill:#e0f2fe
+    style Runtime fill:#fef3c7
+    style Selectors fill:#dcfce7
+```
+
+### Step-by-Step: What Happens When You Add a Product
+
+```mermaid
+sequenceDiagram
+    participant C as Component
+    participant S as Store
+    participant R as Reducer
+    participant A as Adapter
+    
+    C->>S: dispatch(addProduct({ product: {id: 5, name: 'Laptop', price: 999} }))
+    S->>R: addProduct action received
+    R->>A: adapter.addOne(product, state)
+    
+    Note over A: 🔧 Adapter Internal Process:
+    A->>A: 1. Check if ID 5 already exists
+    A->>A: 2. Add '5' to ids array
+    A->>A: 3. Add entity to entities[5]
+    A->>A: 4. Apply sortComparer (reorder ids)
+    A->>A: 5. Return NEW immutable state
+    
+    A-->>R: New state object
+    R-->>S: Store updated
+    
+    Note over S: { ids: [5], entities: {5: {...}}, loading: false }
+    S-->>C: Selectors emit new values
+```
+
+### Visual: State Transformation Example
+
+When you call `adapter.addOne({ id: 4, name: 'Avocado', inStock: true }, state)`:
+
+```
+BEFORE addOne:
+┌──────────────────────────────────────────────────┐
+│ ids: [1, 2, 3]                                   │
+│ entities: {                                      │
+│   1: { id: 1, name: 'Apple', inStock: true }     │
+│   2: { id: 2, name: 'Banana', inStock: false }   │
+│   3: { id: 3, name: 'Cherry', inStock: true }    │
+│ }                                                │
+│ loading: false                                   │
+│ error: null                                      │
+└──────────────────────────────────────────────────┘
+                         ↓
+          adapter.addOne({ id: 4, name: 'Avocado', inStock: true })
+                         ↓
+AFTER addOne (sorted alphabetically by name!):
+┌──────────────────────────────────────────────────┐
+│ ids: [1, 4, 2, 3]    ← 4 inserted after 1        │
+│                        (Apple < Avocado < Banana)│
+│ entities: {                                      │
+│   1: { id: 1, name: 'Apple', inStock: true }     │
+│   4: { id: 4, name: 'Avocado', inStock: true }   │ ← NEW
+│   2: { id: 2, name: 'Banana', inStock: false }   │
+│   3: { id: 3, name: 'Cherry', inStock: true }    │
+│ }                                                │
+│ loading: false                                   │
+│ error: null                                      │
+└──────────────────────────────────────────────────┘
+```
+
+> [!NOTE]
+> The `sortComparer: (a, b) => a.name.localeCompare(b.name)` automatically places "Avocado" between "Apple" and "Banana" in the `ids` array!
+
+### Adapter Methods Reference (Your Implementation)
+
+| Action in Code | Adapter Method | What It Does | Performance |
+|----------------|----------------|--------------|-------------|
+| `loadProductsSuccess` | `setAll(products, state)` | Replace ALL entities | O(n) |
+| `addProduct` | `addOne(product, state)` | Add single entity | O(1) + sort |
+| `updateProduct` | `updateOne({id, changes}, state)` | Partial update | O(1) |
+| `toggleProductStock` | `updateOne({id, changes})` | Toggle boolean field | O(1) |
+| `toggleAllStock` | `map(p => ({...p, inStock: !p.inStock}))` | Transform all entities | O(n) |
+| `removeProduct` | `removeOne(id, state)` | Delete by ID | O(1) |
+| `removeAllProducts` | `removeAll(state)` | Clear everything | O(1) |
+
+### Selectors Flow Diagram
+
+```mermaid
+flowchart LR
+    subgraph Store["🗄️ NgRx Store"]
+        State["ProductState<br/>{ids, entities, loading, error}"]
+    end
+    
+    subgraph AdapterSelectors["📦 Built-in Adapter Selectors"]
+        S1["selectIds → [1, 2, 3]"]
+        S2["selectEntities → {1: {...}, 2: {...}}"]
+        S3["selectAll → Product[]"]
+        S4["selectTotal → 3"]
+    end
+    
+    subgraph CustomSelectors["🔧 Your Custom Selectors"]
+        C1["selectInStockProducts<br/>products.filter(p => p.inStock)"]
+        C2["selectProductById(id)<br/>entities[id]"]
+        C3["selectInStockCount<br/>inStockProducts.length"]
+    end
+    
+    subgraph Component["🖥️ Component"]
+        V1["*ngFor loop"]
+        V2["Product detail"]
+        V3["Stats display"]
+    end
+    
+    State --> S1
+    State --> S2
+    State --> S3
+    State --> S4
+    
+    S3 --> C1
+    S2 --> C2
+    C1 --> C3
+    
+    S3 --> V1
+    C2 --> V2
+    C3 --> V3
+    
+    style AdapterSelectors fill:#dbeafe
+    style CustomSelectors fill:#fef3c7
+```
+
+### 🧠 Why Both `ids` Array AND `entities` Object?
+
+| Use Case | Which to Use | Why |
+|----------|--------------|-----|
+| **Display list in order** (for `*ngFor`) | `ids` array | Preserves insertion/sort order |
+| **Quick lookup by ID** | `entities` dictionary | O(1) direct access |
+| **Count items** | `ids.length` or `selectTotal` | Fast property access |
+| **Check if exists** | `entities[id] !== undefined` | No loop needed |
+| **Get all as array** | `selectAll` | Converts back for templates |
+
+> [!TIP]
+> **Memory Trick**: Think of `ids` as your **table of contents** (ordered list) and `entities` as the **actual chapters** (instant access by page number).
+
+### Code Connection: How Files Work Together
+
+```mermaid
+flowchart TB
+    subgraph Files["📁 Your Store Files"]
+        M["product.model.ts<br/>interface Product"]
+        A["product.actions.ts<br/>createAction()"]
+        R["product.reducer.ts<br/>createEntityAdapter()"]
+        S["product.selectors.ts<br/>getSelectors()"]
+    end
+    
+    subgraph Flow["🔄 Data Flow"]
+        M --> R
+        A --> R
+        R --> |"productAdapter"| S
+    end
+    
+    subgraph Usage["🖥️ Component Usage"]
+        dispatch["this.store.dispatch(addProduct({...}))"]
+        select["this.store.select(selectAllProducts)"]
+    end
+    
+    A --> dispatch
+    S --> select
+```
+
+---
+
 ## 🚀 Implementation
 
 ### Create Adapter

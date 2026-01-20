@@ -4,6 +4,137 @@
 
 ---
 
+## 🔗 How @ContentChild Works: Deep Dive
+
+> [!IMPORTANT]
+> `@ContentChild` queries content that was **projected** into your component via `<ng-content>`. This is content from the **parent's template**, NOT your own!
+
+### ViewChild vs ContentChild: Visual Comparison
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#8b5cf6', 'primaryTextColor': '#fff'}}}%%
+flowchart TB
+    subgraph Parent["👤 Parent Component"]
+        P1["&lt;app-card&gt;"]
+        P2["  &lt;h2 header&gt;Title&lt;/h2&gt;"]
+        P3["  &lt;p&gt;Body&lt;/p&gt;"]
+        P4["&lt;/app-card&gt;"]
+    end
+    
+    subgraph Child["📦 Card Component Template"]
+        C1["&lt;ng-content select='header'&gt;"]
+        C2["&lt;ng-content&gt;"]
+        C3["&lt;input #myInput /&gt;"]
+    end
+    
+    subgraph Queries["🎯 Queries"]
+        Q1["@ContentChild → h2, p"]
+        Q2["@ViewChild → input"]
+    end
+    
+    P2 --> C1
+    P3 --> C2
+    C1 --> Q1
+    C2 --> Q1
+    C3 --> Q2
+    
+    style Parent fill:#e0f2fe
+    style Child fill:#fef3c7
+    style Queries fill:#dcfce7
+```
+
+### Lifecycle Timing: ContentChild vs ViewChild
+
+```mermaid
+sequenceDiagram
+    participant P as Parent
+    participant C as Child Component
+    participant Con as @ContentChild
+    participant V as @ViewChild
+    
+    P->>C: Project content
+    C->>C: Initialize
+    C->>Con: ngAfterContentInit
+    Note over Con: Content queries ready!
+    
+    C->>C: Render view
+    C->>V: ngAfterViewInit
+    Note over V: View queries ready!
+```
+
+### Step-by-Step: Query Resolution
+
+| Query | Source | Available In | Use Case |
+|-------|--------|--------------|----------|
+| **@ViewChild** | Own template | `ngAfterViewInit` | Query your own elements |
+| **@ContentChild** | Parent's projection | `ngAfterContentInit` | Query projected content |
+
+### Code Mapping: Your Implementation
+
+```html
+<!-- PARENT: Projects content INTO child -->
+<app-card>
+    <h2 header>Card Title</h2>  👈 This is PROJECTED
+    <p>Card content</p>         👈 This too
+</app-card>
+```
+
+```typescript
+// CHILD: Queries projected content
+@Component({
+    selector: 'app-card',
+    template: `
+        <div class="card">
+            <ng-content select="[header]"></ng-content>  👈 Slot for header
+            <ng-content></ng-content>                    👈 Slot for body
+            <input #ownInput />                          👈 Own template element
+        </div>
+    `
+})
+export class CardComponent implements AfterContentInit, AfterViewInit {
+    // Query PROJECTED content
+    @ContentChild('header') headerEl!: ElementRef;
+    
+    // Query OWN template
+    @ViewChild('ownInput') inputEl!: ElementRef;
+    
+    ngAfterContentInit() {
+        console.log('Projected header:', this.headerEl);  // ✅ Available
+    }
+    
+    ngAfterViewInit() {
+        console.log('Own input:', this.inputEl);  // ✅ Available
+    }
+}
+```
+
+### Visual: What Goes Where
+
+```
+┌───────────────────────────────────────────────────────────┐
+│ PARENT COMPONENT TEMPLATE                                 │
+│                                                           │
+│   <app-card>                                              │
+│       <h2 header>Title</h2>  ──────────┐                 │
+│       <p>Body text</p>       ──────────┤ @ContentChild   │
+│   </app-card>                           │ queries THESE  │
+│                                         ▼                 │
+│ ┌───────────────────────────────────────────────────────┐ │
+│ │ CHILD COMPONENT (app-card)                            │ │
+│ │                                                       │ │
+│ │   <ng-content select="[header]">  ← Receives h2       │ │
+│ │   <ng-content>                    ← Receives p        │ │
+│ │   <input #localInput />           ← @ViewChild HERE   │ │
+│ │                                                       │ │
+│ └───────────────────────────────────────────────────────┘ │
+└───────────────────────────────────────────────────────────┘
+```
+
+> [!TIP]
+> **Memory Trick**: `@ContentChild` = **mailbox** 📬 (content from outside), `@ViewChild` = **furniture** 🪑 (stuff inside your house)!
+
+---
+
 ## 1. 🔍 What is @ContentChild?
 
 Queries content that was projected into the component via ng-content.

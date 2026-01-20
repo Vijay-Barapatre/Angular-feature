@@ -23,6 +23,141 @@ Allows parent components to project content INTO child component templates.
 
 ---
 
+## 🔗 How Content Projection Works: Deep Dive
+
+> [!IMPORTANT]
+> Content Projection lets a **parent component** pass content **INTO** a **child component's template** using `<ng-content>`. The parent OWNS the content; the child just provides the SLOT.
+
+### The Complete Flow
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#8b5cf6', 'primaryTextColor': '#fff'}}}%%
+flowchart LR
+    subgraph Parent["👤 Parent Component"]
+        P1["&lt;app-card&gt;<br/>  &lt;h3&gt;Title&lt;/h3&gt;<br/>  &lt;p&gt;Body&lt;/p&gt;<br/>&lt;/app-card&gt;"]
+    end
+    
+    subgraph Child["📦 Child Component"]
+        C1["&lt;div class='card'&gt;<br/>  &lt;ng-content&gt;&lt;/ng-content&gt;<br/>&lt;/div&gt;"]
+    end
+    
+    subgraph Result["✅ Rendered DOM"]
+        R1["&lt;div class='card'&gt;<br/>  &lt;h3&gt;Title&lt;/h3&gt;<br/>  &lt;p&gt;Body&lt;/p&gt;<br/>&lt;/div&gt;"]
+    end
+    
+    Parent -->|"Content flows in"| Child
+    Child -->|"ng-content replaced"| Result
+    
+    style Parent fill:#e0f2fe
+    style Child fill:#fef3c7
+    style Result fill:#dcfce7
+```
+
+### Runtime Steps: What Happens When Angular Renders
+
+```mermaid
+sequenceDiagram
+    participant A as Angular Compiler
+    participant P as Parent Component
+    participant C as Child Component
+    participant D as DOM
+    
+    A->>P: Parse parent template
+    Note over A: Sees app-card with children
+    
+    A->>C: Instantiate child component
+    A->>C: Parse child template
+    Note over A: Finds ng-content placeholder
+    
+    A->>A: Match children to slots
+    Note over A: h3 to header, p to default
+    
+    A->>D: Render child template
+    A->>D: REPLACE ng-content with content
+    
+    Note over D: Final DOM ready!
+```
+
+### Step-by-Step Breakdown
+
+| Step | What Happens | Code |
+|------|--------------|------|
+| **1** | Angular parses parent template | `<app-card><h3>Title</h3></app-card>` |
+| **2** | Finds `<app-card>` with content inside | Content = `<h3>Title</h3>` |
+| **3** | Creates child component instance | `SimpleCardComponent` |
+| **4** | Parses child template | `<div class="card"><ng-content></ng-content></div>` |
+| **5** | Finds `<ng-content>` placeholder | This marks where content goes |
+| **6** | **REPLACES** `<ng-content>` with parent's content | `<h3>Title</h3>` inserted |
+| **7** | Final DOM rendered | `<div class="card"><h3>Title</h3></div>` |
+
+### Code Mapping: Your Implementation
+
+```typescript
+// CHILD COMPONENT: Defines WHERE content goes
+@Component({
+    selector: 'app-simple-card',
+    template: `
+        <div class="card">
+            <ng-content></ng-content>  // 👈 SLOT - placeholder
+        </div>
+    `,
+})
+export class SimpleCardComponent { }
+```
+
+```html
+<!-- PARENT: Defines WHAT content is -->
+<app-simple-card>
+    <h3>Welcome!</h3>                               <!-- 👈 Goes INTO ng-content -->
+    <p>This content is projected into the card.</p> <!-- 👈 This too -->
+    <button>Learn More</button>                     <!-- 👈 And this -->
+</app-simple-card>
+```
+
+### 🔑 Key Rules
+
+| Rule | Explanation |
+|------|-------------|
+| **Parent OWNS the content** | Bindings, events, change detection belong to parent |
+| **Child provides the SLOT** | Just defines where content appears |
+| **Content is NOT cloned** | It's moved/projected, not duplicated |
+| **Styles are isolated** | Child's encapsulated styles don't affect projected content |
+| **Lifecycle is parent's** | `ngOnInit`, `ngOnDestroy` etc. fire in parent's context |
+
+### Visual: Before vs After
+
+```
+BEFORE (Angular parses):
+┌─────────────────────────────────────────────────┐
+│ Parent Template:                                │
+│   <app-simple-card>                             │
+│       <h3>Welcome!</h3>      ← Content to project
+│       <p>Body text</p>                          │
+│   </app-simple-card>                            │
+└─────────────────────────────────────────────────┘
+                    +
+┌─────────────────────────────────────────────────┐
+│ Child Template:                                 │
+│   <div class="card">                            │
+│       <ng-content></ng-content>  ← Slot         │
+│   </div>                                        │
+└─────────────────────────────────────────────────┘
+                    ↓
+AFTER (DOM rendered):
+┌─────────────────────────────────────────────────┐
+│ Final DOM:                                      │
+│   <div class="card">                            │
+│       <h3>Welcome!</h3>      ← Projected!       │
+│       <p>Body text</p>                          │
+│   </div>                                        │
+└─────────────────────────────────────────────────┘
+```
+
+> [!TIP]
+> **Memory Trick**: Think of `<ng-content>` as a **mail slot** in a door. The parent (mailman) puts letters in, the child (house) just has the slot - they don't control WHAT comes through!
+
+---
+
 ## 2. 🚀 Single Slot vs Multi-Slot
 
 ### Single Slot

@@ -4,6 +4,60 @@
 
 ---
 
+## 🔗 How the static Option Works: Deep Dive
+
+> [!IMPORTANT]
+> The `static` option controls **WHEN** the query is resolved. `static: true` = early (ngOnInit), `static: false` (default) = late (ngAfterViewInit).
+
+### Query Resolution Timing
+
+```mermaid
+sequenceDiagram
+    participant C as Constructor
+    participant I as ngOnInit
+    participant CD as Change Detection
+    participant V as ngAfterViewInit
+    
+    Note over C,V: static: true resolution
+    C->>I: Query resolved ✅
+    Note over I: Available here!
+    I->>CD: Normal flow continues
+    CD->>V: View initialized
+    
+    Note over C,V: static: false (default) resolution
+    C->>I: Query = undefined ❌
+    I->>CD: Still waiting...
+    CD->>V: Query resolved ✅
+    Note over V: Available here!
+```
+
+### When to Use Each
+
+| Condition | Use `static:` |
+|-----------|---------------|
+| Element is **always present** | `true` |
+| Need query in **ngOnInit** | `true` |
+| Element is **inside *ngIf** | `false` (default) |
+| Element is **inside *ngFor** | `false` (default) |
+| Can wait for **ngAfterViewInit** | `false` (default) |
+
+### Visual: Element Availability Timeline
+
+```
+Component Lifecycle:
+
+constructor → ngOnChanges → ngOnInit → ngDoCheck → ngAfterContentInit → ngAfterViewInit
+                              ↑                                              ↑
+                              │                                              │
+                      static: true ✅                               static: false ✅
+                      (resolved here)                               (resolved here)
+```
+
+> [!TIP]
+> **Memory Trick**: `static: true` = **early bird** 🐦 (gets the worm in ngOnInit), `static: false` = **fashionably late** 🕐 (arrives at ngAfterViewInit)!
+
+---
+
 ## 1. 🔍 What is the static Option?
 
 Controls WHEN the query is resolved.

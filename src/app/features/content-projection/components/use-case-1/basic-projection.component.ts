@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SimpleCardComponent { }
 
-// Alert Box Component
+// Alert Box Component this is not used any where
 @Component({
     selector: 'app-alert-box',
     standalone: true,
@@ -97,6 +97,8 @@ export class AlertBoxComponent {
             <section class="demo-section">
                 <h2>🎯 Live Demo</h2>
                 <div class="demo-grid">
+
+
                     <app-simple-card>
                         <h3>Welcome!</h3>
                         <p>This content is projected into the card component.</p>
@@ -115,6 +117,8 @@ export class AlertBoxComponent {
                             <li>Any HTML!</li>
                         </ul>
                     </app-simple-card>
+
+
                 </div>
             </section>
 
