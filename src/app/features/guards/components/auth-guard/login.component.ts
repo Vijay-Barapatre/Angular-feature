@@ -66,6 +66,6 @@ export class LoginComponent {
     login(username: string) {
         this.authService.login(username);
         // Navigate to the protected route
-        this.router.navigate(['/guards/use-case-1/admin']);
+        this.router.navigate(['/guards/auth-guard/admin']);
     }
 }

@@ -85,7 +85,7 @@ import { FormsModule } from '@angular/forms';
     </div>
   `,
   styles: [`
-    @import '../use-case-1/child.component.css';
+    @import '../basic-input-output/child.component.css';
     
     .two-way-demo {
       background: var(--bg-card);

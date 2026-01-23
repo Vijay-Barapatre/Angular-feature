@@ -157,7 +157,7 @@ const array = this.tabs.toArray();</code></pre>
     </div>
   `,
   styles: [`
-    @import '../../../input-output/components/use-case-1/parent.component.css';
+    @import '../../../input-output/components/basic-input-output/parent.component.css';
 
     .tabs-container {
       display: flex;

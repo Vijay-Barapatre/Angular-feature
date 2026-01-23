@@ -148,7 +148,7 @@ this.menuItems.forEach(item => ...);</code></pre>
     </div>
   `,
   styles: [`
-    @import '../../../input-output/components/use-case-1/parent.component.css';
+    @import '../../../input-output/components/basic-input-output/parent.component.css';
 
     .code-example {
       background: #1e293b;

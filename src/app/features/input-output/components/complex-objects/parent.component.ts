@@ -99,7 +99,7 @@ import { UseCase3ChildComponent, UserProfile } from './child.component';
     </div>
   `,
   styles: [`
-    @import '../use-case-1/parent.component.css';
+    @import '../basic-input-output/parent.component.css';
 
     .control-section {
       margin-bottom: var(--spacing-lg);

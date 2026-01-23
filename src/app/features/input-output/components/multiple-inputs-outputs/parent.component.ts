@@ -71,7 +71,7 @@ import { UseCase6ChildComponent, UserData } from './child.component';
     </div>
   `,
   styles: [`
-    @import '../use-case-1/parent.component.css';
+    @import '../basic-input-output/parent.component.css';
 
     .profile-display {
       background: rgba(255,255,255,0.05);

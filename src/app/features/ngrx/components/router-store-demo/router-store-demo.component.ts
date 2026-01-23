@@ -142,7 +142,7 @@ export class RouterStoreDemoComponent {
   ) { }
 
   navigateToUseCase1(): void {
-    this.router.navigate(['/ngrx/use-case-1']);
+    this.router.navigate(['/ngrx/store-basics']);
   }
 
   navigateWithParams(): void {

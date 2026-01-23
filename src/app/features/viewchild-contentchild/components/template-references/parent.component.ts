@@ -189,7 +189,7 @@ this.inputElement.nativeElement.focus();</code></pre>
     </div>
   `,
   styles: [`
-    @import '../../../input-output/components/use-case-1/parent.component.css';
+    @import '../../../input-output/components/basic-input-output/parent.component.css';
 
     .demo-section {
       background: var(--bg-card);

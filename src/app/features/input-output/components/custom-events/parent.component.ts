@@ -87,7 +87,7 @@ interface CartItem {
     </div>
   `,
   styles: [`
-    @import '../use-case-1/parent.component.css';
+    @import '../basic-input-output/parent.component.css';
 
     .products-grid {
       display: grid;

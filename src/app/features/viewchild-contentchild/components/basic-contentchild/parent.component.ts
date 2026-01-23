@@ -67,7 +67,7 @@ import { CardHeaderComponent } from './header.component';
     </div>
   `,
   styles: [`
-    @import '../../../input-output/components/use-case-1/parent.component.css';
+    @import '../../../input-output/components/basic-input-output/parent.component.css';
 
     .info-display {
       margin-top: var(--spacing-md);

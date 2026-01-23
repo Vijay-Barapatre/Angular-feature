@@ -15,9 +15,9 @@ import { provideServiceWorker } from '@angular/service-worker';
 import { isDevMode } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
-import { productReducer } from './app/features/ngrx/components/use-case-3/store/product.reducer';
-import { cartReducer } from './app/features/ngrx/components/use-case-4/store/cart.reducer';
-import { devToolsReducer } from './app/features/ngrx/components/use-case-5/store/devtools.reducer';
+import { productReducer } from './app/features/ngrx/components/entity-adapter/store/product.reducer';
+import { cartReducer } from './app/features/ngrx/components/selectors-demo/store/cart.reducer';
+import { devToolsReducer } from './app/features/ngrx/components/devtools-demo/store/devtools.reducer';
 
 /**
  * Bootstrap the Angular application

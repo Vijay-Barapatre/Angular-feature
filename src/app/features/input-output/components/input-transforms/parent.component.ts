@@ -80,7 +80,7 @@ import { UseCase5ChildComponent } from './child.component';
     </div>
   `,
   styles: [`
-    @import '../use-case-1/parent.component.css';
+    @import '../basic-input-output/parent.component.css';
     
     .control-group {
       margin-bottom: var(--spacing-md);

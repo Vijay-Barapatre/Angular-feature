@@ -20,6 +20,6 @@ export const authGuard: CanActivateFn = (route, state) => {
         console.log('🛑 Guard: User is unauthorized, redirecting to login...');
         // Redirect to login page
         // Note: In a real app, you might pass a returnUrl query param
-        return router.createUrlTree(['/guards/use-case-1/login']);
+        return router.createUrlTree(['/guards/auth-guard/login']);
     }
 };

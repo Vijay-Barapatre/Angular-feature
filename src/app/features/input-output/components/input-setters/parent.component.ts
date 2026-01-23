@@ -80,7 +80,7 @@ import { UseCase7ChildComponent } from './child.component';
     </div>
   `,
     styles: [`
-    @import '../use-case-1/parent.component.css';
+    @import '../basic-input-output/parent.component.css';
 
     .btn-grid {
       display: grid;

@@ -95,6 +95,6 @@ export class AdminComponent {
 
     logout() {
         this.authService.logout();
-        this.router.navigate(['/guards/use-case-1/login']);
+        this.router.navigate(['/guards/auth-guard/login']);
     }
 }
