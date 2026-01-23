@@ -144,10 +144,10 @@ export class MyModule {{ '{' }} {{ '}' }}</code></pre>
 })
 export class NgModulesOverviewComponent {
     useCases = [
-        { id: 1, path: 'use-case-1', icon: '📋', title: 'Module Basics', description: 'declarations, imports, exports, providers', tags: ['@NgModule', 'metadata', 'structure'] },
-        { id: 2, path: 'use-case-2', icon: '📦', title: 'Feature Modules', description: 'Organize app into feature areas', tags: ['lazy loading', 'feature', 'organization'] },
-        { id: 3, path: 'use-case-3', icon: '🔄', title: 'Shared Modules', description: 'Reusable components across features', tags: ['SharedModule', 'reuse', 'CommonModule'] },
-        { id: 4, path: 'use-case-4', icon: '💉', title: 'Providers & DI', description: 'Service scoping with modules', tags: ['providers', 'forRoot', 'injector'] },
-        { id: 5, path: 'use-case-5', icon: '⚖️', title: 'NgModules vs Standalone', description: 'Compare and migrate', tags: ['standalone', 'migration', 'comparison'] }
+        { id: 1, path: 'module-basics', icon: '📋', title: 'Module Basics', description: 'declarations, imports, exports, providers', tags: ['@NgModule', 'metadata', 'structure'] },
+        { id: 2, path: 'feature-modules', icon: '📦', title: 'Feature Modules', description: 'Organize app into feature areas', tags: ['lazy loading', 'feature', 'organization'] },
+        { id: 3, path: 'shared-modules', icon: '🔄', title: 'Shared Modules', description: 'Reusable components across features', tags: ['SharedModule', 'reuse', 'CommonModule'] },
+        { id: 4, path: 'providers-di', icon: '💉', title: 'Providers & DI', description: 'Service scoping with modules', tags: ['providers', 'forRoot', 'injector'] },
+        { id: 5, path: 'ngmodules-vs-standalone', icon: '⚖️', title: 'NgModules vs Standalone', description: 'Compare and migrate', tags: ['standalone', 'migration', 'comparison'] }
     ];
 }

@@ -10,8 +10,8 @@ export const ANIMATIONS_ROUTES: Routes = [
             .then(m => m.AnimationsOverviewComponent),
         children: [
             {
-                path: 'use-case-1',
-                loadComponent: () => import('./components/use-case-1/basic-state-animation.component')
+                path: 'basic-state-animation',
+                loadComponent: () => import('./components/basic-state-animation/basic-state-animation.component')
                     .then(m => m.BasicStateAnimationComponent),
                 data: {
                     title: 'Basic State Animations',
@@ -19,8 +19,8 @@ export const ANIMATIONS_ROUTES: Routes = [
                 }
             },
             {
-                path: 'use-case-2',
-                loadComponent: () => import('./components/use-case-2/enter-leave-animation.component')
+                path: 'enter-leave-animation',
+                loadComponent: () => import('./components/enter-leave-animation/enter-leave-animation.component')
                     .then(m => m.EnterLeaveAnimationComponent),
                 data: {
                     title: 'Enter/Leave Animations',
@@ -28,8 +28,8 @@ export const ANIMATIONS_ROUTES: Routes = [
                 }
             },
             {
-                path: 'use-case-3',
-                loadComponent: () => import('./components/use-case-3/keyframes-animation.component')
+                path: 'keyframes-animation',
+                loadComponent: () => import('./components/keyframes-animation/keyframes-animation.component')
                     .then(m => m.KeyframesAnimationComponent),
                 data: {
                     title: 'Keyframes Animations',
@@ -37,8 +37,8 @@ export const ANIMATIONS_ROUTES: Routes = [
                 }
             },
             {
-                path: 'use-case-4',
-                loadComponent: () => import('./components/use-case-4/query-stagger-animation.component')
+                path: 'query-stagger-animation',
+                loadComponent: () => import('./components/query-stagger-animation/query-stagger-animation.component')
                     .then(m => m.QueryStaggerAnimationComponent),
                 data: {
                     title: 'Query & Stagger',
@@ -46,8 +46,8 @@ export const ANIMATIONS_ROUTES: Routes = [
                 }
             },
             {
-                path: 'use-case-5',
-                loadComponent: () => import('./components/use-case-5/route-animation.component')
+                path: 'route-animation',
+                loadComponent: () => import('./components/route-animation/route-animation.component')
                     .then(m => m.RouteAnimationComponent),
                 data: {
                     title: 'Route Animations',

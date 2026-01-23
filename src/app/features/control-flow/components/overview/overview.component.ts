@@ -40,21 +40,21 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                 <div class="use-cases-grid">
                     <a routerLink="use-case-1" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🎯</div>
-                        <h3>Use Case 1</h3>
+                        <h3></h3>
                         <p>Conditional</p>
                         <span class="topics">if, else, else if, as</span>
                     </a>
 
                     <a routerLink="use-case-2" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🔄</div>
-                        <h3>Use Case 2</h3>
+                        <h3></h3>
                         <p>Loop</p>
                         <span class="topics">track, $index, empty</span>
                     </a>
 
                     <a routerLink="use-case-3" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🔀</div>
-                        <h3>Use Case 3</h3>
+                        <h3></h3>
                         <p>Switch Multi-Condition</p>
                         <span class="topics">case, default</span>
                     </a>

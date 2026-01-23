@@ -27,33 +27,33 @@ export const SSR_ROUTES: Routes = [
             .then(m => m.SsrOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/ssr-fundamentals.component')
+        path: 'ssr-fundamentals',
+        loadComponent: () => import('./components/ssr-fundamentals/ssr-fundamentals.component')
             .then(m => m.SsrFundamentalsComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/hydration.component')
+        path: 'hydration',
+        loadComponent: () => import('./components/hydration/hydration.component')
             .then(m => m.HydrationComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/transfer-state.component')
+        path: 'transfer-state',
+        loadComponent: () => import('./components/transfer-state/transfer-state.component')
             .then(m => m.TransferStateComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/platform-detection.component')
+        path: 'platform-detection',
+        loadComponent: () => import('./components/platform-detection/platform-detection.component')
             .then(m => m.PlatformDetectionComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/seo-optimization.component')
+        path: 'seo-optimization',
+        loadComponent: () => import('./components/seo-optimization/seo-optimization.component')
             .then(m => m.SeoOptimizationComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/prerendering.component')
+        path: 'prerendering',
+        loadComponent: () => import('./components/prerendering/prerendering.component')
             .then(m => m.PrerenderingComponent)
     }
 ];

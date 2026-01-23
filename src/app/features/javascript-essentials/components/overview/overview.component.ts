@@ -21,8 +21,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
             </header>
 
             <div class="cards-grid">
-                <!-- Use Case 1: Variables & Data Types -->
-                <div class="feature-card" routerLink="use-case-1">
+                <!-- Variables & Data Types -->
+                <div class="feature-card" routerLink="variables-datatypes">
                     <div class="card-icon">📦</div>
                     <h3>Variables & Data Types</h3>
                     <p>var, let, const, primitives, objects, and type coercion</p>
@@ -33,8 +33,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 2: Spread/Rest -->
-                <div class="feature-card" routerLink="use-case-2">
+                <!-- Spread/Rest -->
+                <div class="feature-card" routerLink="spread-rest">
                     <div class="card-icon">✨</div>
                     <h3>Spread & Rest Operators</h3>
                     <p>Spread for arrays/objects, rest parameters for functions</p>
@@ -45,8 +45,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 3: Destructuring -->
-                <div class="feature-card" routerLink="use-case-3">
+                <!-- Destructuring -->
+                <div class="feature-card" routerLink="destructuring">
                     <div class="card-icon">📤</div>
                     <h3>Destructuring</h3>
                     <p>Extract values from objects and arrays efficiently</p>
@@ -57,8 +57,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 4: Arrow Functions -->
-                <div class="feature-card" routerLink="use-case-4">
+                <!-- Arrow Functions -->
+                <div class="feature-card" routerLink="arrow-functions">
                     <div class="card-icon">➡️</div>
                     <h3>Arrow Functions</h3>
                     <p>Concise syntax, lexical this, and callback patterns</p>
@@ -69,8 +69,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 5: Async/Await -->
-                <div class="feature-card" routerLink="use-case-5">
+                <!-- Async/Await -->
+                <div class="feature-card" routerLink="async-await">
                     <div class="card-icon">⏳</div>
                     <h3>Async/Await & Promises</h3>
                     <p>Asynchronous JavaScript patterns for HTTP and more</p>
@@ -81,8 +81,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 6: Array Methods -->
-                <div class="feature-card" routerLink="use-case-6">
+                <!-- Array Methods -->
+                <div class="feature-card" routerLink="array-methods">
                     <div class="card-icon">🔄</div>
                     <h3>Array Methods</h3>
                     <p>map, filter, reduce, find, and functional patterns</p>

@@ -1,0 +1,234 @@
+# 🛡️ XSS Prevention
+
+> **Goal**: Understand and prevent Cross-Site Scripting (XSS) attacks in Angular.
+
+
+## 📋 Table of Contents
+- [1. 🔍 What is XSS?](#1--what-is-xss)
+  - [Types of XSS](#types-of-xss)
+- [2. 🚀 Angular's Built-in Protection](#2--angulars-built-in-protection)
+  - [DomSanitizer](#domsanitizer)
+- [3. ❓ Interview Questions](#3--interview-questions)
+  - [Basic Questions](#basic-questions)
+    - [Q1: How does Angular prevent XSS attacks by default?](#q1-how-does-angular-prevent-xss-attacks-by-default)
+    - [Q2: What is the DomSanitizer and when should you use it?](#q2-what-is-the-domsanitizer-and-when-should-you-use-it)
+  - [Scenario-Based Questions](#scenario-based-questions)
+    - [Scenario 1: Blog Comments](#scenario-1-blog-comments)
+    - [Scenario 2: User Avatar URL](#scenario-2-user-avatar-url)
+  - [📦 Data Flow Summary (Visual Box Diagram)](#data-flow-summary-visual-box-diagram)
+- [🛂 Border Security Analogy (Easy to Remember!)](#border-security-analogy-easy-to-remember)
+  - [📖 Story to Remember:](#story-to-remember)
+  - [🎯 Quick Reference:](#quick-reference)
+- [🧠 Mind Map](#mind-map)
+
+---
+---
+
+## 1. 🔍 What is XSS?
+
+**Cross-Site Scripting (XSS)** is an attack where malicious scripts are injected into trusted websites. The attacker's script runs in the victim's browser with full access to cookies, sessions, and DOM.
+
+### Types of XSS
+
+| Type | Description | Example |
+|------|-------------|---------|
+| **Stored XSS** | Script stored in database | Blog comment with `<script>` |
+| **Reflected XSS** | Script in URL parameter | `?search=<script>alert(1)</script>` |
+| **DOM XSS** | Script manipulates DOM | `innerHTML = userInput` |
+
+---
+
+## 2. 🚀 Angular's Built-in Protection
+
+Angular automatically sanitizes values before inserting them into DOM:
+
+```typescript
+// ✅ SAFE - Angular escapes HTML
+<p>{{ userInput }}</p>
+// <script>alert('xss')</script> → displayed as text, not executed
+
+// ✅ SAFE - Also escaped
+<p [innerText]="userInput"></p>
+
+// ⚠️ DANGEROUS - Bypasses sanitization
+<p [innerHTML]="userInput"></p>
+```
+
+### DomSanitizer
+
+When you MUST use raw HTML:
+
+```typescript
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+constructor(private sanitizer: DomSanitizer) {}
+
+// Only for TRUSTED content
+trustedHtml: SafeHtml = this.sanitizer.bypassSecurityTrustHtml(
+    '<b>Trusted HTML</b>'
+);
+```
+
+---
+
+## 3. ❓ Interview Questions
+
+### Basic Questions
+
+#### Q1: How does Angular prevent XSS attacks by default?
+**Answer:** Angular automatically escapes values in templates. When you use `{{ value }}` or property binding, Angular treats the value as TEXT, not HTML. Special characters like `<`, `>`, `&` are converted to their HTML entity equivalents.
+
+#### Q2: What is the DomSanitizer and when should you use it?
+**Answer:** DomSanitizer is Angular's service for marking content as trusted. Use it ONLY when:
+1. Content comes from a trusted source (your own CMS)
+2. You've already sanitized the content server-side
+3. Never for user-generated content
+
+---
+
+### Scenario-Based Questions
+
+#### Scenario 1: Blog Comments
+**Question:** Users can post comments with basic formatting (bold, italic). How do you allow HTML formatting safely?
+
+**Answer:**
+```typescript
+// Use a whitelist approach with a library like DOMPurify
+import DOMPurify from 'dompurify';
+
+sanitizeComment(html: string): SafeHtml {
+    // Only allow specific tags
+    const clean = DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: ['b', 'i', 'u', 'a'],
+        ALLOWED_ATTR: ['href']
+    });
+    return this.sanitizer.bypassSecurityTrustHtml(clean);
+}
+```
+
+#### Scenario 2: User Avatar URL
+**Question:** Users can set a custom avatar URL. How do you prevent XSS via the URL?
+
+**Answer:**
+```typescript
+// Validate URL format
+isValidUrl(url: string): boolean {
+    try {
+        const parsed = new URL(url);
+        return ['http:', 'https:'].includes(parsed.protocol);
+    } catch {
+        return false;
+    }
+}
+
+// Use in template with validation
+<img [src]="isValidUrl(user.avatarUrl) ? user.avatarUrl : defaultAvatar">
+```
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  XSS PREVENTION: ANGULAR'S BUILT-IN PROTECTION              │
+│                                                             │
+│   SAFE BY DEFAULT:                                          │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ {{ userInput }}                                       │ │
+│   │ Input: "<script>alert('xss')</script>"                │ │
+│   │ Output: &lt;script&gt;alert('xss')&lt;/script&gt;     │ │
+│   │ Result: Displayed as TEXT, NOT executed ✅            │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   DANGEROUS (bypasses sanitization):                        │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ <div [innerHTML]="userInput"></div>                   │ │
+│   │ ❌ Script tags WILL execute!                          │ │
+│   │ ⚠️ Only use for TRUSTED content (your own CMS)        │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   SAFE WAY TO USE HTML:                                     │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ 1. Sanitize with DOMPurify first                      │ │
+│   │ 2. Then bypassSecurityTrustHtml()                     │ │
+│   │ 3. NEVER for raw user input                           │ │
+│   └───────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: `{{ }}` = safe by default. `[innerHTML]` = dangerous. Never trust user input!
+
+---
+
+## 🛂 Border Security Analogy (Easy to Remember!)
+
+![XSS Prevention Airport Security](security-xss-prevention.png)
+
+Think of XSS prevention like **airport border security**:
+
+| Concept | Security Analogy | Memory Trick |
+|---------|------------------|--------------| 
+| **XSS Attack** | 🎭 **Smuggler**: Trying to sneak weapons (malicious code) in | **"The threat"** |
+| **Angular sanitization** | 🛂 **Border patrol**: Scans ALL incoming luggage | **"Default protection"** |
+| **{{ interpolation }}** | 📦 **Sealed package**: Contents locked, can't open | **"Safe by default"** |
+| **[innerHTML]** | 🚪 **VIP entrance**: Bypasses security, contents exposed | **"Dangerous bypass"** |
+| **DomSanitizer** | 🎫 **VIP pass issuer**: "I trust this person, let them through" | **"Trust marker"** |
+
+### 📖 Story to Remember:
+
+> 🛂 **Airport Security**
+>
+> Your Angular app is an airport. User input is incoming luggage:
+>
+> **Default Security (Safe):**
+> ```html
+> {{ userComment }}
+> <!-- Border patrol scans ALL "luggage" -->
+> <!-- <script>alert('xss')</script> → displayed as TEXT, not executed -->
+> <!-- Threat NEUTRALIZED ✅ -->
+> ```
+>
+> **VIP Bypass (Dangerous):**
+> ```html
+> <div [innerHTML]="userComment"></div>
+> <!-- VIP entrance! No scanning! -->
+> <!-- <script>alert('xss')</script> → EXECUTES! -->
+> <!-- Threat GETS THROUGH ❌ -->
+> ```
+>
+> **Proper VIP Handling:**
+> ```typescript
+> // Only for TRUSTED sources (like your own CMS)
+> this.sanitizer.bypassSecurityTrustHtml(trustedHtml);
+> // "I personally vouch for this luggage"
+> ```
+>
+> **NEVER give VIP passes to strangers (user input)!**
+
+### 🎯 Quick Reference:
+```
+🛂 {{ value }}       = Full security scan (safe by default)
+🚪 [innerHTML]       = VIP bypass (dangerous, avoid)
+🎫 DomSanitizer      = VIP pass (only for trusted content)
+🔒 Never trust       = User input is a stranger!
+```
+
+---
+
+## 🧠 Mind Map
+
+```mermaid
+mindmap
+  root((XSS Prevention))
+    Angular Default
+      Template escaping
+      Property binding safe
+    DomSanitizer
+      bypassSecurityTrustHtml
+      Only for trusted content
+    Best Practices
+      Never trust user input
+      Whitelist approach
+      Use DOMPurify
+```

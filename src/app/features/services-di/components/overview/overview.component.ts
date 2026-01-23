@@ -29,7 +29,7 @@ export class OverviewComponent {
         {
             id: 1,
             title: 'Basic Service & Injection',
-            route: '/services-di/use-case-1',
+            route: '/services-di/basic-service',
             description: 'Learn the fundamentals of creating @Injectable services and injecting them via constructor.',
             topics: ['@Injectable()', 'Constructor injection', 'Service methods', 'Shared state', 'providedIn: root'],
             difficulty: 'Beginner',
@@ -38,7 +38,7 @@ export class OverviewComponent {
         {
             id: 2,
             title: 'Singleton vs Component-Scoped',
-            route: '/services-di/use-case-2',
+            route: '/services-di/service-scoping',
             description: 'Understand the difference between singleton services (providedIn: root) and component-level providers.',
             topics: ['Singleton pattern', 'Component providers', 'Service lifetime', 'Instance management'],
             difficulty: 'Beginner',
@@ -47,7 +47,7 @@ export class OverviewComponent {
         {
             id: 3,
             title: 'providedIn Hierarchy',
-            route: '/services-di/use-case-3',
+            route: '/services-di/provided-in-hierarchy',
             description: 'Explore different providedIn options: root, any, platform, and their use cases.',
             topics: ['providedIn: root', 'providedIn: any', 'providedIn: platform', 'Tree-shaking', 'Module boundaries'],
             difficulty: 'Intermediate',
@@ -56,7 +56,7 @@ export class OverviewComponent {
         {
             id: 4,
             title: 'Injection Tokens',
-            route: '/services-di/use-case-4',
+            route: '/services-di/injection-tokens',
             description: 'Create InjectionTokens for injecting non-class values like configuration objects and primitive values.',
             topics: ['InjectionToken', 'useValue', 'Configuration objects', 'Type safety', 'Non-class dependencies'],
             difficulty: 'Intermediate',
@@ -65,7 +65,7 @@ export class OverviewComponent {
         {
             id: 5,
             title: 'Factory Providers',
-            route: '/services-di/use-case-5',
+            route: '/services-di/factory-providers',
             description: 'Use useFactory to dynamically create service instances based on runtime conditions.',
             topics: ['useFactory', 'deps array', 'Dynamic creation', 'Conditional services', 'Environment-based config'],
             difficulty: 'Advanced',
@@ -74,7 +74,7 @@ export class OverviewComponent {
         {
             id: 6,
             title: 'Resolution Modifiers',
-            route: '/services-di/use-case-6',
+            route: '/services-di/resolution-modifiers',
             description: 'Control dependency resolution with @Optional, @Self, @SkipSelf, and @Host decorators.',
             topics: ['@Optional()', '@Self()', '@SkipSelf()', '@Host()', 'Injector hierarchy', 'Resolution control'],
             difficulty: 'Advanced',

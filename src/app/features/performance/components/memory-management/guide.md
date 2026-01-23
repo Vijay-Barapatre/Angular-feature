@@ -1,0 +1,74 @@
+# 🧠 Memory Management
+
+> **💡 Lightbulb Moment**: `takeUntilDestroyed()` = auto-unsubscribe when component dies!
+
+
+## 📋 Table of Contents
+- [Best Patterns](#best-patterns)
+- [Example](#example)
+  - [📦 Data Flow Summary (Visual Box Diagram)](#data-flow-summary-visual-box-diagram)
+
+---
+---
+
+![Memory Leak Flow](./memory-leak-flow.png)
+
+## Best Patterns
+
+1. **async pipe** - Zero boilerplate
+2. **takeUntilDestroyed()** - Modern approach
+3. **DestroyRef.onDestroy()** - For non-Observable cleanup
+
+---
+
+## Example
+
+```typescript
+private destroyRef = inject(DestroyRef);
+
+ngOnInit() {
+    this.data$.pipe(
+        takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
+}
+```
+
+---
+
+### 📦 Data Flow Summary (Visual Box Diagram)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  MEMORY MANAGEMENT: PREVENT LEAKS                           │
+│                                                             │
+│   PATTERN 1 - ASYNC PIPE (BEST):                            │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ {{ data$ | async }}                                   │ │
+│   │ // Zero boilerplate, auto-unsubscribes!               │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   PATTERN 2 - takeUntilDestroyed (MODERN):                  │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ private destroyRef = inject(DestroyRef);              │ │
+│   │                                                       │ │
+│   │ ngOnInit() {                                          │ │
+│   │   this.data$.pipe(                                    │ │
+│   │     takeUntilDestroyed(this.destroyRef)               │ │
+│   │   ).subscribe(...);                                   │ │
+│   │ }                                                     │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   PATTERN 3 - DestroyRef.onDestroy (NON-OBSERVABLE):        │
+│   ┌───────────────────────────────────────────────────────┐ │
+│   │ this.destroyRef.onDestroy(() => {                     │ │
+│   │   clearInterval(this.timer);                          │ │
+│   │ });                                                   │ │
+│   └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│   ⚠️ Unsubscribed = No memory leak!                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **Key Takeaway**: Always unsubscribe! Use async pipe when possible. Use takeUntilDestroyed for manual subscriptions!
+
+```

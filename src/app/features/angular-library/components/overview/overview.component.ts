@@ -73,37 +73,37 @@ import { RouterLink } from '@angular/router';
             <section class="usecases-section">
                 <h2>📖 Use Cases</h2>
                 <div class="usecase-grid">
-                    <a routerLink="use-case-1" class="usecase-card">
+                    <a routerLink="library-basics" class="usecase-card">
                         <span class="num">1</span>
                         <h3>Library Basics</h3>
                         <p>Generate, structure, and configure Angular libraries</p>
                         <span class="tag">ng generate library</span>
                     </a>
-                    <a routerLink="use-case-2" class="usecase-card">
+                    <a routerLink="components-services" class="usecase-card">
                         <span class="num">2</span>
                         <h3>Components & Services</h3>
                         <p>Create exportable components, directives, pipes, and services</p>
                         <span class="tag">public-api.ts</span>
                     </a>
-                    <a routerLink="use-case-3" class="usecase-card">
+                    <a routerLink="building-publishing" class="usecase-card">
                         <span class="num">3</span>
                         <h3>Building & Publishing</h3>
                         <p>Build for production and publish to npm registry</p>
                         <span class="tag">npm publish</span>
                     </a>
-                    <a routerLink="use-case-4" class="usecase-card">
+                    <a routerLink="consuming-libraries" class="usecase-card">
                         <span class="num">4</span>
                         <h3>Consuming Libraries</h3>
                         <p>Install and use libraries in your applications</p>
                         <span class="tag">npm install</span>
                     </a>
-                    <a routerLink="use-case-5" class="usecase-card">
+                    <a routerLink="testing-libraries" class="usecase-card">
                         <span class="num">5</span>
                         <h3>Testing Libraries</h3>
                         <p>Unit testing and integration testing strategies</p>
                         <span class="tag">ng test my-lib</span>
                     </a>
-                    <a routerLink="use-case-6" class="usecase-card">
+                    <a routerLink="versioning-updates" class="usecase-card">
                         <span class="num">6</span>
                         <h3>Versioning & Updates</h3>
                         <p>Semantic versioning, breaking changes, and migrations</p>

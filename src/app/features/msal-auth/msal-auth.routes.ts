@@ -13,33 +13,33 @@ export const MSAL_AUTH_ROUTES: Routes = [
             .then(m => m.MsalAuthOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/msal-setup.component')
+        path: 'msal-setup',
+        loadComponent: () => import('./components/msal-setup/msal-setup.component')
             .then(m => m.MsalSetupComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/login-flows.component')
+        path: 'login-flows',
+        loadComponent: () => import('./components/login-flows/login-flows.component')
             .then(m => m.LoginFlowsComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/auth-guard.component')
+        path: 'auth-guard',
+        loadComponent: () => import('./components/auth-guard/auth-guard.component')
             .then(m => m.AuthGuardComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/http-interceptor.component')
+        path: 'http-interceptor',
+        loadComponent: () => import('./components/http-interceptor/http-interceptor.component')
             .then(m => m.HttpInterceptorComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/user-profile.component')
+        path: 'user-profile',
+        loadComponent: () => import('./components/user-profile/user-profile.component')
             .then(m => m.UserProfileComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/token-management.component')
+        path: 'token-management',
+        loadComponent: () => import('./components/token-management/token-management.component')
             .then(m => m.TokenManagementComponent)
     }
 ];

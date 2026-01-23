@@ -30,7 +30,7 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Use Case 1: Image Processing -->
+        <!-- Image Processing -->
         <a [routerLink]="['image-processing']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-purple-500 dark:hover:border-purple-400">
           <div class="flex items-start gap-4">
@@ -50,7 +50,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 2: Data Processing -->
+        <!-- Data Processing -->
         <a [routerLink]="['data-processing']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-400">
           <div class="flex items-start gap-4">
@@ -70,7 +70,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 3: Prime Calculation -->
+        <!-- Prime Calculation -->
         <a [routerLink]="['prime-calculation']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-400">
           <div class="flex items-start gap-4">
@@ -90,7 +90,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 4: File Encryption -->
+        <!-- File Encryption -->
         <a [routerLink]="['file-encryption']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-rose-500 dark:hover:border-rose-400">
           <div class="flex items-start gap-4">
@@ -110,7 +110,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 5: Worker Pool -->
+        <!-- Worker Pool -->
         <a [routerLink]="['worker-pool']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-sky-500 dark:hover:border-sky-400 md:col-span-2">
           <div class="flex items-start gap-4">

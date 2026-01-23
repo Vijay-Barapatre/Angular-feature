@@ -16,33 +16,33 @@ export const DEFER_VIEWS_ROUTES: Routes = [
             .then(m => m.DeferViewsOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/basic-defer.component')
+        path: 'basic-defer',
+        loadComponent: () => import('./components/basic-defer/basic-defer.component')
             .then(m => m.BasicDeferComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/loading-states.component')
+        path: 'loading-states',
+        loadComponent: () => import('./components/loading-states/loading-states.component')
             .then(m => m.LoadingStatesComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/trigger-conditions.component')
+        path: 'trigger-conditions',
+        loadComponent: () => import('./components/trigger-conditions/trigger-conditions.component')
             .then(m => m.TriggerConditionsComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/prefetching.component')
+        path: 'prefetching',
+        loadComponent: () => import('./components/prefetching/prefetching.component')
             .then(m => m.PrefetchingComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/when-condition.component')
+        path: 'when-condition',
+        loadComponent: () => import('./components/when-condition/when-condition.component')
             .then(m => m.WhenConditionComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/real-world.component')
+        path: 'real-world',
+        loadComponent: () => import('./components/real-world/real-world.component')
             .then(m => m.RealWorldComponent)
     }
 ];

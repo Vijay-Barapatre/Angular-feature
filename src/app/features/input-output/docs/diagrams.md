@@ -4,7 +4,7 @@ Complete visual guide showing data flow and component communication patterns for
 
 ---
 
-## Use Case 1: Basic @Input() and @Output()
+## Basic @Input() and @Output()
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#667eea','secondaryColor':'#764ba2','tertiaryColor':'#f093fb'}}}%%
@@ -57,7 +57,7 @@ sequenceDiagram
 
 ---
 
-## Use Case 2: Two-Way Binding
+## Two-Way Binding
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#10b981','secondaryColor':'#059669','tertiaryColor':'#34d399'}}}%%
@@ -101,7 +101,7 @@ graph TD
 
 ---
 
-## Use Case 3: Complex Objects & Change Detection
+## Complex Objects & Change Detection
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#f59e0b','secondaryColor':'#d97706'}}}%%
@@ -138,7 +138,7 @@ flowchart TB
 
 ---
 
-## Use Case 4: Custom Event Payloads
+## Custom Event Payloads
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#ef4444','secondaryColor':'#dc2626'}}}%%
@@ -173,7 +173,7 @@ flowchart TB
 
 ---
 
-## Use Case 5: Input Transforms & Validation
+## Input Transforms & Validation
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#8b5cf6','secondaryColor':'#7c3aed'}}}%%
@@ -208,7 +208,7 @@ flowchart LR
 
 ---
 
-## Use Case 6: Multiple Inputs & Outputs
+## Multiple Inputs & Outputs
 
 ```mermaid
 %%{init: {'theme':'dark', 'themeVariables': { 'primaryColor':'#06b6d4','secondaryColor':'#0891b2'}}}%%

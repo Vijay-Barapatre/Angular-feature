@@ -37,56 +37,56 @@ export const HTTP_CLIENT_ROUTES: Routes = [
         title: 'HttpClient & Observables'
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/basic-get.component')
+        path: 'basic-get',
+        loadComponent: () => import('./components/basic-get/basic-get.component')
             .then(m => m.BasicGetComponent),
         title: 'Basic GET with Observable'
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/crud.component')
+        path: 'crud',
+        loadComponent: () => import('./components/crud/crud.component')
             .then(m => m.CrudComponent),
         title: 'CRUD Operations'
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/error-handling.component')
+        path: 'error-handling',
+        loadComponent: () => import('./components/error-handling/error-handling.component')
             .then(m => m.ErrorHandlingComponent),
         title: 'Error Handling & Retry'
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/interceptors.component')
+        path: 'interceptors',
+        loadComponent: () => import('./components/interceptors/interceptors.component')
             .then(m => m.InterceptorsComponent),
         title: 'HTTP Interceptors'
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/promises.component')
+        path: 'promises',
+        loadComponent: () => import('./components/promises/promises.component')
             .then(m => m.PromisesComponent),
         title: 'Promise-based Requests'
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/rxjs-operators.component')
+        path: 'rxjs-operators',
+        loadComponent: () => import('./components/rxjs-operators/rxjs-operators.component')
             .then(m => m.RxjsOperatorsComponent),
         title: 'RxJS Operators'
     },
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/caching.component')
+        path: 'caching',
+        loadComponent: () => import('./components/caching/caching.component')
             .then(m => m.CachingComponent),
         title: 'Caching Strategies'
     },
     {
-        path: 'use-case-8',
-        loadComponent: () => import('./components/use-case-8/file-operations.component')
+        path: 'file-operations',
+        loadComponent: () => import('./components/file-operations/file-operations.component')
             .then(m => m.FileOperationsComponent),
         title: 'File Upload/Download'
     },
     {
-        path: 'use-case-9',
-        loadComponent: () => import('./components/use-case-9/promise-patterns.component')
+        path: 'promise-patterns',
+        loadComponent: () => import('./components/promise-patterns/promise-patterns.component')
             .then(m => m.PromisePatternsComponent),
         title: 'Advanced Promise Patterns'
     }

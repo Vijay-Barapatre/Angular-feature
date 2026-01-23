@@ -7,12 +7,14 @@
  * ROUTE STRUCTURE:
  * /services-di (base)
  *   ├── / (overview/landing)
- *   ├── /use-case-1 (Basic Service & Injection)
- *   ├── /use-case-2 (Singleton vs Component-Scoped)
- *   ├── /use-case-3 (providedIn Hierarchy)
- *   ├── /use-case-4 (Injection Tokens)
- *   ├── /use-case-5 (Factory Providers)
- *   ├── /use-case-6 (Resolution Modifiers)
+ *   ├── /basic-service (Basic Service & Injection)
+ *   ├── /service-scoping (Singleton vs Component-Scoped)
+ *   ├── /provided-in-hierarchy (providedIn Hierarchy)
+ *   ├── /injection-tokens (Injection Tokens)
+ *   ├── /factory-providers (Factory Providers)
+ *   ├── /resolution-modifiers (Resolution Modifiers)
+ *   ├── /use-factory (useFactory Implementation)
+ *   ├── /multi-providers (Multi Providers)
  *   └── /exercise (Learner practice template)
  */
 
@@ -29,7 +31,7 @@ export const SERVICES_DI_ROUTES: Routes = [
     },
 
     /**
-     * USE CASE 1: Basic Service & Injection
+     * Basic Service & Injection
      * Demonstrates:
      * - Creating an @Injectable service
      * - Injecting service via constructor
@@ -37,60 +39,60 @@ export const SERVICES_DI_ROUTES: Routes = [
      * - Service methods and state management
      */
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/sender.component').then(m => m.SenderComponent)
+        path: 'basic-service',
+        loadComponent: () => import('./components/basic-service/sender.component').then(m => m.SenderComponent)
     },
 
     /**
-     * USE CASE 2: Singleton vs Component-Scoped Services
+     * Singleton vs Component-Scoped Services
      * Demonstrates:
      * - providedIn: 'root' creates singleton
      * - Component-level providers create new instances
      * - Understanding service scope and lifetime
      */
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/parent.component').then(m => m.UseCase2ParentComponent)
+        path: 'service-scoping',
+        loadComponent: () => import('./components/service-scoping/parent.component').then(m => m.UseCase2ParentComponent)
     },
 
     /**
-     * USE CASE 3: providedIn Hierarchy
+     * providedIn Hierarchy
      * Demonstrates:
      * - providedIn: 'root' (application-wide singleton)
      * - providedIn: 'any' (lazy module singleton)
      * - providedIn: 'platform' (cross-application singleton)
      */
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/parent.component').then(m => m.UseCase3ParentComponent)
+        path: 'provided-in-hierarchy',
+        loadComponent: () => import('./components/provided-in-hierarchy/parent.component').then(m => m.UseCase3ParentComponent)
     },
 
     /**
-     * USE CASE 4: Injection Tokens
+     * Injection Tokens
      * Demonstrates:
      * - Creating InjectionToken for non-class values
      * - Using useValue for configuration objects
      * - Type-safe injection of primitives and objects
      */
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/parent.component').then(m => m.UseCase4ParentComponent)
+        path: 'injection-tokens',
+        loadComponent: () => import('./components/injection-tokens/parent.component').then(m => m.UseCase4ParentComponent)
     },
 
     /**
-     * USE CASE 5: Factory Providers
+     * Factory Providers
      * Demonstrates:
      * - useFactory for dynamic service creation
      * - Injecting dependencies into factory functions
      * - Conditional service instantiation
      */
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/parent.component').then(m => m.UseCase5ParentComponent)
+        path: 'factory-providers',
+        loadComponent: () => import('./components/factory-providers/parent.component').then(m => m.UseCase5ParentComponent)
     },
 
     /**
-     * USE CASE 6: Resolution Modifiers
+     * Resolution Modifiers
      * Demonstrates:
      * - @Optional() for optional dependencies
      * - @Self() to restrict to current injector
@@ -98,32 +100,32 @@ export const SERVICES_DI_ROUTES: Routes = [
      * - @Host() for host element injection
      */
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/parent.component').then(m => m.UseCase6ParentComponent)
+        path: 'resolution-modifiers',
+        loadComponent: () => import('./components/resolution-modifiers/parent.component').then(m => m.UseCase6ParentComponent)
     },
 
     /**
-     * USE CASE 7: useFactory Provider
+     * useFactory Provider
      * Demonstrates:
      * - useFactory for conditional service creation
      * - Injecting dependencies into factory functions
      * - Runtime service instantiation based on config
      */
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/use-factory-example.component').then(m => m.UseFactoryExampleComponent)
+        path: 'use-factory',
+        loadComponent: () => import('./components/use-factory/use-factory-example.component').then(m => m.UseFactoryExampleComponent)
     },
 
     /**
-     * USE CASE 8: Multi-Providers
+     * Multi-Providers
      * Demonstrates:
      * - Using multi: true for plugin systems
      * - Injecting arrays of services under same token
      * - Building extensible plugin architectures
      */
     {
-        path: 'use-case-8',
-        loadComponent: () => import('./components/use-case-8/multi-provider-example.component').then(m => m.MultiProviderExampleComponent)
+        path: 'multi-providers',
+        loadComponent: () => import('./components/multi-providers/multi-provider-example.component').then(m => m.MultiProviderExampleComponent)
     },
 
     /**

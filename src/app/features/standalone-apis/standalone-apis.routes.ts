@@ -15,33 +15,33 @@ export const STANDALONE_APIS_ROUTES: Routes = [
             .then(m => m.StandaloneApisOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/bootstrap-config.component')
+        path: 'bootstrap-config',
+        loadComponent: () => import('./components/bootstrap-config/bootstrap-config.component')
             .then(m => m.BootstrapConfigComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/provide-router.component')
+        path: 'provide-router',
+        loadComponent: () => import('./components/provide-router/provide-router.component')
             .then(m => m.ProvideRouterComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/provide-http.component')
+        path: 'provide-http',
+        loadComponent: () => import('./components/provide-http/provide-http.component')
             .then(m => m.ProvideHttpComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/standalone-components.component')
+        path: 'standalone-components',
+        loadComponent: () => import('./components/standalone-components/standalone-components.component')
             .then(m => m.StandaloneComponentsComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/standalone-directives.component')
+        path: 'standalone-directives',
+        loadComponent: () => import('./components/standalone-directives/standalone-directives.component')
             .then(m => m.StandaloneDirectivesComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/migration-patterns.component')
+        path: 'migration-patterns',
+        loadComponent: () => import('./components/migration-patterns/migration-patterns.component')
             .then(m => m.MigrationPatternsComponent)
     }
 ];

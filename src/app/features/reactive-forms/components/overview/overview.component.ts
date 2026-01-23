@@ -241,70 +241,70 @@ export class ReactiveFormsOverviewComponent {
             id: 1,
             title: 'Basic FormControl & FormGroup',
             description: 'Foundation of Reactive Forms. Create controls, bind them, and access values.',
-            path: 'use-case-1',
+            path: 'basic-reactive',
             icon: '🎯'
         },
         {
             id: 2,
             title: 'Nested FormGroups',
             description: 'Organize complex forms with nested groups like address within user profile.',
-            path: 'use-case-2',
+            path: 'nested-groups',
             icon: '📦'
         },
         {
             id: 3,
             title: 'FormArray (Dynamic Fields)',
             description: 'Add and remove form controls dynamically at runtime.',
-            path: 'use-case-3',
+            path: 'form-array',
             icon: '➕'
         },
         {
             id: 4,
             title: 'Built-in Validators',
             description: 'Use Angular\'s validators: required, minLength, maxLength, pattern, email.',
-            path: 'use-case-4',
+            path: 'built-in-validators',
             icon: '✅'
         },
         {
             id: 5,
             title: 'Custom Validators',
             description: 'Create sync and async validators for custom validation logic.',
-            path: 'use-case-5',
+            path: 'custom-validators',
             icon: '🛡️'
         },
         {
             id: 6,
             title: 'Cross-Field Validation',
             description: 'Validate fields that depend on each other: password match, date range.',
-            path: 'use-case-6',
+            path: 'cross-field',
             icon: '🔗'
         },
         {
             id: 7,
             title: 'Dynamic Form Generation',
             description: 'Generate entire forms from JSON configuration at runtime.',
-            path: 'use-case-7',
+            path: 'dynamic-form',
             icon: '⚡'
         },
         {
             id: 8,
             title: 'Value Changes & Status',
             description: 'React to form changes using RxJS Observables.',
-            path: 'use-case-8',
+            path: 'value-changes',
             icon: '📡'
         },
         {
             id: 9,
             title: 'Strongly Typed Forms',
             description: 'Angular 14+ Strict Typing, NonNullableFormBuilder, and FormRecord.',
-            path: 'use-case-9',
+            path: 'typed-forms',
             icon: '🛡️'
         },
         {
             id: 10,
             title: 'Forms + Signals',
             description: 'Bridging RxJS form streams to Signals for derived state (toSignal).',
-            path: 'use-case-10',
+            path: 'signals-interop',
             icon: '🚦'
         }
     ];

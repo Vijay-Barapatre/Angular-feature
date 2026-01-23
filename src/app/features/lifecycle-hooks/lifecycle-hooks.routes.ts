@@ -7,12 +7,12 @@
  * ROUTE STRUCTURE:
  * /lifecycle-hooks (base)
  *   ├── / (overview/landing)
- *   ├── /use-case-1 (ngOnInit & ngOnDestroy)
- *   ├── /use-case-2 (ngOnChanges)
- *   ├── /use-case-3 (ngAfterViewInit & ngAfterViewChecked)
- *   ├── /use-case-4 (ngAfterContentInit & ngAfterContentChecked)
- *   ├── /use-case-5 (ngDoCheck)
- *   ├── /use-case-6 (Complete Lifecycle Demo)
+ *   ├── /on-init-on-destroy (ngOnInit & ngOnDestroy)
+ *   ├── /on-changes (ngOnChanges)
+ *   ├── /after-view-init (ngAfterViewInit & ngAfterViewChecked)
+ *   ├── /after-content-init (ngAfterContentInit & ngAfterContentChecked)
+ *   ├── /do-check (ngDoCheck)
+ *   ├── /complete-lifecycle (Complete Lifecycle Demo)
  *   └── /exercise (Learner practice template)
  * 
  * LIFECYCLE HOOKS ORDER:
@@ -40,19 +40,19 @@ export const LIFECYCLE_HOOKS_ROUTES: Routes = [
     },
 
     /**
-     * USE CASE 1: ngOnInit & ngOnDestroy
+     * ngOnInit & ngOnDestroy
      * Demonstrates:
      * - ngOnInit for initialization logic (fetching data, setting up subscriptions)
      * - ngOnDestroy for cleanup (unsubscribing, clearing timers)
      * - Real-world example: Timer component with proper cleanup
      */
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/parent.component').then(m => m.UseCase1ParentComponent)
+        path: 'on-init-on-destroy',
+        loadComponent: () => import('./components/on-init-on-destroy/parent.component').then(m => m.UseCase1ParentComponent)
     },
 
     /**
-     * USE CASE 2: ngOnChanges
+     * ngOnChanges
      * Demonstrates:
      * - Reacting to @Input property changes
      * - Using SimpleChanges object
@@ -60,36 +60,36 @@ export const LIFECYCLE_HOOKS_ROUTES: Routes = [
      * - First change detection with isFirstChange()
      */
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/parent.component').then(m => m.UseCase2ParentComponent)
+        path: 'on-changes',
+        loadComponent: () => import('./components/on-changes/parent.component').then(m => m.UseCase2ParentComponent)
     },
 
     /**
-     * USE CASE 3: ngAfterViewInit & ngAfterViewChecked
+     * ngAfterViewInit & ngAfterViewChecked
      * Demonstrates:
      * - ngAfterViewInit for accessing @ViewChild elements
      * - ngAfterViewChecked for post-view-update operations
      * - Real-world example: Chart initialization after view renders
      */
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/parent.component').then(m => m.UseCase3ParentComponent)
+        path: 'after-view-init',
+        loadComponent: () => import('./components/after-view-init/parent.component').then(m => m.UseCase3ParentComponent)
     },
 
     /**
-     * USE CASE 4: ngAfterContentInit & ngAfterContentChecked
+     * ngAfterContentInit & ngAfterContentChecked
      * Demonstrates:
      * - ngAfterContentInit for accessing @ContentChild
      * - ngAfterContentChecked for content updates
      * - Real-world example: Dynamic tab container with projected content
      */
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/parent.component').then(m => m.UseCase4ParentComponent)
+        path: 'after-content-init',
+        loadComponent: () => import('./components/after-content-init/parent.component').then(m => m.UseCase4ParentComponent)
     },
 
     /**
-     * USE CASE 5: ngDoCheck
+     * ngDoCheck
      * Demonstrates:
      * - ngDoCheck for custom change detection
      * - Detecting changes Angular misses (object mutations)
@@ -97,12 +97,12 @@ export const LIFECYCLE_HOOKS_ROUTES: Routes = [
      * - When to use vs. avoid
      */
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/parent.component').then(m => m.UseCase5ParentComponent)
+        path: 'do-check',
+        loadComponent: () => import('./components/do-check/parent.component').then(m => m.UseCase5ParentComponent)
     },
 
     /**
-     * USE CASE 6: Complete Lifecycle Demo
+     * Complete Lifecycle Demo
      * Demonstrates:
      * - All hooks in execution order
      * - Visual lifecycle logger
@@ -110,8 +110,8 @@ export const LIFECYCLE_HOOKS_ROUTES: Routes = [
      * - Performance metrics
      */
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/parent.component').then(m => m.UseCase6ParentComponent)
+        path: 'complete-lifecycle',
+        loadComponent: () => import('./components/complete-lifecycle/parent.component').then(m => m.UseCase6ParentComponent)
     },
 
     /**

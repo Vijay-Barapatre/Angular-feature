@@ -7,12 +7,12 @@
  * ROUTE STRUCTURE:
  * /viewchild-contentchild (base)
  *   ├── / (overview/landing)
- *   ├── /use-case-1 (Basic @ViewChild)
- *   ├── /use-case-2 (@ViewChild with template references)
- *   ├── /use-case-3 (@ViewChildren)
- *   ├── /use-case-4 (Basic @ContentChild)
- *   ├── /use-case-5 (@ContentChildren)
- *   ├── /use-case-6 (Lifecycle timing)
+ *   ├── /basic-viewchild (Basic @ViewChild)
+ *   ├── /template-references (@ViewChild with template references)
+ *   ├── /viewchildren (@ViewChildren)
+ *   ├── /basic-contentchild (Basic @ContentChild)
+ *   ├── /contentchildren (@ContentChildren)
+ *   ├── /lifecycle-timing (Lifecycle timing)
  *   └── /exercise (Learner practice template)
  */
 
@@ -29,7 +29,7 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
     },
 
     /**
-     * USE CASE 1: Basic @ViewChild
+     * Basic @ViewChild
      * Demonstrates:
      * - Accessing child component instances
      * - Calling child methods from parent
@@ -37,12 +37,12 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
      * - AfterViewInit lifecycle hook
      */
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/parent.component').then(m => m.UseCase1ParentComponent)
+        path: 'basic-viewchild',
+        loadComponent: () => import('./components/basic-viewchild/parent.component').then(m => m.UseCase1ParentComponent)
     },
 
     /**
-     * USE CASE 2: @ViewChild with Template References
+     * @ViewChild with Template References
      * Demonstrates:
      * - Accessing DOM elements via template references
      * - Using ElementRef for DOM manipulation
@@ -50,12 +50,12 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
      * - Type-safe element access
      */
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/parent.component').then(m => m.UseCase2ParentComponent)
+        path: 'template-references',
+        loadComponent: () => import('./components/template-references/parent.component').then(m => m.UseCase2ParentComponent)
     },
 
     /**
-     * USE CASE 3: @ViewChildren
+     * @ViewChildren
      * Demonstrates:
      * - Accessing multiple child components
      * - Working with QueryList API
@@ -63,12 +63,12 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
      * - Dynamic child management
      */
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/parent.component').then(m => m.UseCase3ParentComponent)
+        path: 'viewchildren',
+        loadComponent: () => import('./components/viewchildren/parent.component').then(m => m.UseCase3ParentComponent)
     },
 
     /**
-     * USE CASE 4: Basic @ContentChild
+     * Basic @ContentChild
      * Demonstrates:
      * - Content projection with ng-content
      * - Accessing projected components
@@ -76,12 +76,12 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
      * - View vs Content children difference
      */
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/parent.component').then(m => m.UseCase4ParentComponent)
+        path: 'basic-contentchild',
+        loadComponent: () => import('./components/basic-contentchild/parent.component').then(m => m.UseCase4ParentComponent)
     },
 
     /**
-     * USE CASE 5: @ContentChildren
+     * @ContentChildren
      * Demonstrates:
      * - Accessing multiple projected children
      * - Multiple ng-content with select attribute
@@ -89,12 +89,12 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
      * - Advanced content projection patterns
      */
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/parent.component').then(m => m.UseCase5ParentComponent)
+        path: 'contentchildren',
+        loadComponent: () => import('./components/contentchildren/parent.component').then(m => m.UseCase5ParentComponent)
     },
 
     /**
-     * USE CASE 6: Lifecycle Timing
+     * Lifecycle Timing
      * Demonstrates:
      * - When @ViewChild and @ContentChild are available
      * - Lifecycle hook execution order
@@ -102,8 +102,8 @@ export const VIEWCHILD_CONTENTCHILD_ROUTES: Routes = [
      * - Best practices for component queries
      */
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/parent.component').then(m => m.UseCase6ParentComponent)
+        path: 'lifecycle-timing',
+        loadComponent: () => import('./components/lifecycle-timing/parent.component').then(m => m.UseCase6ParentComponent)
     },
 
     /**

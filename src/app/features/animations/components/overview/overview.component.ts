@@ -52,37 +52,37 @@ import &#123; BrowserAnimationsModule &#125; from '&#64;angular/platform-browser
             <nav class="use-cases-nav">
                 <h2>📚 Use Cases</h2>
                 <div class="use-cases-grid">
-                    <a routerLink="use-case-1" class="use-case-card" routerLinkActive="active">
+                    <a routerLink="basic-state-animation" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🎯</div>
-                        <h3>Use Case 1</h3>
+                        <h3></h3>
                         <p>Basic State Animations</p>
                         <span class="topics">trigger, state, transition, animate</span>
                     </a>
 
-                    <a routerLink="use-case-2" class="use-case-card" routerLinkActive="active">
+                    <a routerLink="enter-leave-animation" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🚪</div>
-                        <h3>Use Case 2</h3>
+                        <h3></h3>
                         <p>Enter/Leave Animations</p>
                         <span class="topics">:enter, :leave, void, *</span>
                     </a>
 
-                    <a routerLink="use-case-3" class="use-case-card" routerLinkActive="active">
+                    <a routerLink="keyframes-animation" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🎬</div>
-                        <h3>Use Case 3</h3>
+                        <h3></h3>
                         <p>Keyframes Animations</p>
                         <span class="topics">keyframes, offset, multi-step</span>
                     </a>
 
-                    <a routerLink="use-case-4" class="use-case-card" routerLinkActive="active">
+                    <a routerLink="query-stagger-animation" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🎭</div>
-                        <h3>Use Case 4</h3>
+                        <h3></h3>
                         <p>Query & Stagger</p>
                         <span class="topics">query, stagger, group</span>
                     </a>
 
-                    <a routerLink="use-case-5" class="use-case-card" routerLinkActive="active">
+                    <a routerLink="route-animation" class="use-case-card" routerLinkActive="active">
                         <div class="icon">🛤️</div>
-                        <h3>Use Case 5</h3>
+                        <h3></h3>
                         <p>Route Animations</p>
                         <span class="topics">page transitions, router outlet</span>
                     </a>

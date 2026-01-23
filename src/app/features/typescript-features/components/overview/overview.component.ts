@@ -21,8 +21,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
             </header>
 
             <div class="cards-grid">
-                <!-- Use Case 1: Interfaces & Types -->
-                <div class="feature-card" routerLink="use-case-1">
+                <!-- Interfaces & Types -->
+                <div class="feature-card" routerLink="interfaces-types">
                     <div class="card-icon">📋</div>
                     <h3>Interfaces & Types</h3>
                     <p>Define shapes for objects, API responses, and component props</p>
@@ -33,8 +33,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 2: Generics -->
-                <div class="feature-card" routerLink="use-case-2">
+                <!-- Generics -->
+                <div class="feature-card" routerLink="generics">
                     <div class="card-icon">🧬</div>
                     <h3>Generics</h3>
                     <p>Create reusable components and services with type parameters</p>
@@ -45,8 +45,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 3: Decorators -->
-                <div class="feature-card" routerLink="use-case-3">
+                <!-- Decorators -->
+                <div class="feature-card" routerLink="decorators">
                     <div class="card-icon">🎀</div>
                     <h3>Decorators</h3>
                     <p>Understand &#64;Component, &#64;Injectable, &#64;Input and custom decorators</p>
@@ -57,8 +57,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 4: Union & Intersection -->
-                <div class="feature-card" routerLink="use-case-4">
+                <!-- Union & Intersection -->
+                <div class="feature-card" routerLink="union-intersection">
                     <div class="card-icon">🔀</div>
                     <h3>Union & Intersection</h3>
                     <p>Combine types with | and & for flexible type definitions</p>
@@ -69,8 +69,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 5: Type Guards -->
-                <div class="feature-card" routerLink="use-case-5">
+                <!-- Type Guards -->
+                <div class="feature-card" routerLink="type-guards">
                     <div class="card-icon">🛡️</div>
                     <h3>Type Guards</h3>
                     <p>Narrow types at runtime with typeof, instanceof, and custom guards</p>
@@ -81,8 +81,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 6: Utility Types -->
-                <div class="feature-card" routerLink="use-case-6">
+                <!-- Utility Types -->
+                <div class="feature-card" routerLink="utility-types">
                     <div class="card-icon">🧰</div>
                     <h3>Utility Types</h3>
                     <p>Partial, Required, Pick, Omit, Record and more</p>

@@ -34,38 +34,38 @@ export const HOST_LISTENER_ROUTES: Routes = [
         title: 'HostListener & HostBinding'
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/basic-host-listener.component')
+        path: 'basic-host-listener',
+        loadComponent: () => import('./components/basic-host-listener/basic-host-listener.component')
             .then(m => m.BasicHostListenerComponent),
         title: 'Basic HostListener'
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/keyboard-events.component')
+        path: 'keyboard-events',
+        loadComponent: () => import('./components/keyboard-events/keyboard-events.component')
             .then(m => m.KeyboardEventsComponent),
         title: 'Keyboard Events'
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/window-events.component')
+        path: 'window-events',
+        loadComponent: () => import('./components/window-events/window-events.component')
             .then(m => m.WindowEventsComponent),
         title: 'Window/Document Events'
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/host-binding.component')
+        path: 'host-binding',
+        loadComponent: () => import('./components/host-binding/host-binding.component')
             .then(m => m.HostBindingComponent),
         title: 'HostBinding Basics'
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/combined.component')
+        path: 'combined',
+        loadComponent: () => import('./components/combined/combined.component')
             .then(m => m.CombinedComponent),
         title: 'Combined HostListener + HostBinding'
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/custom-directive.component')
+        path: 'custom-directive',
+        loadComponent: () => import('./components/custom-directive/custom-directive.component')
             .then(m => m.CustomDirectiveComponent),
         title: 'Custom Attribute Directive'
     }

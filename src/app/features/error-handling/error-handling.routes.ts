@@ -13,28 +13,28 @@ export const ERROR_HANDLING_ROUTES: Routes = [
             .then(m => m.ErrorHandlingOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/global-error-handler.component')
+        path: 'global-error-handler',
+        loadComponent: () => import('./components/global-error-handler/global-error-handler.component')
             .then(m => m.GlobalErrorHandlerComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/http-error-interceptor.component')
+        path: 'http-error-interceptor',
+        loadComponent: () => import('./components/http-error-interceptor/http-error-interceptor.component')
             .then(m => m.HttpErrorInterceptorComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/error-notification.component')
+        path: 'error-notification',
+        loadComponent: () => import('./components/error-notification/error-notification.component')
             .then(m => m.ErrorNotificationComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/retry-recovery.component')
+        path: 'retry-recovery',
+        loadComponent: () => import('./components/retry-recovery/retry-recovery.component')
             .then(m => m.RetryRecoveryComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/error-boundaries.component')
+        path: 'error-boundaries',
+        loadComponent: () => import('./components/error-boundaries/error-boundaries.component')
             .then(m => m.ErrorBoundariesComponent)
     }
 ];

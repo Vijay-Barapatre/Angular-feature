@@ -14,33 +14,33 @@ export const ANGULAR_LIBRARY_ROUTES: Routes = [
             .then(m => m.AngularLibraryOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/library-basics.component')
+        path: 'library-basics',
+        loadComponent: () => import('./components/library-basics/library-basics.component')
             .then(m => m.LibraryBasicsComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/components-services.component')
+        path: 'components-services',
+        loadComponent: () => import('./components/components-services/components-services.component')
             .then(m => m.ComponentsServicesComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/building-publishing.component')
+        path: 'building-publishing',
+        loadComponent: () => import('./components/building-publishing/building-publishing.component')
             .then(m => m.BuildingPublishingComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/consuming-libraries.component')
+        path: 'consuming-libraries',
+        loadComponent: () => import('./components/consuming-libraries/consuming-libraries.component')
             .then(m => m.ConsumingLibrariesComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/testing-libraries.component')
+        path: 'testing-libraries',
+        loadComponent: () => import('./components/testing-libraries/testing-libraries.component')
             .then(m => m.TestingLibrariesComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/versioning-updates.component')
+        path: 'versioning-updates',
+        loadComponent: () => import('./components/versioning-updates/versioning-updates.component')
             .then(m => m.VersioningUpdatesComponent)
     }
 ];

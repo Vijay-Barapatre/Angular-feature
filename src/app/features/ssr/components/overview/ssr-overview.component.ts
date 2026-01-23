@@ -533,50 +533,50 @@ import { RouterLink } from '@angular/router';
 export class SsrOverviewComponent {
     useCases = [
         {
-            number: 'Use Case 1',
+            number: '',
             icon: '📚',
             title: 'SSR Fundamentals',
-            route: 'use-case-1',
+            route: 'ssr-fundamentals',
             description: 'Understand the basics of Angular Universal, how SSR works, and when to use it.',
             tags: ['Angular Universal', '@angular/ssr', 'Setup']
         },
         {
-            number: 'Use Case 2',
+            number: '',
             icon: '💧',
             title: 'Hydration',
-            route: 'use-case-2',
+            route: 'hydration',
             description: 'Learn how the client takes over from server-rendered HTML without flickering.',
             tags: ['Client Hydration', 'Event Replay', 'Non-destructive']
         },
         {
-            number: 'Use Case 3',
+            number: '',
             icon: '📦',
             title: 'Transfer State',
-            route: 'use-case-3',
+            route: 'transfer-state',
             description: 'Share data between server and client to avoid duplicate API calls.',
             tags: ['TransferState', 'State Transfer', 'API Caching']
         },
         {
-            number: 'Use Case 4',
+            number: '',
             icon: '🔍',
             title: 'Platform Detection',
-            route: 'use-case-4',
+            route: 'platform-detection',
             description: 'Handle browser-only APIs and code that cannot run on the server.',
             tags: ['isPlatformBrowser', 'isPlatformServer', 'DOM APIs']
         },
         {
-            number: 'Use Case 5',
+            number: '',
             icon: '🔍',
             title: 'SEO Optimization',
-            route: 'use-case-5',
+            route: 'seo-optimization',
             description: 'Implement meta tags, Open Graph, and structured data for search engines.',
             tags: ['Meta Tags', 'Structured Data', 'Social Sharing']
         },
         {
-            number: 'Use Case 6',
+            number: '',
             icon: '📄',
             title: 'Prerendering (SSG)',
-            route: 'use-case-6',
+            route: 'prerendering',
             description: 'Generate static HTML at build time for even faster page loads.',
             tags: ['Static Generation', 'Build Time', 'Edge Caching']
         }

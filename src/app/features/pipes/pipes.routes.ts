@@ -6,28 +6,28 @@ export const PIPES_ROUTES: Routes = [
         loadComponent: () => import('./components/overview/overview.component').then(m => m.OverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/built-in-pipes.component').then(m => m.BuiltInPipesComponent)
+        path: 'built-in-pipes',
+        loadComponent: () => import('./components/built-in-pipes/built-in-pipes.component').then(m => m.BuiltInPipesComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/custom-pipe.component').then(m => m.CustomPipeComponent)
+        path: 'custom-pipe',
+        loadComponent: () => import('./components/custom-pipe/custom-pipe.component').then(m => m.CustomPipeComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/pure-impure-pipes.component').then(m => m.PureImpurePipesComponent)
+        path: 'pure-impure-pipes',
+        loadComponent: () => import('./components/pure-impure-pipes/pure-impure-pipes.component').then(m => m.PureImpurePipesComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/async-pipe.component').then(m => m.AsyncPipeComponent)
+        path: 'async-pipe',
+        loadComponent: () => import('./components/async-pipe/async-pipe.component').then(m => m.AsyncPipeComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/json-keyvalue-pipe.component').then(m => m.JsonKeyValuePipeComponent)
+        path: 'json-keyvalue-pipe',
+        loadComponent: () => import('./components/json-keyvalue-pipe/json-keyvalue-pipe.component').then(m => m.JsonKeyValuePipeComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/chaining-pipes.component').then(m => m.ChainingPipesComponent)
+        path: 'chaining-pipes',
+        loadComponent: () => import('./components/chaining-pipes/chaining-pipes.component').then(m => m.ChainingPipesComponent)
     },
     {
         path: 'exercise',

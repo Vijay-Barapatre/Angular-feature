@@ -53,31 +53,31 @@ import { RouterLink } from '@angular/router';
             <section class="usecases-section">
                 <h2>📖 Use Cases</h2>
                 <div class="usecase-grid">
-                    <a routerLink="use-case-1" class="usecase-card">
+                    <a routerLink="global-error-handler" class="usecase-card">
                         <span class="num">1</span>
                         <h3>Global ErrorHandler</h3>
                         <p>Custom ErrorHandler class for all unhandled errors</p>
                         <span class="tag">ErrorHandler</span>
                     </a>
-                    <a routerLink="use-case-2" class="usecase-card">
+                    <a routerLink="http-error-interceptor" class="usecase-card">
                         <span class="num">2</span>
                         <h3>HTTP Error Interceptor</h3>
                         <p>Centralized API error handling</p>
                         <span class="tag">HttpInterceptor</span>
                     </a>
-                    <a routerLink="use-case-3" class="usecase-card">
+                    <a routerLink="error-notification" class="usecase-card">
                         <span class="num">3</span>
                         <h3>Error Notification</h3>
                         <p>Toast/snackbar service for user feedback</p>
                         <span class="tag">Service</span>
                     </a>
-                    <a routerLink="use-case-4" class="usecase-card">
+                    <a routerLink="retry-recovery" class="usecase-card">
                         <span class="num">4</span>
                         <h3>Retry & Recovery</h3>
                         <p>RxJS retry, catchError, fallback patterns</p>
                         <span class="tag">RxJS</span>
                     </a>
-                    <a routerLink="use-case-5" class="usecase-card">
+                    <a routerLink="error-boundaries" class="usecase-card">
                         <span class="num">5</span>
                         <h3>Error Boundaries</h3>
                         <p>Component-level error isolation</p>

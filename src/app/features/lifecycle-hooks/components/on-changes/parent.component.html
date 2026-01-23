@@ -1,0 +1,187 @@
+<!-- ngOnChanges -->
+
+<div class="use-case-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/lifecycle-hooks" class="back-link">← Back to Lifecycle Hooks</a>
+        <h1>🔄 ngOnChanges</h1>
+        <p class="header-description">
+            React to &#64;Input property changes using the ngOnChanges hook.
+            Modify the inputs below and watch the change detection in action.
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-grid">
+        <!-- Left: Interactive Demo -->
+        <div class="demo-section">
+            <h2>🎮 Interactive Demo</h2>
+
+            <!-- Input Controls -->
+            <div class="controls-card">
+                <h3>📝 Modify Inputs</h3>
+
+                <!-- User Selection -->
+                <div class="control-group">
+                    <label>Quick Switch User:</label>
+                    <div class="user-buttons">
+                        <button *ngFor="let user of sampleUsers" class="btn btn-sm"
+                            [class.active]="user.id === currentUser.id" (click)="switchUser(user)">
+                            {{ user.name }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Name Input -->
+                <div class="control-group">
+                    <label for="userName">User Name:</label>
+                    <input type="text" id="userName" [value]="currentUser.name"
+                        (input)="updateName($any($event.target).value)" class="input-field">
+                </div>
+
+                <!-- Email Input -->
+                <div class="control-group">
+                    <label for="userEmail">User Email:</label>
+                    <input type="email" id="userEmail" [value]="currentUser.email"
+                        (input)="updateEmail($any($event.target).value)" class="input-field">
+                </div>
+
+                <!-- Toggle Controls -->
+                <div class="toggle-controls">
+                    <button class="btn btn-secondary" (click)="toggleTheme()">
+                        {{ theme === 'dark' ? '☀️ Light Theme' : '🌙 Dark Theme' }}
+                    </button>
+                    <button class="btn btn-secondary" (click)="toggleBadge()">
+                        {{ showBadge ? '🚫 Hide Badge' : '✅ Show Badge' }}
+                    </button>
+                    <button class="btn btn-outline" (click)="clearLog()">
+                        🗑️ Clear Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- User Card Component -->
+            <div class="component-display">
+                <h3>👤 User Card Component (Child)</h3>
+                <app-user-card [user]="currentUser" [theme]="theme" [showBadge]="showBadge"
+                    (changesDetected)="onChangesDetected($event)">
+                </app-user-card>
+            </div>
+
+            <!-- Changes Log -->
+            <div class="log-section">
+                <h3>📋 ngOnChanges Log</h3>
+                <div class="log-container">
+                    <div *ngIf="changesLog.length === 0" class="log-empty">
+                        No changes detected yet. Modify the inputs above.
+                    </div>
+                    <div *ngFor="let log of changesLog" class="log-entry">
+                        <span class="log-time">{{ log.time }}</span>
+                        <span class="log-changes">{{ log.changes }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Code Explanation -->
+        <div class="explanation-section">
+            <h2>📖 How It Works</h2>
+
+            <!-- ngOnChanges Explanation -->
+            <div class="concept-card">
+                <h3>🔄 ngOnChanges</h3>
+                <p class="concept-description">
+                    Called <strong>before ngOnInit</strong> and whenever one or more
+                    input properties change. Receives a <code>SimpleChanges</code> object.
+                </p>
+                <div class="code-block">
+                    <pre><code>export class UserCardComponent implements OnChanges &#123;
+  &#64;Input() user!: User;
+  &#64;Input() theme!: string;
+
+  ngOnChanges(changes: SimpleChanges): void &#123;
+    // Check if specific property changed
+    if (changes['user']) &#123;
+      const change = changes['user'];
+      console.log('Previous:', change.previousValue);
+      console.log('Current:', change.currentValue);
+      console.log('First change?', change.isFirstChange());
+    &#125;
+  &#125;
+&#125;</code></pre>
+                </div>
+            </div>
+
+            <!-- SimpleChanges Object -->
+            <div class="concept-card">
+                <h3>📦 SimpleChanges Object</h3>
+                <p class="concept-description">
+                    Each changed input has a <code>SimpleChange</code> object with these properties:
+                </p>
+                <div class="properties-table">
+                    <div class="property-row">
+                        <code>previousValue</code>
+                        <span>The value before the change</span>
+                    </div>
+                    <div class="property-row">
+                        <code>currentValue</code>
+                        <span>The new value after the change</span>
+                    </div>
+                    <div class="property-row">
+                        <code>firstChange</code>
+                        <span>Boolean - true if this is the initial value</span>
+                    </div>
+                    <div class="property-row">
+                        <code>isFirstChange()</code>
+                        <span>Method - returns true on first change</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- When It's Called -->
+            <div class="concept-card highlight">
+                <h3>⏰ When ngOnChanges Is Called</h3>
+                <div class="timeline">
+                    <div class="timeline-item first">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-text">
+                            <strong>Before ngOnInit</strong> - Initial values
+                        </span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-text">
+                            <strong>Every &#64;Input change</strong> - New reference
+                        </span>
+                    </div>
+                    <div class="timeline-item warning">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-text">
+                            <strong>⚠️ NOT for object mutations</strong>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="concept-card warning-card">
+                <h3>⚠️ Important Notes</h3>
+                <ul class="notes-list">
+                    <li>
+                        <strong>Object mutations not detected:</strong>
+                        <code>user.name = 'New'</code> won't trigger ngOnChanges.
+                        Create a new object: <code>user = &#123;...user, name: 'New'&#125;</code>
+                    </li>
+                    <li>
+                        <strong>Performance:</strong>
+                        Called frequently - keep logic simple and fast
+                    </li>
+                    <li>
+                        <strong>Multiple inputs:</strong>
+                        All changed inputs are bundled in one call
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

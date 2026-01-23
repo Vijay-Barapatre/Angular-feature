@@ -13,66 +13,66 @@ import { RouterLink } from '@angular/router';
       <p class="subtitle">Master the art of building forms using pure HTML templates and Angular directives.</p>
 
       <div class="grid">
-        <!-- Use Case 1: Basics -->
-        <div class="card" routerLink="use-case-1">
+        <!-- Basics -->
+        <div class="card" routerLink="basic-form">
           <div class="icon">🚀</div>
-          <h2>Use Case 1: The Basics</h2>
+          <h2>The Basics</h2>
           <p><strong>Two-Way Binding</strong></p>
           <p>Learn <code>[(ngModel)]</code>, <code>ngForm</code>, and handling form submission.</p>
         </div>
 
-        <!-- Use Case 2: Validation -->
-        <div class="card" routerLink="use-case-2">
+        <!-- Validation -->
+        <div class="card" routerLink="validation">
           <div class="icon">✅</div>
-          <h2>Use Case 2: Validation</h2>
+          <h2>Validation</h2>
           <p><strong>Error Handling</strong></p>
           <p>Built-in validators, error messages, and visual feedback.</p>
         </div>
 
-        <!-- Use Case 3: Groups -->
-        <div class="card" routerLink="use-case-3">
+        <!-- Groups -->
+        <div class="card" routerLink="complex-form">
           <div class="icon">🗂️</div>
-          <h2>Use Case 3: Grouping</h2>
+          <h2>Grouping</h2>
           <p><strong>Nested Data</strong></p>
           <p>Using <code>ngModelGroup</code> to organize complex form data structures.</p>
         </div>
 
-        <!-- Use Case 4: Custom Validator -->
-        <div class="card" routerLink="use-case-4">
+        <!-- Custom Validator -->
+        <div class="card" routerLink="custom-validator">
           <div class="icon">⚙️</div>
-          <h2>Use Case 4: Custom Validators</h2>
+          <h2>Custom Validators</h2>
           <p><strong>Advanced Logic</strong></p>
           <p>Creating custom directives for complex validation rules (e.g., password match).</p>
         </div>
 
-        <!-- Use Case 5: Dynamic Forms -->
-        <div class="card" routerLink="use-case-5">
+        <!-- Dynamic Forms -->
+        <div class="card" routerLink="dynamic-form">
           <div class="icon">🔢</div>
-          <h2>Use Case 5: Dynamic Forms</h2>
+          <h2>Dynamic Forms</h2>
           <p><strong>Complex Lists</strong></p>
           <p>Managing arrays, real-time calculations, and dynamic index-based naming.</p>
         </div>
 
-        <!-- Use Case 6: Async Validators -->
-        <div class="card" routerLink="use-case-6">
+        <!-- Async Validators -->
+        <div class="card" routerLink="async-validator">
           <div class="icon">⏳</div>
-          <h2>Use Case 6: Async Validators</h2>
+          <h2>Async Validators</h2>
           <p><strong>API Validation</strong></p>
           <p>Check username availability with async validator directives.</p>
         </div>
 
-        <!-- Use Case 7: Value Changes -->
-        <div class="card" routerLink="use-case-7">
+        <!-- Value Changes -->
+        <div class="card" routerLink="value-changes">
           <div class="icon">📡</div>
-          <h2>Use Case 7: Form Observables</h2>
+          <h2>Form Observables</h2>
           <p><strong>Reactive Streams</strong></p>
           <p>Subscribe to valueChanges and statusChanges with RxJS.</p>
         </div>
 
-        <!-- Use Case 8: Signals Integration -->
-        <div class="card" routerLink="use-case-8">
+        <!-- Signals Integration -->
+        <div class="card" routerLink="signals-integration">
           <div class="icon">🚦</div>
-          <h2>Use Case 8: Signals Integration</h2>
+          <h2>Signals Integration</h2>
           <p><strong>Modern Angular</strong></p>
           <p>Bridge template forms with Angular Signals for reactive UI.</p>
         </div>

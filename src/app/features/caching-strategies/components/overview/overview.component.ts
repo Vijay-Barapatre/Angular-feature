@@ -58,31 +58,31 @@ import { RouterLink } from '@angular/router';
             <section class="usecases-section">
                 <h2>📖 Use Cases</h2>
                 <div class="usecase-grid">
-                    <a routerLink="use-case-1" class="usecase-card">
+                    <a routerLink="http-caching" class="usecase-card">
                         <span class="num">1</span>
                         <h3>HTTP Caching</h3>
                         <p>shareReplay, HTTP cache headers</p>
                         <span class="tag">RxJS</span>
                     </a>
-                    <a routerLink="use-case-2" class="usecase-card">
+                    <a routerLink="memory-cache" class="usecase-card">
                         <span class="num">2</span>
                         <h3>Memory Cache Service</h3>
                         <p>In-memory caching with TTL</p>
                         <span class="tag">Service</span>
                     </a>
-                    <a routerLink="use-case-3" class="usecase-card">
+                    <a routerLink="storage-cache" class="usecase-card">
                         <span class="num">3</span>
                         <h3>Storage Cache</h3>
                         <p>localStorage & sessionStorage</p>
                         <span class="tag">Web API</span>
                     </a>
-                    <a routerLink="use-case-4" class="usecase-card">
+                    <a routerLink="indexeddb-cache" class="usecase-card">
                         <span class="num">4</span>
                         <h3>IndexedDB</h3>
                         <p>Large data & offline storage</p>
                         <span class="tag">Dexie.js</span>
                     </a>
-                    <a routerLink="use-case-5" class="usecase-card">
+                    <a routerLink="cache-invalidation" class="usecase-card">
                         <span class="num">5</span>
                         <h3>Cache Invalidation</h3>
                         <p>TTL, stale-while-revalidate</p>

@@ -31,7 +31,7 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Use Case 1: Update Notifications -->
+        <!-- Update Notifications -->
         <a [routerLink]="['update-notification']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-sky-500 dark:hover:border-sky-400">
           <div class="flex items-start gap-4">
@@ -51,7 +51,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 2: Caching Strategies -->
+        <!-- Caching Strategies -->
         <a [routerLink]="['caching-strategies']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-400">
           <div class="flex items-start gap-4">
@@ -71,7 +71,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 3: Offline Indicator -->
+        <!-- Offline Indicator -->
         <a [routerLink]="['offline-indicator']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-rose-500 dark:hover:border-rose-400">
           <div class="flex items-start gap-4">
@@ -91,7 +91,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 4: Push Notifications -->
+        <!-- Push Notifications -->
         <a [routerLink]="['push-notifications']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-violet-500 dark:hover:border-violet-400">
           <div class="flex items-start gap-4">
@@ -111,7 +111,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 5: Unrecoverable State & Bypass -->
+        <!-- Unrecoverable State & Bypass -->
         <a [routerLink]="['bypass-service-worker']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-amber-500 dark:hover:border-amber-400">
           <div class="flex items-start gap-4">

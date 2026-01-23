@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { SubjectDemoComponent } from './components/use-case-1/subject-demo.component';
-import { BehaviorSubjectDemoComponent } from './components/use-case-2/behavior-subject-demo.component';
-import { ReplaySubjectDemoComponent } from './components/use-case-3/replay-subject-demo.component';
-import { AsyncSubjectDemoComponent } from './components/use-case-4/async-subject-demo.component';
+import { SubjectDemoComponent } from './components/subject-demo/subject-demo.component';
+import { BehaviorSubjectDemoComponent } from './components/behavior-subject-demo/behavior-subject-demo.component';
+import { ReplaySubjectDemoComponent } from './components/replay-subject-demo/replay-subject-demo.component';
+import { AsyncSubjectDemoComponent } from './components/async-subject-demo/async-subject-demo.component';
 
 export const RXJS_SUBJECTS_ROUTES: Routes = [
     {

@@ -94,11 +94,11 @@ interface UseCase {
 })
 export class HostListenerOverviewComponent {
     useCases: UseCase[] = [
-        { id: 1, title: 'Basic HostListener', description: 'Listen to host element events: click, mouseenter, mouseleave.', path: 'use-case-1', icon: '👆' },
-        { id: 2, title: 'Keyboard Events', description: 'Handle keyboard shortcuts and key combinations.', path: 'use-case-2', icon: '⌨️' },
-        { id: 3, title: 'Window/Document Events', description: 'React to scroll, resize, and window-level events.', path: 'use-case-3', icon: '🖥️' },
-        { id: 4, title: 'HostBinding Basics', description: 'Dynamically bind classes, styles, and attributes.', path: 'use-case-4', icon: '🎨' },
-        { id: 5, title: 'Combined Pattern', description: 'Interactive components using both decorators together.', path: 'use-case-5', icon: '🔗' },
-        { id: 6, title: 'Custom Directive', description: 'Build reusable attribute directive with both decorators.', path: 'use-case-6', icon: '🧩' }
+        { id: 1, title: 'Basic HostListener', description: 'Listen to host element events: click, mouseenter, mouseleave.', path: 'basic-host-listener', icon: '👆' },
+        { id: 2, title: 'Keyboard Events', description: 'Handle keyboard shortcuts and key combinations.', path: 'keyboard-events', icon: '⌨️' },
+        { id: 3, title: 'Window/Document Events', description: 'React to scroll, resize, and window-level events.', path: 'window-events', icon: '🖥️' },
+        { id: 4, title: 'HostBinding Basics', description: 'Dynamically bind classes, styles, and attributes.', path: 'host-binding', icon: '🎨' },
+        { id: 5, title: 'Combined Pattern', description: 'Interactive components using both decorators together.', path: 'combined', icon: '🔗' },
+        { id: 6, title: 'Custom Directive', description: 'Build reusable attribute directive with both decorators.', path: 'custom-directive', icon: '🧩' }
     ];
 }

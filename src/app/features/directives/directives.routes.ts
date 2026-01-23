@@ -24,50 +24,50 @@ export const DIRECTIVES_ROUTES: Routes = [
         title: 'Angular Directives'
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/basic-attribute.component')
+        path: 'basic-attribute',
+        loadComponent: () => import('./components/basic-attribute/basic-attribute.component')
             .then(m => m.BasicAttributeComponent),
         title: 'Basic Attribute Directives'
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/directive-inputs.component')
+        path: 'directive-inputs',
+        loadComponent: () => import('./components/directive-inputs/directive-inputs.component')
             .then(m => m.DirectiveInputsComponent),
         title: 'Directive with @Input'
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/host-listener.component')
+        path: 'host-listener',
+        loadComponent: () => import('./components/host-listener/host-listener.component')
             .then(m => m.HostListenerDirectiveComponent),
         title: '@HostListener in Directives'
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/host-binding.component')
+        path: 'host-binding',
+        loadComponent: () => import('./components/host-binding/host-binding.component')
             .then(m => m.HostBindingDirectiveComponent),
         title: '@HostBinding in Directives'
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/structural-basics.component')
+        path: 'structural-basics',
+        loadComponent: () => import('./components/structural-basics/structural-basics.component')
             .then(m => m.StructuralBasicsComponent),
         title: 'Structural Directive Basics'
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/custom-structural.component')
+        path: 'custom-structural',
+        loadComponent: () => import('./components/custom-structural/custom-structural.component')
             .then(m => m.CustomStructuralComponent),
         title: 'Custom Structural Directives'
     },
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/directive-composition.component')
+        path: 'directive-composition',
+        loadComponent: () => import('./components/directive-composition/directive-composition.component')
             .then(m => m.DirectiveCompositionComponent),
         title: 'Directive Composition'
     },
     {
-        path: 'use-case-8',
-        loadComponent: () => import('./components/use-case-8/real-world.component')
+        path: 'real-world',
+        loadComponent: () => import('./components/real-world/real-world.component')
             .then(m => m.RealWorldDirectivesComponent),
         title: 'Real-world Directives'
     }

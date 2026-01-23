@@ -156,12 +156,12 @@ import { RouterLink } from '@angular/router';
 })
 export class PerformanceOverviewComponent {
     useCases = [
-        { id: 1, path: 'use-case-1', icon: '🔄', title: 'OnPush Change Detection', description: 'Reduce CD cycles with immutable patterns', tags: ['OnPush', 'markForCheck', 'immutable'], highlight: true, impact: 'high' },
-        { id: 2, path: 'use-case-2', icon: '📋', title: 'TrackBy Optimization', description: 'Efficient list rendering with identity tracking', tags: ['trackBy', '@for track', 'DOM reuse'], impact: 'high' },
-        { id: 3, path: 'use-case-3', icon: '📦', title: 'Lazy Loading', description: 'Code splitting and @defer blocks', tags: ['loadChildren', '@defer', 'preload'], impact: 'high' },
-        { id: 4, path: 'use-case-4', icon: '🎯', title: 'Bundle Optimization', description: 'Tree-shaking and import optimization', tags: ['tree-shaking', 'budgets', 'webpack'] },
-        { id: 5, path: 'use-case-5', icon: '🚀', title: 'Runtime Performance', description: 'Pure pipes, memoization, virtual scroll', tags: ['pure pipe', 'memo', 'VirtualScroll'], impact: 'medium' },
-        { id: 6, path: 'use-case-6', icon: '🧠', title: 'Memory Management', description: 'Prevent leaks with proper cleanup', tags: ['takeUntilDestroyed', 'unsubscribe', 'WeakRef'] },
-        { id: 7, path: 'use-case-7', icon: '🔍', title: 'Profiling & DevTools', description: 'Measure, debug, and optimize', tags: ['DevTools', 'Lighthouse', 'profiler'] }
+        { id: 1, path: 'onpush-strategy', icon: '🔄', title: 'OnPush Change Detection', description: 'Reduce CD cycles with immutable patterns', tags: ['OnPush', 'markForCheck', 'immutable'], highlight: true, impact: 'high' },
+        { id: 2, path: 'trackby-optimization', icon: '📋', title: 'TrackBy Optimization', description: 'Efficient list rendering with identity tracking', tags: ['trackBy', '@for track', 'DOM reuse'], impact: 'high' },
+        { id: 3, path: 'lazy-loading', icon: '📦', title: 'Lazy Loading', description: 'Code splitting and @defer blocks', tags: ['loadChildren', '@defer', 'preload'], impact: 'high' },
+        { id: 4, path: 'bundle-optimization', icon: '🎯', title: 'Bundle Optimization', description: 'Tree-shaking and import optimization', tags: ['tree-shaking', 'budgets', 'webpack'] },
+        { id: 5, path: 'runtime-performance', icon: '🚀', title: 'Runtime Performance', description: 'Pure pipes, memoization, virtual scroll', tags: ['pure pipe', 'memo', 'VirtualScroll'], impact: 'medium' },
+        { id: 6, path: 'memory-management', icon: '🧠', title: 'Memory Management', description: 'Prevent leaks with proper cleanup', tags: ['takeUntilDestroyed', 'unsubscribe', 'WeakRef'] },
+        { id: 7, path: 'profiling-devtools', icon: '🔍', title: 'Profiling & DevTools', description: 'Measure, debug, and optimize', tags: ['DevTools', 'Lighthouse', 'profiler'] }
     ];
 }

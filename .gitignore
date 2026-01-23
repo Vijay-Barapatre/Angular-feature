@@ -62,3 +62,6 @@ Desktop.ini
 *~
 node_modules
 .vs/slnx.sqlite
+/src/app/features/input-output/components/use-case-1/video-frames
+/src/app/features/input-output/components/use-case-1/voiceover-scriptold.md
+/src/app/features/viewchild-contentchild/components/use-case-1/video-frames

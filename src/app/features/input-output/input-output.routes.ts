@@ -7,12 +7,13 @@
  * ROUTE STRUCTURE:
  * /input-output (base)
  *   ├── / (overview/landing)
- *   ├── /use-case-1 (Basic parent-child data passing)
- *   ├── /use-case-2 (Two-way binding)
- *   ├── /use-case-3 (Complex objects & immutability)
- *   ├── /use-case-4 (Custom events with payloads)
- *   ├── /use-case-5 (Input transforms & validation)
- *   ├── /use-case-6 (Multiple inputs/outputs)
+ *   ├── /basic-input-output (Basic parent-child data passing)
+ *   ├── /two-way-binding (Two-way binding)
+ *   ├── /complex-objects (Complex objects & immutability)
+ *   ├── /custom-events (Custom events with payloads)
+ *   ├── /input-transforms (Input transforms & validation)
+ *   ├── /multiple-inputs-outputs (Multiple inputs/outputs)
+ *   ├── /input-setters (Input setters)
  *   └── /exercise (Learner practice template)
  */
 
@@ -29,31 +30,31 @@ export const INPUT_OUTPUT_ROUTES: Routes = [
     },
 
     /**
-     * USE CASE 1: Basic @Input() and @Output()
+     * Basic @Input() and @Output()
      * Demonstrates:
      * - Simple data passing from parent to child via @Input()
      * - Event emission from child to parent via @Output()
      * - Primitive data types (string, number, boolean)
      */
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/parent.component').then(m => m.UseCase1ParentComponent)
+        path: 'basic-input-output',
+        loadComponent: () => import('./components/basic-input-output/parent.component').then(m => m.UseCase1ParentComponent)
     },
 
     /**
-     * USE CASE 2: Two-Way Binding Pattern
+     * Two-Way Binding Pattern
      * Demonstrates:
      * - Implementing two-way binding with @Input() and @Output()
      * - Using the [()] banana-in-a-box syntax
      * - Change suffix naming convention
      */
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/parent.component').then(m => m.UseCase2ParentComponent)
+        path: 'two-way-binding',
+        loadComponent: () => import('./components/two-way-binding/parent.component').then(m => m.UseCase2ParentComponent)
     },
 
     /**
-     * USE CASE 3: Complex Objects & Immutability
+     * Complex Objects & Immutability
      * Demonstrates:
      * - Passing complex objects (arrays, nested objects)
      * - Change detection with OnPush strategy
@@ -61,12 +62,12 @@ export const INPUT_OUTPUT_ROUTES: Routes = [
      * - Object reference vs value changes
      */
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/parent.component').then(m => m.UseCase3ParentComponent)
+        path: 'complex-objects',
+        loadComponent: () => import('./components/complex-objects/parent.component').then(m => m.UseCase3ParentComponent)
     },
 
     /**
-     * USE CASE 4: Custom Event Payloads
+     * Custom Event Payloads
      * Demonstrates:
      * - EventEmitter with custom data types
      * - Multiple event types from single component
@@ -74,12 +75,12 @@ export const INPUT_OUTPUT_ROUTES: Routes = [
      * - Real-world shopping cart scenario
      */
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/parent.component').then(m => m.UseCase4ParentComponent)
+        path: 'custom-events',
+        loadComponent: () => import('./components/custom-events/parent.component').then(m => m.UseCase4ParentComponent)
     },
 
     /**
-     * USE CASE 5: Input Transforms & Validation
+     * Input Transforms & Validation
      * Demonstrates:
      * - Angular's transform option for @Input()
      * - Input setters for validation
@@ -87,12 +88,12 @@ export const INPUT_OUTPUT_ROUTES: Routes = [
      * - Input getters for computed values
      */
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/parent.component').then(m => m.UseCase5ParentComponent)
+        path: 'input-transforms',
+        loadComponent: () => import('./components/input-transforms/parent.component').then(m => m.UseCase5ParentComponent)
     },
 
     /**
-     * USE CASE 6: Multiple Inputs/Outputs
+     * Multiple Inputs/Outputs
      * Demonstrates:
      * - Components with multiple @Input() decorators
      * - Components with multiple @Output() decorators
@@ -100,20 +101,20 @@ export const INPUT_OUTPUT_ROUTES: Routes = [
      * - Complex component communication patterns
      */
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/parent.component').then(m => m.UseCase6ParentComponent)
+        path: 'multiple-inputs-outputs',
+        loadComponent: () => import('./components/multiple-inputs-outputs/parent.component').then(m => m.UseCase6ParentComponent)
     },
 
     /**
-     * USE CASE 7: Input Setters (Validation & Side Effects)
+     * Input Setters (Validation & Side Effects)
      * Demonstrates:
      * - Using TypeScript setters for @Input interception
      * - Validation and Sanitization logic within the child
      * - Derived state updates
      */
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/parent.component').then(m => m.UseCase7ParentComponent)
+        path: 'input-setters',
+        loadComponent: () => import('./components/input-setters/parent.component').then(m => m.UseCase7ParentComponent)
     },
 
     /**

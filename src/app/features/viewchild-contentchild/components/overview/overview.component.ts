@@ -412,7 +412,7 @@ export class OverviewComponent {
     {
       id: 1,
       title: 'Basic @ViewChild',
-      path: 'use-case-1',
+      path: 'basic-viewchild',
       description: 'Access child component instances and call methods directly from the parent.',
       difficulty: 'Beginner',
       concepts: ['@ViewChild', 'AfterViewInit', 'Component Reference']
@@ -420,7 +420,7 @@ export class OverviewComponent {
     {
       id: 2,
       title: '@ViewChild with Template Refs',
-      path: 'use-case-2',
+      path: 'template-references',
       description: 'Use template reference variables to access and manipulate DOM elements.',
       difficulty: 'Beginner',
       concepts: ['Template Refs', 'ElementRef', 'DOM Access']
@@ -428,7 +428,7 @@ export class OverviewComponent {
     {
       id: 3,
       title: '@ViewChildren',
-      path: 'use-case-3',
+      path: 'viewchildren',
       description: 'Query multiple child components and work with QueryList API.',
       difficulty: 'Intermediate',
       concepts: ['@ViewChildren', 'QueryList', 'Dynamic Children']
@@ -436,7 +436,7 @@ export class OverviewComponent {
     {
       id: 4,
       title: 'Basic @ContentChild',
-      path: 'use-case-4',
+      path: 'basic-contentchild',
       description: 'Learn content projection and access projected components.',
       difficulty: 'Intermediate',
       concepts: ['@ContentChild', 'ng-content', 'AfterContentInit']
@@ -444,7 +444,7 @@ export class OverviewComponent {
     {
       id: 5,
       title: '@ContentChildren',
-      path: 'use-case-5',
+      path: 'contentchildren',
       description: 'Master complex content projection with multiple children.',
       difficulty: 'Advanced',
       concepts: ['@ContentChildren', 'Multi-slot Projection', 'QueryList']
@@ -452,7 +452,7 @@ export class OverviewComponent {
     {
       id: 6,
       title: 'Lifecycle Timing',
-      path: 'use-case-6',
+      path: 'lifecycle-timing',
       description: 'Understand when queries are resolved and common timing pitfalls.',
       difficulty: 'Advanced',
       concepts: ['Lifecycle Hooks', 'Timing', 'Best Practices']

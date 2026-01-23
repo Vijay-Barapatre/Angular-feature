@@ -61,37 +61,37 @@ import { RouterLink } from '@angular/router';
             <section class="usecases-section">
                 <h2>📖 Use Cases</h2>
                 <div class="usecase-grid">
-                    <a routerLink="use-case-1" class="usecase-card">
+                    <a routerLink="msal-setup" class="usecase-card">
                         <span class="num">1</span>
                         <h3>MSAL Setup</h3>
                         <p>Configuration, app registration, provider setup</p>
                         <span class="tag">Configuration</span>
                     </a>
-                    <a routerLink="use-case-2" class="usecase-card">
+                    <a routerLink="login-flows" class="usecase-card">
                         <span class="num">2</span>
                         <h3>Login Flows</h3>
                         <p>Popup vs Redirect login methods</p>
                         <span class="tag">loginPopup / loginRedirect</span>
                     </a>
-                    <a routerLink="use-case-3" class="usecase-card">
+                    <a routerLink="auth-guard" class="usecase-card">
                         <span class="num">3</span>
                         <h3>Auth Guard</h3>
                         <p>Protect routes with MsalGuard</p>
                         <span class="tag">canActivate</span>
                     </a>
-                    <a routerLink="use-case-4" class="usecase-card">
+                    <a routerLink="http-interceptor" class="usecase-card">
                         <span class="num">4</span>
                         <h3>HTTP Interceptor</h3>
                         <p>Auto-attach tokens to API calls</p>
                         <span class="tag">MsalInterceptor</span>
                     </a>
-                    <a routerLink="use-case-5" class="usecase-card">
+                    <a routerLink="user-profile" class="usecase-card">
                         <span class="num">5</span>
                         <h3>User Profile</h3>
                         <p>Get user info from Microsoft Graph</p>
                         <span class="tag">graph.microsoft.com</span>
                     </a>
-                    <a routerLink="use-case-6" class="usecase-card">
+                    <a routerLink="token-management" class="usecase-card">
                         <span class="num">6</span>
                         <h3>Token Management</h3>
                         <p>Acquire tokens, silent refresh, scopes</p>

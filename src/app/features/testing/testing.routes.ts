@@ -16,38 +16,38 @@ export const TESTING_ROUTES: Routes = [
             .then(m => m.TestingOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/component-testing.component')
+        path: 'component-testing',
+        loadComponent: () => import('./components/component-testing/component-testing.component')
             .then(m => m.ComponentTestingComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/service-testing.component')
+        path: 'service-testing',
+        loadComponent: () => import('./components/service-testing/service-testing.component')
             .then(m => m.ServiceTestingComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/mocking-demo.component')
+        path: 'mocking-demo',
+        loadComponent: () => import('./components/mocking-demo/mocking-demo.component')
             .then(m => m.MockingDemoComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/async-testing.component')
+        path: 'async-testing',
+        loadComponent: () => import('./components/async-testing/async-testing.component')
             .then(m => m.AsyncTestingComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/http-testing.component')
+        path: 'http-testing',
+        loadComponent: () => import('./components/http-testing/http-testing.component')
             .then(m => m.HttpTestingComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/performance-testing.component')
+        path: 'performance-testing',
+        loadComponent: () => import('./components/performance-testing/performance-testing.component')
             .then(m => m.PerformanceTestingComponent)
     },
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/reusable-utils.component')
+        path: 'reusable-utils',
+        loadComponent: () => import('./components/reusable-utils/reusable-utils.component')
             .then(m => m.ReusableUtilsComponent)
     }
 ];

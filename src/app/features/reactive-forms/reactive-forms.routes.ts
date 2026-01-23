@@ -24,14 +24,16 @@
  * 
  * ROUTE STRUCTURE:
  * /reactive-forms           -> Overview (landing page)
- * /reactive-forms/use-case-1 -> Basic FormControl & FormGroup
- * /reactive-forms/use-case-2 -> Nested FormGroups
- * /reactive-forms/use-case-3 -> FormArray (Dynamic Fields)
- * /reactive-forms/use-case-4 -> Built-in Validators
- * /reactive-forms/use-case-5 -> Custom Validators (Sync & Async)
- * /reactive-forms/use-case-6 -> Cross-Field Validation
- * /reactive-forms/use-case-7 -> Dynamic Form Generation
- * /reactive-forms/use-case-8 -> Value Changes & Status Observables
+ * /reactive-forms/basic-reactive           -> Basic FormControl & FormGroup
+ * /reactive-forms/nested-groups            -> Nested FormGroups
+ * /reactive-forms/form-array               -> FormArray (Dynamic Fields)
+ * /reactive-forms/built-in-validators      -> Built-in Validators
+ * /reactive-forms/custom-validators       -> Custom Validators (Sync & Async)
+ * /reactive-forms/cross-field              -> Cross-Field Validation
+ * /reactive-forms/dynamic-form             -> Dynamic Form Generation
+ * /reactive-forms/value-changes            -> Value Changes & Status Observables
+ * /reactive-forms/typed-forms               -> Strongly Typed Forms
+ * /reactive-forms/signals-interop          -> Reactive Forms + Signals (Interop)
  */
 
 import { Routes } from '@angular/router';
@@ -48,92 +50,82 @@ export const REACTIVE_FORMS_ROUTES: Routes = [
     },
 
     /**
-     * USE CASE 1: Basic FormControl & FormGroup
-     * Foundation of Reactive Forms - creating and binding form controls.
+     * Basic FormControl & FormGroup
      */
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/basic-reactive.component').then(m => m.BasicReactiveComponent)
+        path: 'basic-reactive',
+        loadComponent: () => import('./components/basic-reactive/basic-reactive.component').then(m => m.BasicReactiveComponent)
     },
 
     /**
-     * USE CASE 2: Nested FormGroups
-     * Organizing complex forms with nested groups (e.g., address within user).
+     * Nested FormGroups
      */
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/nested-groups.component').then(m => m.NestedGroupsComponent)
+        path: 'nested-groups',
+        loadComponent: () => import('./components/nested-groups/nested-groups.component').then(m => m.NestedGroupsComponent)
     },
 
     /**
-     * USE CASE 3: FormArray (Dynamic Fields)
-     * Adding and removing form controls dynamically at runtime.
+     * FormArray (Dynamic Fields)
      */
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/form-array.component').then(m => m.FormArrayComponent)
+        path: 'form-array',
+        loadComponent: () => import('./components/form-array/form-array.component').then(m => m.FormArrayComponent)
     },
 
     /**
-     * USE CASE 4: Built-in Validators
-     * Using Angular's built-in validators (required, minLength, pattern, etc.).
+     * Built-in Validators
      */
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/built-in-validators.component').then(m => m.BuiltInValidatorsComponent)
+        path: 'built-in-validators',
+        loadComponent: () => import('./components/built-in-validators/built-in-validators.component').then(m => m.BuiltInValidatorsComponent)
     },
 
     /**
-     * USE CASE 5: Custom Validators (Sync & Async)
-     * Creating your own validation logic, including async validators.
+     * Custom Validators (Sync & Async)
      */
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/custom-validators.component').then(m => m.CustomValidatorsComponent)
+        path: 'custom-validators',
+        loadComponent: () => import('./components/custom-validators/custom-validators.component').then(m => m.CustomValidatorsComponent)
     },
 
     /**
-     * USE CASE 6: Cross-Field Validation
-     * Validating fields that depend on each other (password confirmation, date ranges).
+     * Cross-Field Validation
      */
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/cross-field.component').then(m => m.CrossFieldComponent)
+        path: 'cross-field',
+        loadComponent: () => import('./components/cross-field/cross-field.component').then(m => m.CrossFieldComponent)
     },
 
     /**
-     * USE CASE 7: Dynamic Form Generation
-     * Generating forms from JSON configuration at runtime.
+     * Dynamic Form Generation
      */
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/dynamic-form.component').then(m => m.DynamicFormComponent)
+        path: 'dynamic-form',
+        loadComponent: () => import('./components/dynamic-form/dynamic-form.component').then(m => m.DynamicFormComponent)
     },
 
     /**
-     * USE CASE 8: Value Changes & Status Observables
-     * Reacting to form value and status changes using RxJS.
+     * Value Changes & Status Observables
      */
     {
-        path: 'use-case-8',
-        loadComponent: () => import('./components/use-case-8/value-changes.component').then(m => m.ValueChangesComponent)
+        path: 'value-changes',
+        loadComponent: () => import('./components/value-changes/value-changes.component').then(m => m.ValueChangesComponent)
     },
 
     /**
-     * USE CASE 9: Strongly Typed Forms (Angular 14+)
-     * Using strict typing, NonNullableFormBuilder, and FormRecord.
+     * Strongly Typed Forms (Angular 14+)
      */
     {
-        path: 'use-case-9',
-        loadComponent: () => import('./components/use-case-9/typed-forms.component').then(m => m.TypedFormsComponent)
+        path: 'typed-forms',
+        loadComponent: () => import('./components/typed-forms/typed-forms.component').then(m => m.TypedFormsComponent)
     },
 
     /**
-     * USE CASE 10: Reactive Forms + Signals (Interop)
-     * Bridging RxJS form streams to Angular Signals.
+     * Reactive Forms + Signals (Interop)
      */
     {
-        path: 'use-case-10',
-        loadComponent: () => import('./components/use-case-10/signals-interop.component').then(m => m.SignalsInteropComponent)
+        path: 'signals-interop',
+        loadComponent: () => import('./components/signals-interop/signals-interop.component').then(m => m.SignalsInteropComponent)
     }
 ];

@@ -134,37 +134,37 @@ import { RouterLink } from '@angular/router';
 export class StandaloneApisOverviewComponent {
     useCases = [
         {
-            id: 1, path: 'use-case-1', icon: '⚡',
+            id: 1, path: 'bootstrap-config', icon: '⚡',
             title: 'bootstrapApplication',
             description: 'Modern app bootstrapping with app.config.ts',
             tags: ['bootstrapApplication', 'app.config.ts', 'ApplicationConfig']
         },
         {
-            id: 2, path: 'use-case-2', icon: '🛤️',
+            id: 2, path: 'provide-router', icon: '🛤️',
             title: 'provideRouter',
             description: 'Functional routing with features like preloading',
             tags: ['provideRouter', 'withPreloading', 'withComponentInputBinding']
         },
         {
-            id: 3, path: 'use-case-3', icon: '🌐',
+            id: 3, path: 'provide-http', icon: '🌐',
             title: 'provideHttpClient',
             description: 'HTTP client with functional interceptors',
             tags: ['provideHttpClient', 'withInterceptors', 'withFetch']
         },
         {
-            id: 4, path: 'use-case-4', icon: '📦',
+            id: 4, path: 'standalone-components', icon: '📦',
             title: 'Standalone Components',
             description: 'Components without NgModules',
             tags: ['standalone: true', 'imports', 'self-contained']
         },
         {
-            id: 5, path: 'use-case-5', icon: '🎯',
+            id: 5, path: 'standalone-directives', icon: '🎯',
             title: 'Standalone Directives & Pipes',
             description: 'Reusable standalone utilities',
             tags: ['standalone directive', 'standalone pipe']
         },
         {
-            id: 6, path: 'use-case-6', icon: '🔄',
+            id: 6, path: 'migration-patterns', icon: '🔄',
             title: 'Migration Patterns',
             description: 'Migrate from NgModules to Standalone',
             tags: ['importProvidersFrom', 'migration', 'hybrid']

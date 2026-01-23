@@ -29,7 +29,7 @@ export class OverviewComponent {
         {
             id: 1,
             title: 'ngOnInit & ngOnDestroy',
-            route: '/lifecycle-hooks/use-case-1',
+            route: '/lifecycle-hooks/on-init-on-destroy',
             description: 'Learn component initialization and cleanup. Essential for setting up subscriptions and releasing resources.',
             topics: ['ngOnInit', 'ngOnDestroy', 'Subscriptions', 'Timer cleanup', 'Resource management'],
             difficulty: 'Beginner',
@@ -38,7 +38,7 @@ export class OverviewComponent {
         {
             id: 2,
             title: 'ngOnChanges',
-            route: '/lifecycle-hooks/use-case-2',
+            route: '/lifecycle-hooks/on-changes',
             description: 'React to @Input property changes with SimpleChanges object. Track previous and current values.',
             topics: ['ngOnChanges', 'SimpleChanges', '@Input tracking', 'isFirstChange()', 'Value comparison'],
             difficulty: 'Beginner',
@@ -47,7 +47,7 @@ export class OverviewComponent {
         {
             id: 3,
             title: 'View Lifecycle Hooks',
-            route: '/lifecycle-hooks/use-case-3',
+            route: '/lifecycle-hooks/after-view-init',
             description: 'Access child components and DOM elements after view initialization with ngAfterViewInit.',
             topics: ['ngAfterViewInit', 'ngAfterViewChecked', '@ViewChild', 'DOM access', 'Third-party integration'],
             difficulty: 'Intermediate',
@@ -56,7 +56,7 @@ export class OverviewComponent {
         {
             id: 4,
             title: 'Content Projection Lifecycle',
-            route: '/lifecycle-hooks/use-case-4',
+            route: '/lifecycle-hooks/after-content-init',
             description: 'Handle projected content with ngAfterContentInit and ngAfterContentChecked hooks.',
             topics: ['ngAfterContentInit', 'ngAfterContentChecked', '@ContentChild', 'ng-content', 'Dynamic tabs'],
             difficulty: 'Intermediate',
@@ -65,7 +65,7 @@ export class OverviewComponent {
         {
             id: 5,
             title: 'Custom Change Detection',
-            route: '/lifecycle-hooks/use-case-5',
+            route: '/lifecycle-hooks/do-check',
             description: 'Implement custom change detection with ngDoCheck to catch changes Angular misses.',
             topics: ['ngDoCheck', 'Object mutation', 'Deep comparison', 'Performance', 'KeyValueDiffers'],
             difficulty: 'Advanced',
@@ -74,7 +74,7 @@ export class OverviewComponent {
         {
             id: 6,
             title: 'Complete Lifecycle Demo',
-            route: '/lifecycle-hooks/use-case-6',
+            route: '/lifecycle-hooks/complete-lifecycle',
             description: 'Visualize all lifecycle hooks in action with an interactive demo showing execution order.',
             topics: ['All hooks', 'Execution order', 'Visual logging', 'Interactive demo', 'Performance metrics'],
             difficulty: 'Advanced',

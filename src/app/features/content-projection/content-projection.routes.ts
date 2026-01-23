@@ -13,28 +13,28 @@ export const CONTENT_PROJECTION_ROUTES: Routes = [
             .then(m => m.ContentProjectionOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/basic-projection.component')
+        path: 'basic-projection',
+        loadComponent: () => import('./components/basic-projection/basic-projection.component')
             .then(m => m.BasicProjectionComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/multi-slot.component')
+        path: 'multi-slot',
+        loadComponent: () => import('./components/multi-slot/multi-slot.component')
             .then(m => m.MultiSlotComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/template-outlet.component')
+        path: 'template-outlet',
+        loadComponent: () => import('./components/template-outlet/template-outlet.component')
             .then(m => m.TemplateOutletComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/conditional-projection.component')
+        path: 'conditional-projection',
+        loadComponent: () => import('./components/conditional-projection/conditional-projection.component')
             .then(m => m.ConditionalProjectionComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/real-world-patterns.component')
+        path: 'real-world-patterns',
+        loadComponent: () => import('./components/real-world-patterns/real-world-patterns.component')
             .then(m => m.RealWorldPatternsComponent)
     }
 ];

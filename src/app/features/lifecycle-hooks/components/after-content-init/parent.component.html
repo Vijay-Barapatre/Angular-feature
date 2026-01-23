@@ -1,0 +1,183 @@
+<!-- Content Projection Lifecycle -->
+
+<div class="use-case-container fade-in">
+    <!-- Header -->
+    <div class="page-header">
+        <a routerLink="/lifecycle-hooks" class="back-link">← Back to Lifecycle Hooks</a>
+        <h1>📦 Content Projection Lifecycle</h1>
+        <p class="header-description">
+            Learn ngAfterContentInit and ngAfterContentChecked for handling projected content.
+            Essential for building reusable container components.
+        </p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-grid">
+        <!-- Left: Interactive Demo -->
+        <div class="demo-section">
+            <h2>🎮 Interactive Demo</h2>
+
+            <!-- Controls -->
+            <div class="controls-card">
+                <div class="controls">
+                    <button class="btn btn-primary" (click)="toggleExtraTab()">
+                        {{ showExtraTab ? '➖ Remove Tab' : '➕ Add Tab' }}
+                    </button>
+                    <button class="btn btn-secondary" (click)="updateContent()">
+                        🔄 Update Content
+                    </button>
+                    <button class="btn btn-outline" (click)="clearLog()">
+                        🗑️ Clear Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Container with Projected Content -->
+            <div class="tabs-container">
+                <h3>📑 Tab Container (with ng-content)</h3>
+
+                <app-tab-container (contentLifecycleEvent)="onContentLifecycleEvent($event)">
+                    <!-- These are PROJECTED into the tab container -->
+                    <app-tab-item title="Profile" icon="👤">
+                        <p>This is the Profile tab content.</p>
+                        <p>Current data: {{ dynamicContent }}</p>
+                    </app-tab-item>
+
+                    <app-tab-item title="Settings" icon="⚙️">
+                        <p>Settings panel with various options.</p>
+                        <ul>
+                            <li>Theme: Dark</li>
+                            <li>Notifications: On</li>
+                        </ul>
+                    </app-tab-item>
+
+                    <app-tab-item *ngIf="showExtraTab" title="Extra" icon="✨">
+                        <p>This tab was dynamically added!</p>
+                        <p>ngAfterContentChecked detects new content.</p>
+                    </app-tab-item>
+                </app-tab-container>
+            </div>
+
+            <!-- Content Lifecycle Log -->
+            <div class="log-section">
+                <h3>📋 Content Lifecycle Log</h3>
+                <div class="log-container">
+                    <div *ngIf="contentLifecycleLog.length === 0" class="log-empty">
+                        No events yet. Interact with the tabs above.
+                    </div>
+                    <div *ngFor="let log of contentLifecycleLog" class="log-entry" [class]="'log-' + log.type">
+                        <span class="log-time">{{ log.time }}</span>
+                        <span class="log-event">{{ log.event }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Code Explanation -->
+        <div class="explanation-section">
+            <h2>📖 How It Works</h2>
+
+            <!-- Content vs View -->
+            <div class="concept-card highlight">
+                <h3>📦 Content vs 👁️ View</h3>
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <span>Content</span>
+                        <span>View</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span>Elements between component tags</span>
+                        <span>Elements in component's template</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span><code>&lt;app-container&gt;<br/>  &lt;child/&gt;<br/>&lt;/app-container&gt;</code></span>
+                        <span><code>template: `&lt;child/&gt;`</code></span>
+                    </div>
+                    <div class="comparison-row">
+                        <span>&#64;ContentChild</span>
+                        <span>&#64;ViewChild</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span>ngAfterContentInit</span>
+                        <span>ngAfterViewInit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ngAfterContentInit -->
+            <div class="concept-card">
+                <h3>📦 ngAfterContentInit</h3>
+                <p class="concept-description">
+                    Called <strong>once</strong> after Angular projects external content
+                    into the component. Access &#64;ContentChild here.
+                </p>
+                <div class="code-block">
+                    <pre><code>export class TabContainer implements AfterContentInit &#123;
+  &#64;ContentChildren(TabItem) 
+  tabs!: QueryList&lt;TabItem&gt;;
+
+  ngAfterContentInit(): void &#123;
+    // ✅ Safe to access &#64;ContentChildren
+    console.log('Found tabs:', this.tabs.length);
+    this.selectFirstTab();
+  &#125;
+&#125;</code></pre>
+                </div>
+            </div>
+
+            <!-- ngAfterContentChecked -->
+            <div class="concept-card warning-card">
+                <h3>🔄 ngAfterContentChecked</h3>
+                <p class="concept-description">
+                    Called after every check of projected content.
+                    Use for detecting dynamic content changes.
+                </p>
+                <div class="code-block">
+                    <pre><code>ngAfterContentChecked(): void &#123;
+  // Detect if tabs were added/removed
+  if (this.tabs.length !== this.previousCount) &#123;
+    console.log('Tabs changed!');
+    this.previousCount = this.tabs.length;
+  &#125;
+&#125;</code></pre>
+                </div>
+                <div class="best-practices warning">
+                    <h4>⚠️ Performance Tips:</h4>
+                    <ul>
+                        <li>Runs frequently - keep logic minimal</li>
+                        <li>Use QueryList.changes for dynamic content</li>
+                        <li>Avoid modifying component state</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lifecycle Order -->
+            <div class="concept-card">
+                <h3>📊 Lifecycle Order</h3>
+                <div class="order-diagram">
+                    <div class="order-step">
+                        <span class="step-num">1</span>
+                        <span class="step-name">ngOnInit</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step active">
+                        <span class="step-num">2</span>
+                        <span class="step-name">ngAfterContentInit</span>
+                        <span class="step-note">📦 Content ready</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step checked">
+                        <span class="step-num">3</span>
+                        <span class="step-name">ngAfterContentChecked</span>
+                    </div>
+                    <div class="order-arrow">↓</div>
+                    <div class="order-step">
+                        <span class="step-num">4</span>
+                        <span class="step-name">ngAfterViewInit</span>
+                        <span class="step-note">👁️ View ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

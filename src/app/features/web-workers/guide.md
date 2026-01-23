@@ -1,5 +1,37 @@
 # 👷 Master Web Workers in Angular
 
+
+## 📋 Table of Contents
+- [📑 Index](#index)
+- [🎯 What Problem Does This Solve?](#what-problem-does-this-solve)
+  - [The Problem](#the-problem)
+  - [The Solution: Web Workers](#the-solution-web-workers)
+  - [Key Improvements](#key-improvements)
+- [🔍 How It Works](#how-it-works)
+  - [Technical Architecture](#technical-architecture)
+  - [Communication Protocol](#communication-protocol)
+- [🚀 Implementation](#implementation)
+  - [1. Generating a Worker](#1-generating-a-worker)
+  - [2. Basic Setup](#2-basic-setup)
+- [🗄️ The Office Assistant Analogy](#the-office-assistant-analogy)
+- [🧠 Mind Map](#mind-map)
+- [📚 Key Classes & APIs](#key-classes--apis)
+  - [1. `Worker`](#1-worker)
+  - [2. `DedicatedWorkerGlobalScope`](#2-dedicatedworkerglobalscope)
+  - [3. `Structured Clone Algorithm`](#3-structured-clone-algorithm)
+  - [4. `Transferable Objects`](#4-transferable-objects)
+- [🌍 Real-World Use Cases](#real-world-use-cases)
+  - [1. **Client-Side Image Manipulation**](#1-client-side-image-manipulation)
+  - [2. **Large CSV/JSON Parsing**](#2-large-csvjson-parsing)
+  - [3. **Cryptographic Operations**](#3-cryptographic-operations)
+  - [4. **Physics Engines in Games**](#4-physics-engines-in-games)
+  - [5. **Rich Text Formatting**](#5-rich-text-formatting)
+- [❓ Interview Questions](#interview-questions)
+  - [Basic (1-8)](#basic-1-8)
+  - [Intermediate (9-16)](#intermediate-9-16)
+  - [Advanced (17-25)](#advanced-17-25)
+
+---
 ## 📑 Index
 1. [🎯 What Problem Does This Solve?](#-what-problem-does-this-solve)
 2. [🔍 How It Works](#-how-it-works)

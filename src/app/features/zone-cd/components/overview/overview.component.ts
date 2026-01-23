@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-zone-cd-overview',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
-    template: `
+  selector: 'app-zone-cd-overview',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  template: `
     <div class="overview-container fade-in">
       <div class="header-section">
         <h1>Zone.js & Change Detection</h1>
@@ -23,31 +23,31 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="features-grid">
-        <a routerLink="use-case-1" class="feature-card">
+        <a routerLink="zone-execution" class="feature-card">
           <div class="icon">🎯</div>
           <h3>Execution Context</h3>
           <p>Visualize code running Inside vs Outside the NgZone.</p>
         </a>
 
-        <a routerLink="use-case-2" class="feature-card">
+        <a routerLink="run-outside" class="feature-card">
           <div class="icon">🚀</div>
           <h3>Performance</h3>
           <p>Using <code>runOutsideAngular</code> for heavyweight tasks.</p>
         </a>
 
-        <a routerLink="use-case-3" class="feature-card">
+        <a routerLink="strategies" class="feature-card">
           <div class="icon">⚡</div>
           <h3>Strategies</h3>
           <p>Deep dive into <code>Default</code> vs <code>OnPush</code> strategy.</p>
         </a>
 
-        <a routerLink="use-case-4" class="feature-card">
+        <a routerLink="manual-detection" class="feature-card">
           <div class="icon">🔧</div>
           <h3>Manual Control</h3>
           <p>Using <code>detectChanges</code> and <code>markForCheck</code> manually.</p>
         </a>
         
-        <a routerLink="use-case-5" class="feature-card">
+        <a routerLink="detach-reattach" class="feature-card">
           <div class="icon">🧊</div>
           <h3>Detach / Reattach</h3>
           <p>Completely freezing parts of the UI for performance.</p>
@@ -63,7 +63,7 @@ import { RouterLink } from '@angular/router';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .overview-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
     .header-section { text-align: center; margin-bottom: 40px; }
     h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--primary-color); }

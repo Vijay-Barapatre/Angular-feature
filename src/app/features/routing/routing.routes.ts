@@ -8,23 +8,23 @@ export const ROUTING_ROUTES: Routes = [
     },
     {
         path: 'basic-navigation',
-        loadComponent: () => import('./components/use-case-1/basic-navigation.component').then(m => m.BasicNavigationComponent)
+        loadComponent: () => import('./components/basic-navigation/basic-navigation.component').then(m => m.BasicNavigationComponent)
     },
     {
         path: 'route-parameters',
-        loadComponent: () => import('./components/use-case-2/route-parameters.component').then(m => m.RouteParametersComponent)
+        loadComponent: () => import('./components/route-parameters/route-parameters.component').then(m => m.RouteParametersComponent)
     },
     {
         path: 'route-parameters/user/:id',
-        loadComponent: () => import('./components/use-case-2/user-profile.component').then(m => m.UserProfileComponent)
+        loadComponent: () => import('./components/route-parameters/user-profile.component').then(m => m.UserProfileComponent)
     },
     {
         path: 'query-parameters',
-        loadComponent: () => import('./components/use-case-3/query-parameters.component').then(m => m.QueryParametersComponent)
+        loadComponent: () => import('./components/query-parameters/query-parameters.component').then(m => m.QueryParametersComponent)
     },
     {
         path: 'child-routes',
-        loadComponent: () => import('./components/use-case-4/child-routes.component').then(m => m.ChildRoutesComponent),
+        loadComponent: () => import('./components/child-routes/child-routes.component').then(m => m.ChildRoutesComponent),
         children: [
             {
                 path: '',
@@ -33,16 +33,16 @@ export const ROUTING_ROUTES: Routes = [
             },
             {
                 path: 'overview',
-                loadComponent: () => import('./components/use-case-4/dashboard-overview.component').then(m => m.DashboardOverviewComponent)
+                loadComponent: () => import('./components/child-routes/dashboard-overview.component').then(m => m.DashboardOverviewComponent)
             },
             {
                 path: 'settings',
-                loadComponent: () => import('./components/use-case-4/dashboard-settings.component').then(m => m.DashboardSettingsComponent)
+                loadComponent: () => import('./components/child-routes/dashboard-settings.component').then(m => m.DashboardSettingsComponent)
             }
         ]
     },
     {
         path: 'programmatic-navigation',
-        loadComponent: () => import('./components/use-case-5/programmatic-navigation.component').then(m => m.ProgrammaticNavigationComponent)
+        loadComponent: () => import('./components/programmatic-navigation/programmatic-navigation.component').then(m => m.ProgrammaticNavigationComponent)
     }
 ];

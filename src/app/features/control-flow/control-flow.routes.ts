@@ -10,20 +10,20 @@ export const CONTROL_FLOW_ROUTES: Routes = [
             .then(m => m.ControlFlowOverviewComponent),
         children: [
             {
-                path: 'use-case-1',
-                loadComponent: () => import('./components/use-case-1/if-control-flow.component')
+                path: 'if-control-flow',
+                loadComponent: () => import('./components/if-control-flow/if-control-flow.component')
                     .then(m => m.IfControlFlowComponent),
                 data: { title: '@if Conditional Rendering' }
             },
             {
-                path: 'use-case-2',
-                loadComponent: () => import('./components/use-case-2/for-control-flow.component')
+                path: 'for-control-flow',
+                loadComponent: () => import('./components/for-control-flow/for-control-flow.component')
                     .then(m => m.ForControlFlowComponent),
                 data: { title: '@for Loop Rendering' }
             },
             {
-                path: 'use-case-3',
-                loadComponent: () => import('./components/use-case-3/switch-control-flow.component')
+                path: 'switch-control-flow',
+                loadComponent: () => import('./components/switch-control-flow/switch-control-flow.component')
                     .then(m => m.SwitchControlFlowComponent),
                 data: { title: '@switch Multi-Condition' }
             }

@@ -108,13 +108,13 @@ interface UseCase {
 })
 export class HttpClientOverviewComponent {
     useCases: UseCase[] = [
-        { id: 1, title: 'Basic GET with Observable', description: 'Fetch data, subscribe, async pipe, loading states.', path: 'use-case-1', icon: '📥', level: 'Basic' },
-        { id: 2, title: 'CRUD Operations', description: 'POST, PUT, DELETE with request bodies and responses.', path: 'use-case-2', icon: '✏️', level: 'Basic' },
-        { id: 3, title: 'Error Handling &#38; Retry', description: 'catchError, retry, custom error handlers.', path: 'use-case-3', icon: '🐛', level: 'Intermediate' },
-        { id: 4, title: 'HTTP Interceptors', description: 'Auth tokens, logging, global error handling.', path: 'use-case-4', icon: '🔒', level: 'Intermediate' },
-        { id: 5, title: 'Promise-based Requests', description: 'lastValueFrom, async/await patterns.', path: 'use-case-5', icon: '🤝', level: 'Intermediate' },
-        { id: 6, title: 'RxJS Operators', description: 'switchMap, concatMap, forkJoin, debounce.', path: 'use-case-6', icon: '🔧', level: 'Advanced' },
-        { id: 7, title: 'Caching Strategies', description: 'shareReplay, BehaviorSubject, cache invalidation.', path: 'use-case-7', icon: '💾', level: 'Advanced' },
-        { id: 8, title: 'File Upload/Download', description: 'Progress tracking, blob handling.', path: 'use-case-8', icon: '📁', level: 'Advanced' }
+        { id: 1, title: 'Basic GET with Observable', description: 'Fetch data, subscribe, async pipe, loading states.', path: 'basic-get', icon: '📥', level: 'Basic' },
+        { id: 2, title: 'CRUD Operations', description: 'POST, PUT, DELETE with request bodies and responses.', path: 'crud', icon: '✏️', level: 'Basic' },
+        { id: 3, title: 'Error Handling &#38; Retry', description: 'catchError, retry, custom error handlers.', path: 'error-handling', icon: '🐛', level: 'Intermediate' },
+        { id: 4, title: 'HTTP Interceptors', description: 'Auth tokens, logging, global error handling.', path: 'interceptors', icon: '🔒', level: 'Intermediate' },
+        { id: 5, title: 'Promise-based Requests', description: 'lastValueFrom, async/await patterns.', path: 'promises', icon: '🤝', level: 'Intermediate' },
+        { id: 6, title: 'RxJS Operators', description: 'switchMap, concatMap, forkJoin, debounce.', path: 'rxjs-operators', icon: '🔧', level: 'Advanced' },
+        { id: 7, title: 'Caching Strategies', description: 'shareReplay, BehaviorSubject, cache invalidation.', path: 'caching', icon: '💾', level: 'Advanced' },
+        { id: 8, title: 'File Upload/Download', description: 'Progress tracking, blob handling.', path: 'file-operations', icon: '📁', level: 'Advanced' }
     ];
 }

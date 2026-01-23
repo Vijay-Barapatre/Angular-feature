@@ -1,0 +1,74 @@
+Angular Input and Output.
+Concept and code explained together — the easy way.
+
+If you understand this pattern,
+you understand how Angular components talk — cleanly, safely, and predictably.
+
+Imagine two components — a parent and a child.
+By default, they are completely isolated.
+
+The parent has data, like a user name.
+But the child cannot see it.
+
+And when the child does something,
+the parent doesn’t even know it happened.
+
+So right now, they’re disconnected.
+We need a bridge.
+
+Angular gives us that bridge with one simple rule.
+Data goes down using Input.
+Events go up using Output.
+
+Step one — the child component defines the contract.
+What data it expects, and what events it can send.
+
+Here’s the complete picture — child component, parent component, and the template.
+Don’t worry about memorizing it.
+Let’s understand how it works.
+
+Input means the child expects data from the parent.
+The data always flows downward.
+
+Output means the child can notify the parent.
+Events always flow upward.
+
+The parent owns the data.
+It is the single source of truth.
+
+When an event comes from the child,
+the parent decides what to do.
+
+This connection happens in the template.
+Square brackets send data down.
+Parentheses send events up.
+
+Squares down.
+Parentheses up.
+
+When the parent updates data,
+Angular automatically pushes it to the child.
+
+The user interacts with the child component.
+
+The child emits an event,
+and the parent reacts immediately.
+
+This complete cycle is called unidirectional data flow.
+Clear, predictable, and easy to debug.
+
+Never change input data inside the child.
+The parent owns it — always.
+
+In modern Angular, we use Signals.
+Cleaner syntax, better performance —
+but the same exact idea.
+
+Parent owns data.
+Child receives data.
+Child emits events.
+Parent reacts.
+
+If you remember this flow,
+Angular communication will never confuse you again.
+Happy coding.

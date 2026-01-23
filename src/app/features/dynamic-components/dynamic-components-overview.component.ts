@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Use Case 1: Basic Creation -->
+        <!-- Basic Creation -->
         <a [routerLink]="['basic-creation']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400">
           <div class="flex items-start gap-4">
@@ -36,7 +36,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 2: Inputs & Outputs -->
+        <!-- Inputs & Outputs -->
         <a [routerLink]="['inputs-outputs']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-400">
           <div class="flex items-start gap-4">
@@ -54,7 +54,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 3: Lazy Loading -->
+        <!-- Lazy Loading -->
         <a [routerLink]="['lazy-loading']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-amber-500 dark:hover:border-amber-400">
           <div class="flex items-start gap-4">
@@ -72,7 +72,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 4: NgComponentOutlet -->
+        <!-- NgComponentOutlet -->
         <a [routerLink]="['ng-component-outlet']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-rose-500 dark:hover:border-rose-400">
           <div class="flex items-start gap-4">
@@ -90,7 +90,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 5: Modal Service -->
+        <!-- Modal Service -->
         <a [routerLink]="['modal-service']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-violet-500 dark:hover:border-violet-400 md:col-span-2">
           <div class="flex items-start gap-4">

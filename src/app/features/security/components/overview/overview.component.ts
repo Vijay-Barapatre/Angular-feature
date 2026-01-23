@@ -62,37 +62,37 @@ import { RouterLink } from '@angular/router';
             <section class="usecases-section">
                 <h2>📖 Use Cases</h2>
                 <div class="usecase-grid">
-                    <a routerLink="use-case-1" class="usecase-card">
+                    <a routerLink="xss-prevention" class="usecase-card">
                         <span class="num">1</span>
                         <h3>XSS Prevention</h3>
                         <p>DomSanitizer, auto-escaping, bypassSecurityTrust</p>
                         <span class="tag">Built-in</span>
                     </a>
-                    <a routerLink="use-case-2" class="usecase-card">
+                    <a routerLink="csrf-protection" class="usecase-card">
                         <span class="num">2</span>
                         <h3>CSRF Protection</h3>
                         <p>Tokens, HttpOnly cookies, SameSite</p>
                         <span class="tag">Backend</span>
                     </a>
-                    <a routerLink="use-case-3" class="usecase-card">
+                    <a routerLink="content-security-policy" class="usecase-card">
                         <span class="num">3</span>
                         <h3>Content Security Policy</h3>
                         <p>Headers, nonce, strict-dynamic</p>
                         <span class="tag">Server</span>
                     </a>
-                    <a routerLink="use-case-4" class="usecase-card">
+                    <a routerLink="auth-security" class="usecase-card">
                         <span class="num">4</span>
                         <h3>Auth Security</h3>
                         <p>JWT handling, secure storage, token refresh</p>
                         <span class="tag">Pattern</span>
                     </a>
-                    <a routerLink="use-case-5" class="usecase-card">
+                    <a routerLink="input-validation" class="usecase-card">
                         <span class="num">5</span>
                         <h3>Input Validation</h3>
                         <p>Client & server validation, sanitization</p>
                         <span class="tag">Forms</span>
                     </a>
-                    <a routerLink="use-case-6" class="usecase-card">
+                    <a routerLink="security-checklist" class="usecase-card">
                         <span class="num">6</span>
                         <h3>Security Checklist</h3>
                         <p>Best practices, OWASP Top 10, audit</p>

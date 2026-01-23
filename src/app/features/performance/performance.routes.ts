@@ -13,38 +13,38 @@ export const PERFORMANCE_ROUTES: Routes = [
             .then(m => m.PerformanceOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/onpush-strategy.component')
+        path: 'onpush-strategy',
+        loadComponent: () => import('./components/onpush-strategy/onpush-strategy.component')
             .then(m => m.OnPushStrategyComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/trackby-optimization.component')
+        path: 'trackby-optimization',
+        loadComponent: () => import('./components/trackby-optimization/trackby-optimization.component')
             .then(m => m.TrackByOptimizationComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/lazy-loading.component')
+        path: 'lazy-loading',
+        loadComponent: () => import('./components/lazy-loading/lazy-loading.component')
             .then(m => m.LazyLoadingComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/bundle-optimization.component')
+        path: 'bundle-optimization',
+        loadComponent: () => import('./components/bundle-optimization/bundle-optimization.component')
             .then(m => m.BundleOptimizationComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/runtime-performance.component')
+        path: 'runtime-performance',
+        loadComponent: () => import('./components/runtime-performance/runtime-performance.component')
             .then(m => m.RuntimePerformanceComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/memory-management.component')
+        path: 'memory-management',
+        loadComponent: () => import('./components/memory-management/memory-management.component')
             .then(m => m.MemoryManagementComponent)
     },
     {
-        path: 'use-case-7',
-        loadComponent: () => import('./components/use-case-7/profiling-devtools.component')
+        path: 'profiling-devtools',
+        loadComponent: () => import('./components/profiling-devtools/profiling-devtools.component')
             .then(m => m.ProfilingDevToolsComponent)
     }
 ];

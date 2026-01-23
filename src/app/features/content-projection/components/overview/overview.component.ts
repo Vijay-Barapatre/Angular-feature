@@ -60,31 +60,31 @@ import { RouterLink } from '@angular/router';
             <section class="usecases-section">
                 <h2>📖 Use Cases</h2>
                 <div class="usecase-grid">
-                    <a routerLink="use-case-1" class="usecase-card">
+                    <a routerLink="basic-projection" class="usecase-card">
                         <span class="num">1</span>
                         <h3>Basic ng-content</h3>
                         <p>Single slot content projection</p>
                         <span class="tag">ng-content</span>
                     </a>
-                    <a routerLink="use-case-2" class="usecase-card">
+                    <a routerLink="multi-slot" class="usecase-card">
                         <span class="num">2</span>
                         <h3>Multi-Slot Projection</h3>
                         <p>Named slots with select attribute</p>
                         <span class="tag">select="..."</span>
                     </a>
-                    <a routerLink="use-case-3" class="usecase-card">
+                    <a routerLink="template-outlet" class="usecase-card">
                         <span class="num">3</span>
                         <h3>ngTemplateOutlet</h3>
                         <p>Dynamic template rendering</p>
                         <span class="tag">ng-template</span>
                     </a>
-                    <a routerLink="use-case-4" class="usecase-card">
+                    <a routerLink="conditional-projection" class="usecase-card">
                         <span class="num">4</span>
                         <h3>Conditional Projection</h3>
                         <p>Show/hide projected content</p>
                         <span class="tag">&#64;ContentChild</span>
                     </a>
-                    <a routerLink="use-case-5" class="usecase-card">
+                    <a routerLink="real-world-patterns" class="usecase-card">
                         <span class="num">5</span>
                         <h3>Real-World Patterns</h3>
                         <p>Card, Modal, Tabs components</p>

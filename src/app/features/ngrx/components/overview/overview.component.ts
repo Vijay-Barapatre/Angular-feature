@@ -20,8 +20,8 @@ import { RouterLink } from '@angular/router';
             </header>
 
             <div class="cards-grid">
-                <!-- Use Case 1: Store Basics -->
-                <div class="feature-card" routerLink="use-case-1">
+                <!-- Store Basics -->
+                <div class="feature-card" routerLink="store-basics">
                     <div class="card-icon">🏬</div>
                     <h3>Store Basics</h3>
                     <p>Actions, Reducers, Selectors, and Dispatching</p>
@@ -31,8 +31,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 2: Effects -->
-                <div class="feature-card" routerLink="use-case-2">
+                <!-- Effects -->
+                <div class="feature-card" routerLink="effects-demo">
                     <div class="card-icon">⚡</div>
                     <h3>Effects</h3>
                     <p>Side effects and API calls</p>
@@ -42,8 +42,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 3: Entity Adapter -->
-                <div class="feature-card" routerLink="use-case-3">
+                <!-- Entity Adapter -->
+                <div class="feature-card" routerLink="entity-adapter">
                     <div class="card-icon">📦</div>
                     <h3>Entity Adapter</h3>
                     <p>Efficient collection management with normalization</p>
@@ -53,8 +53,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 4: Selectors Deep Dive -->
-                <div class="feature-card" routerLink="use-case-4">
+                <!-- Selectors Deep Dive -->
+                <div class="feature-card" routerLink="selectors-demo">
                     <div class="card-icon">🔍</div>
                     <h3>Selectors Deep Dive</h3>
                     <p>Memoization, composition, and performance</p>
@@ -64,8 +64,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 5: DevTools -->
-                <div class="feature-card" routerLink="use-case-5">
+                <!-- DevTools -->
+                <div class="feature-card" routerLink="devtools-demo">
                     <div class="card-icon">🛠️</div>
                     <h3>DevTools Integration</h3>
                     <p>Time-travel debugging and state inspection</p>
@@ -75,8 +75,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 6: Best Practices -->
-                <div class="feature-card" routerLink="use-case-6">
+                <!-- Best Practices -->
+                <div class="feature-card" routerLink="best-practices">
                     <div class="card-icon">📋</div>
                     <h3>Best Practices</h3>
                     <p>Patterns, anti-patterns, and production tips</p>
@@ -86,8 +86,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!--Use Case 7: Router Store -->
-                <div class="feature-card" routerLink="use-case-7">
+                <!--Router Store -->
+                <div class="feature-card" routerLink="router-store-demo">
                     <div class="card-icon">🔗</div>
                     <h3>Router Store</h3>
                     <p>Sync Angular Router with NgRx Store state</p>
@@ -97,8 +97,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 8: Component Store -->
-                <div class="feature-card" routerLink="use-case-8">
+                <!-- Component Store -->
+                <div class="feature-card" routerLink="component-store-demo">
                     <div class="card-icon">🎯</div>
                     <h3>Component Store</h3>
                     <p>Local reactive state management for components</p>
@@ -108,8 +108,8 @@ import { RouterLink } from '@angular/router';
                     </div>
                 </div>
 
-                <!-- Use Case 9: Advanced Patterns -->
-                <div class="feature-card" routerLink="use-case-9">
+                <!-- Advanced Patterns -->
+                <div class="feature-card" routerLink="advanced-patterns">
                     <div class="card-icon">⚡</div>
                     <h3>Advanced Patterns</h3>
                     <p>Meta-reducers, runtime checks, and production setup</p>

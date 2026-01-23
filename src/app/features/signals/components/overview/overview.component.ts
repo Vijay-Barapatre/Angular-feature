@@ -215,49 +215,49 @@ export class OverviewComponent {
     useCases = [
         {
             id: 1,
-            route: 'use-case-1',
+            route: 'basic-signals',
             icon: '📡',
-            title: 'Use Case 1: Basic Signals',
+            title: 'Basic Signals',
             description: 'Create and update reactive signals with signal(), set(), and update()',
             concepts: ['signal()', 'set()', 'update()']
         },
         {
             id: 2,
-            route: 'use-case-2',
+            route: 'computed-signals',
             icon: '🧮',
-            title: 'Use Case 2: Computed Signals',
+            title: 'Computed Signals',
             description: 'Derive read-only values that auto-update when dependencies change',
             concepts: ['computed()', 'derived state', 'auto-tracking']
         },
         {
             id: 3,
-            route: 'use-case-3',
+            route: 'effects',
             icon: '⚡',
-            title: 'Use Case 3: Effects',
+            title: 'Effects',
             description: 'Run side effects when signal values change',
             concepts: ['effect()', 'cleanup', 'untracked()']
         },
         {
             id: 4,
-            route: 'use-case-4',
+            route: 'signal-inputs',
             icon: '📥',
-            title: 'Use Case 4: Signal Inputs',
+            title: 'Signal Inputs',
             description: 'Use input() and input.required() for reactive component inputs',
             concepts: ['input()', 'input.required()', 'transform']
         },
         {
             id: 5,
-            route: 'use-case-5',
+            route: 'model-signals',
             icon: '🔄',
-            title: 'Use Case 5: Model Signals',
+            title: 'Model Signals',
             description: 'Two-way binding with model() for parent-child sync',
             concepts: ['model()', 'two-way binding', 'writeable']
         },
         {
             id: 6,
-            route: 'use-case-6',
+            route: 'signals-vs-observables',
             icon: '⚖️',
-            title: 'Use Case 6: Signals vs Observables',
+            title: 'Signals vs Observables',
             description: 'When to use each and how to convert between them',
             concepts: ['toSignal()', 'toObservable()', 'comparison']
         }

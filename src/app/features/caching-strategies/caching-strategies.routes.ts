@@ -13,28 +13,28 @@ export const CACHING_STRATEGIES_ROUTES: Routes = [
             .then(m => m.CachingOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/http-caching.component')
+        path: 'http-caching',
+        loadComponent: () => import('./components/http-caching/http-caching.component')
             .then(m => m.HttpCachingComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/memory-cache.component')
+        path: 'memory-cache',
+        loadComponent: () => import('./components/memory-cache/memory-cache.component')
             .then(m => m.MemoryCacheComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/storage-cache.component')
+        path: 'storage-cache',
+        loadComponent: () => import('./components/storage-cache/storage-cache.component')
             .then(m => m.StorageCacheComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/indexeddb-cache.component')
+        path: 'indexeddb-cache',
+        loadComponent: () => import('./components/indexeddb-cache/indexeddb-cache.component')
             .then(m => m.IndexedDbCacheComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/cache-invalidation.component')
+        path: 'cache-invalidation',
+        loadComponent: () => import('./components/cache-invalidation/cache-invalidation.component')
             .then(m => m.CacheInvalidationComponent)
     }
 ];

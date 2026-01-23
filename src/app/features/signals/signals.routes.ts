@@ -6,12 +6,12 @@
  * ROUTE STRUCTURE:
  * /signals (base)
  *   ├── / (overview)
- *   ├── /use-case-1 (Basic Signals)
- *   ├── /use-case-2 (Computed Signals)
- *   ├── /use-case-3 (Effects)
- *   ├── /use-case-4 (Signal Inputs)
- *   ├── /use-case-5 (Model Signals)
- *   ├── /use-case-6 (Signals vs Observables)
+ *   ├── /basic-signals (Basic Signals)
+ *   ├── /computed-signals (Computed Signals)
+ *   ├── /effects (Effects)
+ *   ├── /signal-inputs (Signal Inputs)
+ *   ├── /model-signals (Model Signals)
+ *   ├── /signals-vs-observables (Signals vs Observables)
  *   └── /exercise (Learner practice)
  */
 
@@ -23,28 +23,28 @@ export const SIGNALS_ROUTES: Routes = [
         loadComponent: () => import('./components/overview/overview.component').then(m => m.OverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/demo.component').then(m => m.UseCase1DemoComponent)
+        path: 'basic-signals',
+        loadComponent: () => import('./components/basic-signals/demo.component').then(m => m.UseCase1DemoComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/demo.component').then(m => m.UseCase2DemoComponent)
+        path: 'computed-signals',
+        loadComponent: () => import('./components/computed-signals/demo.component').then(m => m.UseCase2DemoComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/demo.component').then(m => m.UseCase3DemoComponent)
+        path: 'effects',
+        loadComponent: () => import('./components/effects/demo.component').then(m => m.UseCase3DemoComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/demo.component').then(m => m.UseCase4DemoComponent)
+        path: 'signal-inputs',
+        loadComponent: () => import('./components/signal-inputs/demo.component').then(m => m.UseCase4DemoComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/demo.component').then(m => m.UseCase5DemoComponent)
+        path: 'model-signals',
+        loadComponent: () => import('./components/model-signals/demo.component').then(m => m.UseCase5DemoComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/demo.component').then(m => m.UseCase6DemoComponent)
+        path: 'signals-vs-observables',
+        loadComponent: () => import('./components/signals-vs-observables/demo.component').then(m => m.UseCase6DemoComponent)
     },
     {
         path: 'exercise',

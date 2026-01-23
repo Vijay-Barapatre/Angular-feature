@@ -19,7 +19,7 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Use Case 1: Basic Navigation -->
+        <!-- Basic Navigation -->
         <a [routerLink]="['basic-navigation']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400">
           <div class="flex items-start gap-4">
@@ -39,7 +39,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 2: Route Parameters -->
+        <!-- Route Parameters -->
         <a [routerLink]="['route-parameters']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-rose-500 dark:hover:border-rose-400">
           <div class="flex items-start gap-4">
@@ -59,7 +59,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 3: Query Parameters -->
+        <!-- Query Parameters -->
         <a [routerLink]="['query-parameters']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-amber-500 dark:hover:border-amber-400">
           <div class="flex items-start gap-4">
@@ -79,7 +79,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 4: Child Routes -->
+        <!-- Child Routes -->
         <a [routerLink]="['child-routes']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-400">
           <div class="flex items-start gap-4">
@@ -99,7 +99,7 @@ import { RouterLink } from '@angular/router';
           </div>
         </a>
 
-        <!-- Use Case 5: Programmatic Navigation -->
+        <!-- Programmatic Navigation -->
         <a [routerLink]="['programmatic-navigation']" 
            class="group block p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-slate-200 dark:border-slate-700 hover:border-violet-500 dark:hover:border-violet-400">
           <div class="flex items-start gap-4">

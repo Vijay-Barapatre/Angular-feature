@@ -13,33 +13,33 @@ export const SECURITY_ROUTES: Routes = [
             .then(m => m.SecurityOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/xss-prevention.component')
+        path: 'xss-prevention',
+        loadComponent: () => import('./components/xss-prevention/xss-prevention.component')
             .then(m => m.XssPreventionComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/csrf-protection.component')
+        path: 'csrf-protection',
+        loadComponent: () => import('./components/csrf-protection/csrf-protection.component')
             .then(m => m.CsrfProtectionComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/csp.component')
+        path: 'content-security-policy',
+        loadComponent: () => import('./components/content-security-policy/csp.component')
             .then(m => m.CspComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/auth-security.component')
+        path: 'auth-security',
+        loadComponent: () => import('./components/auth-security/auth-security.component')
             .then(m => m.AuthSecurityComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/input-validation.component')
+        path: 'input-validation',
+        loadComponent: () => import('./components/input-validation/input-validation.component')
             .then(m => m.InputValidationComponent)
     },
     {
-        path: 'use-case-6',
-        loadComponent: () => import('./components/use-case-6/security-checklist.component')
+        path: 'security-checklist',
+        loadComponent: () => import('./components/security-checklist/security-checklist.component')
             .then(m => m.SecurityChecklistComponent)
     },
 

@@ -156,7 +156,7 @@ export class TestingOverviewComponent {
     useCases = [
         {
             id: 1,
-            path: 'use-case-1',
+            path: 'component-testing',
             icon: '🧩',
             title: 'Component Testing Basics',
             description: 'TestBed setup, fixtures, DOM queries, and event testing',
@@ -164,7 +164,7 @@ export class TestingOverviewComponent {
         },
         {
             id: 2,
-            path: 'use-case-2',
+            path: 'service-testing',
             icon: '⚙️',
             title: 'Service Testing',
             description: 'Testing isolated services with state and methods',
@@ -172,7 +172,7 @@ export class TestingOverviewComponent {
         },
         {
             id: 3,
-            path: 'use-case-3',
+            path: 'mocking-demo',
             icon: '🎭',
             title: 'Mocking Dependencies',
             description: 'Spy objects, mock providers, and dependency isolation',
@@ -180,7 +180,7 @@ export class TestingOverviewComponent {
         },
         {
             id: 4,
-            path: 'use-case-4',
+            path: 'async-testing',
             icon: '⏱️',
             title: 'Async Testing',
             description: 'Testing Promises, Observables, and timers',
@@ -188,7 +188,7 @@ export class TestingOverviewComponent {
         },
         {
             id: 5,
-            path: 'use-case-5',
+            path: 'http-testing',
             icon: '🌐',
             title: 'HTTP Testing',
             description: 'HttpClientTestingModule and request verification',
@@ -196,7 +196,7 @@ export class TestingOverviewComponent {
         },
         {
             id: 6,
-            path: 'use-case-6',
+            path: 'performance-testing',
             icon: '⚡',
             title: 'Performance-Aware Testing',
             description: 'Optimizing test speed and testing OnPush components',
@@ -205,7 +205,7 @@ export class TestingOverviewComponent {
         },
         {
             id: 7,
-            path: 'use-case-7',
+            path: 'reusable-utils',
             icon: '🔧',
             title: 'Reusable Testing Utilities',
             description: 'Factory functions, harnesses, and shared mocks',

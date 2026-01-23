@@ -139,10 +139,10 @@ import { RouterLink } from '@angular/router';
 })
 export class RxjsSignalOverviewComponent {
     useCases = [
-        { id: 1, path: 'use-case-1', icon: '📡', title: 'toSignal()', description: 'Convert Observable to Signal', tags: ['toSignal', 'initialValue', 'requireSync'] },
-        { id: 2, path: 'use-case-2', icon: '🔄', title: 'toObservable()', description: 'Convert Signal to Observable', tags: ['toObservable', 'RxJS operators'] },
-        { id: 3, path: 'use-case-3', icon: '⚡', title: 'effect()', description: 'React to signal changes', tags: ['effect', 'side effects', 'logging'] },
-        { id: 4, path: 'use-case-4', icon: '🧮', title: 'Computed + Async', description: 'Combine computed signals with async', tags: ['computed', 'derive', 'combine'] },
-        { id: 5, path: 'use-case-5', icon: '🌍', title: 'Real-world Patterns', description: 'HTTP, forms, state management', tags: ['HTTP', 'forms', 'state'] }
+        { id: 1, path: 'to-signal', icon: '📡', title: 'toSignal()', description: 'Convert Observable to Signal', tags: ['toSignal', 'initialValue', 'requireSync'] },
+        { id: 2, path: 'to-observable', icon: '🔄', title: 'toObservable()', description: 'Convert Signal to Observable', tags: ['toObservable', 'RxJS operators'] },
+        { id: 3, path: 'effect-signals', icon: '⚡', title: 'effect()', description: 'React to signal changes', tags: ['effect', 'side effects', 'logging'] },
+        { id: 4, path: 'computed-async', icon: '🧮', title: 'Computed + Async', description: 'Combine computed signals with async', tags: ['computed', 'derive', 'combine'] },
+        { id: 5, path: 'real-world-patterns', icon: '🌍', title: 'Real-world Patterns', description: 'HTTP, forms, state management', tags: ['HTTP', 'forms', 'state'] }
     ];
 }

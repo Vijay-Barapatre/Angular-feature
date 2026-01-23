@@ -13,28 +13,28 @@ export const RXJS_SIGNAL_INTEROP_ROUTES: Routes = [
             .then(m => m.RxjsSignalOverviewComponent)
     },
     {
-        path: 'use-case-1',
-        loadComponent: () => import('./components/use-case-1/to-signal.component')
+        path: 'to-signal',
+        loadComponent: () => import('./components/to-signal/to-signal.component')
             .then(m => m.ToSignalComponent)
     },
     {
-        path: 'use-case-2',
-        loadComponent: () => import('./components/use-case-2/to-observable.component')
+        path: 'to-observable',
+        loadComponent: () => import('./components/to-observable/to-observable.component')
             .then(m => m.ToObservableComponent)
     },
     {
-        path: 'use-case-3',
-        loadComponent: () => import('./components/use-case-3/effect-signals.component')
+        path: 'effect-signals',
+        loadComponent: () => import('./components/effect-signals/effect-signals.component')
             .then(m => m.EffectSignalsComponent)
     },
     {
-        path: 'use-case-4',
-        loadComponent: () => import('./components/use-case-4/computed-async.component')
+        path: 'computed-async',
+        loadComponent: () => import('./components/computed-async/computed-async.component')
             .then(m => m.ComputedAsyncComponent)
     },
     {
-        path: 'use-case-5',
-        loadComponent: () => import('./components/use-case-5/real-world-patterns.component')
+        path: 'real-world-patterns',
+        loadComponent: () => import('./components/real-world-patterns/real-world-patterns.component')
             .then(m => m.RealWorldPatternsComponent)
     }
 ];

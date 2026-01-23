@@ -8,19 +8,19 @@ Angular's `HttpClient` is a powerful service for making HTTP requests. This guid
 
 ## 📋 Table of Contents
 
-1. [Use Case 1: Basic GET with Observable](#use-case-1-basic-get-with-observable)
-2. [Use Case 2: CRUD Operations](#use-case-2-crud-operations)
-3. [Use Case 3: Error Handling & Retry](#use-case-3-error-handling--retry)
-4. [Use Case 4: HTTP Interceptors](#use-case-4-http-interceptors)
-5. [Use Case 5: Promise-based Requests](#use-case-5-promise-based-requests)
-6. [Use Case 6: RxJS Operators](#use-case-6-rxjs-operators)
-7. [Use Case 7: Caching Strategies](#use-case-7-caching-strategies)
-8. [Use Case 8: File Upload/Download](#use-case-8-file-uploaddownload)
-9. [Use Case 9: Promise Patterns](#use-case-9-promise-patterns)
+1. [Basic GET with Observable](#use-case-1-basic-get-with-observable)
+2. [CRUD Operations](#use-case-2-crud-operations)
+3. [Error Handling & Retry](#use-case-3-error-handling--retry)
+4. [HTTP Interceptors](#use-case-4-http-interceptors)
+5. [Promise-based Requests](#use-case-5-promise-based-requests)
+6. [RxJS Operators](#use-case-6-rxjs-operators)
+7. [Caching Strategies](#use-case-7-caching-strategies)
+8. [File Upload/Download](#use-case-8-file-uploaddownload)
+9. [Promise Patterns](#use-case-9-promise-patterns)
 
 ---
 
-## Use Case 1: Basic GET with Observable
+## Basic GET with Observable
 
 ### 📖 What It Teaches
 How to fetch data from an API and handle all UI states (loading, error, empty, success).
@@ -79,7 +79,7 @@ fetchWithStateManagement(): void {
 
 ---
 
-## Use Case 2: CRUD Operations
+## CRUD Operations
 
 ### 📖 What It Teaches
 Complete Create, Read, Update, Delete operations with optimistic updates.
@@ -134,7 +134,7 @@ createUser(): void {
 
 ---
 
-## Use Case 3: Error Handling & Retry
+## Error Handling & Retry
 
 ### 📖 What It Teaches
 Production-grade error handling with classification, retry strategies, and graceful degradation.
@@ -187,7 +187,7 @@ Stop calling a failing service to let it recover:
 
 ---
 
-## Use Case 4: HTTP Interceptors
+## HTTP Interceptors
 
 ### 📖 What It Teaches
 Middleware that runs for EVERY HTTP request/response.
@@ -244,7 +244,7 @@ req.clone({ headers: req.headers.set('Auth', 'token') });
 
 ---
 
-## Use Case 5: Promise-based Requests
+## Promise-based Requests
 
 ### 📖 What It Teaches
 Using async/await syntax with Angular's HttpClient.
@@ -291,7 +291,7 @@ async loadData(): Promise<void> {
 
 ---
 
-## Use Case 6: RxJS Operators
+## RxJS Operators
 
 ### 📖 What It Teaches
 Advanced RxJS patterns for real-world HTTP scenarios.
@@ -337,7 +337,7 @@ forkJoin({
 
 ---
 
-## Use Case 7: Caching Strategies
+## Caching Strategies
 
 ### 📖 What It Teaches
 How to cache HTTP responses to avoid redundant API calls.
@@ -381,7 +381,7 @@ invalidateCache(): void {
 
 ---
 
-## Use Case 8: File Upload/Download
+## File Upload/Download
 
 ### 📖 What It Teaches
 Handle file operations with progress tracking.
@@ -430,7 +430,7 @@ this.http.get('/api/file', { responseType: 'blob' }).subscribe(blob => {
 
 ---
 
-## Use Case 9: Promise Patterns
+## Promise Patterns
 
 ### 📖 What It Teaches
 Advanced Promise patterns: `Promise.all`, `Promise.allSettled`, `Promise.race`.

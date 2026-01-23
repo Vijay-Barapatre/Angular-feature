@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-pipes-overview',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
-    template: `
+  selector: 'app-pipes-overview',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  template: `
     <div class="overview-container fade-in">
       <div class="header-section">
         <h1>Transforming Data with Pipes</h1>
@@ -28,37 +28,37 @@ import { RouterLink } from '@angular/router';
       </div>
 
       <div class="features-grid">
-        <a routerLink="use-case-1" class="feature-card">
+        <a routerLink="built-in-pipes" class="feature-card">
           <div class="icon">🛠️</div>
           <h3>Built-in Pipes</h3>
           <p>Date, Currency, Percent, and Text transformation</p>
         </a>
 
-        <a routerLink="use-case-2" class="feature-card">
+        <a routerLink="custom-pipe" class="feature-card">
           <div class="icon">✨</div>
           <h3>Custom Pipes</h3>
           <p>Create your own reusable transformation logic</p>
         </a>
 
-        <a routerLink="use-case-3" class="feature-card">
+        <a routerLink="pure-impure-pipes" class="feature-card">
           <div class="icon">⚡</div>
           <h3>Pure vs Impure</h3>
           <p>Understand performance and change detection</p>
         </a>
 
-        <a routerLink="use-case-4" class="feature-card">
+        <a routerLink="async-pipe" class="feature-card">
           <div class="icon">⏳</div>
           <h3>Async Pipe</h3>
           <p>Handle Observables and Promises automatically</p>
         </a>
         
-        <a routerLink="use-case-5" class="feature-card">
+        <a routerLink="json-keyvalue-pipe" class="feature-card">
           <div class="icon">🔧</div>
           <h3>Debugging & Utils</h3>
           <p>JSON pipe and KeyValue pipe deep dive</p>
         </a>
 
-        <a routerLink="use-case-6" class="feature-card">
+        <a routerLink="chaining-pipes" class="feature-card">
           <div class="icon">🔗</div>
           <h3>Chaining</h3>
           <p>Combine multiple pipes for complex results</p>
@@ -74,7 +74,7 @@ import { RouterLink } from '@angular/router';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .overview-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
     .header-section { text-align: center; margin-bottom: 40px; }
     h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--primary-color); }

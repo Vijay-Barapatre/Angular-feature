@@ -136,49 +136,49 @@ import { RouterLink } from '@angular/router';
 export class DirectivesOverviewComponent {
     useCases = [
         {
-            id: 1, path: 'use-case-1',
+            id: 1, path: 'basic-attribute',
             title: 'Basic Attribute Directives',
             description: 'Create simple directives that change element appearance',
             tags: ['appHighlight', 'appTooltip', 'Renderer2']
         },
         {
-            id: 2, path: 'use-case-2',
+            id: 2, path: 'directive-inputs',
             title: 'Directive with @Input',
             description: 'Pass data to directives for dynamic behavior',
             tags: ['@Input', 'dynamic styling', 'configuration']
         },
         {
-            id: 3, path: 'use-case-3',
+            id: 3, path: 'host-listener',
             title: '@HostListener in Directives',
             description: 'Listen to events on the host element',
             tags: ['@HostListener', 'click', 'hover', 'events']
         },
         {
-            id: 4, path: 'use-case-4',
+            id: 4, path: 'host-binding',
             title: '@HostBinding in Directives',
             description: 'Bind to host element properties',
             tags: ['@HostBinding', 'class', 'style', 'disabled']
         },
         {
-            id: 5, path: 'use-case-5',
+            id: 5, path: 'structural-basics',
             title: 'Structural Directive Basics',
             description: 'Understand how *ngIf and *ngFor work internally',
             tags: ['TemplateRef', 'ViewContainerRef', '*appIf']
         },
         {
-            id: 6, path: 'use-case-6',
+            id: 6, path: 'custom-structural',
             title: 'Custom Structural Directives',
             description: 'Build custom structural directives like *appRepeat',
             tags: ['*appRepeat', '*appLet', 'context']
         },
         {
-            id: 7, path: 'use-case-7',
+            id: 7, path: 'directive-composition',
             title: 'Directive Composition',
             description: 'Combine multiple directives for complex behavior',
             tags: ['hostDirectives', 'composition', 'DRY']
         },
         {
-            id: 8, path: 'use-case-8',
+            id: 8, path: 'real-world',
             title: 'Real-world Directives',
             description: 'Production-ready patterns and best practices',
             tags: ['*appPermission', 'lazyLoad', 'infiniteScroll']
